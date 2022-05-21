@@ -1,15 +1,7 @@
 <div id="top"></div>
 <br />
 <div align="center">
-  <a href="https://github.com/EpitechPromo2025/B-FUN-400-PAR-4-1-wolfram-matthieu.queru">
-    <img src="https://cdn-icons-png.flaticon.com/512/919/919850.png" alt="Logo" width="100" height="100">
-  </a>
-
-  <h3 align="center">Wolfram</h3>
-
-  <p align="center">
-    Elementary Cellular Automaton
-    <br />
+  <h3 align="center">Paperwork</h3>
   </p>
 </div>
 
