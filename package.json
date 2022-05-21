@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Paperwork server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/start.js",
+    "dev": "nodemon ./bin/start.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
