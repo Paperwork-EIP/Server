@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = new Router();
-const google = require('./externalApi/facebook');
-const discord = require('./externalApi/google');
+const google = require('./facebook');
+const discord = require('./google');
 
 router.use('/google', google);
 router.use('/facebook', facebook);
