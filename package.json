@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/start.js",
     "dev": "nodemon ./bin/start.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "express": "^4.17.2",
+    "jest": "^28.1.0",
     "pg": "^8.7.1",
     "querystring": "^0.2.1",
     "sql-template-strings": "^2.2.2"
