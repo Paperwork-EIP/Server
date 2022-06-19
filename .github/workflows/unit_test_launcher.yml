@@ -1,0 +1,27 @@
+name: Node.js CI
+
+# trigger : on push or PR on preprod
+on:
+  push:
+    branches: [ preprod ]
+  pull_request:
+    branches: [ preprod ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x] # will run builds on all of these versions
+
+    steps:
+    - uses: actions/checkout@v3 # check out of the repository so the workflow can access it | needs to be done for each job
+    - run: npm i # install dependencies | create package-lock.json
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3 # setup node environment
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    #- run: npm ci # package-lock.json must exist
+    - run: npm run build --if-present
+    - run: npm test

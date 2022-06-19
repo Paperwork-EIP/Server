@@ -1,0 +1,33 @@
+version: "3"
+
+volumes:
+  kms:
+
+services:
+  server:
+    restart: on-failure
+    container_name: paperwork-server
+    image: node:lts
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://toto:pass@192.168.1.11:5432/paperwork
+      NODE_ENV: development
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    command: "sh -c 'cd /app && npm install && npm run dev'"
+    volumes:
+      - ./:/app
+      - kms:/usr/share/data
+
+  postgres:
+    restart: on-failure
+    container_name: database
+    image: postgres:latest
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: toto
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: paperwork
