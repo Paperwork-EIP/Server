@@ -1,4 +1,4 @@
-const db = require('./paperwork');
+const db = require('./db');
 
 module.exports = {
   async create(username, email, password = '') {

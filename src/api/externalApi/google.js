@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const router = new Router();
-const { google_clientID, google_secret } = require('../../../const.json');
+const { google_clientID, google_secret } = require('../../const.json');
 const axios = require('axios');
 const querystring = require('querystring');
-const USER = require('../../../persistence/users')
-const TOKEN = require('../../../persistence/tokens')
+const USER = require('../../persistence/users')
+const TOKEN = require('../../persistence/tokens')
 const jwt = require('jsonwebtoken');
-const { jwt_key } = require('../../../const.json');
+const { jwt_key } = require('../../const.json');
 
 function getGoogleAuthURL(redirect) {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";

@@ -1,6 +1,6 @@
 const sql = require('sql-template-strings');
 const bcrypt = require('bcrypt');
-const db = require('./paperwork');
+const db = require('./db');
 
 module.exports = {
   async set(email, service, token, callback) {
