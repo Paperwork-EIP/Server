@@ -7,4 +7,5 @@ const oauth = require('./externalOauth/oauth');
 
 router.use('/user', users);
 router.use('/oauth', oauth);
+router.use('/token', middleware.checkJWT, tokens);
 module.exports = router;

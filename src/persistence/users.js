@@ -1,12 +1,12 @@
 const db = require('./paperwork');
 
 module.exports = {
-  async create(email, password = '') {
+  async create(username, email, password = '') {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (email, password)
-        VALUES (${email}, ${hashedPassword})
+      INSERT INTO user_table (pseudo, email, password)
+        VALUES (${username}, ${email}, ${hashedPassword})
         RETURNING id, email;
       `);
       const [user] = rows;

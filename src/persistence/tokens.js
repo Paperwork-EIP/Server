@@ -7,9 +7,9 @@ module.exports = {
     try {
       let query;
       if (token)
-        query = 'UPDATE user_table SET '+ service + ' = \'' + token + '\' WHERE email = \'' + email + '\';';
+        query = 'UPDATE user_table SET '+ service + '_token' + ' = \'' + token + '\' WHERE email = \'' + email + '\';';
       else
-        query = 'UPDATE user_table SET '+ service + ' = \'\' WHERE email = \'' + email + '\';';
+        query = 'UPDATE user_table SET '+ service + '_token' + ' = \'\' WHERE email = \'' + email + '\';';
       db.query(query).then(() => {
         callback(true)
       }).catch(e => {
@@ -20,7 +20,7 @@ module.exports = {
     }
   },
   async find(email, service) {
-    const query = 'SELECT '+ service + ' FROM user_table ' + ' WHERE email = \'' + email + '\';';
+    const query = 'SELECT '+ service + '_token' + ' FROM user_table ' + ' WHERE email = \'' + email + '\';';
     const { rows } = await db.query(query);
     return rows[0][service];
   },
