@@ -1,8 +1,8 @@
 const express = require('express');
-
 const { Router } = express;
 const router = new Router();
 const users = require('./db/user.js');
+const tokens = require('./db/token.js');
 const oauth = require('./externalOauth/oauth');
 
 router.use('/user', users);

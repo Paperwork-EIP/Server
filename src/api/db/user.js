@@ -1,10 +1,13 @@
 const { Router } = require('express');
 const User = require('../../persistence/users');
+const jwt = require('jsonwebtoken');
+const { jwt_key } = require('../../const');
 const router = new Router();
 
 router.post('/register', async (request, response) => {
     try {
       const { pseudo, email, password } = request.body;
+      console.log('test');
       if (!email || !password || !pseudo) {
         return response
           .status(400)

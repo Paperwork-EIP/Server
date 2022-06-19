@@ -3,7 +3,7 @@ const router = new Router();
 const axios = require('axios');
 const { messenger_clientID, messenger_secret } = require('../../../const.json');
 var querystring = require('querystring');
-const REDIRECT_URI = 'http://localhost:3000';
+const REDIRECT_URI = 'http://172.19.0.2:3000/';
 
 function get_code() {
     const rootUrl = "https://www.facebook.com/v13.0/dialog/oauth";
