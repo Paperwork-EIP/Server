@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = new Router();
+<<<<<<< HEAD
 const axios = require('axios');
 const { messenger_clientID, messenger_secret } = require('../../const.json');
 var querystring = require('querystring');
@@ -44,5 +45,9 @@ router.get("/", async (req, response) => {
       throw new Error(error);
     });
 })
+=======
+
+//implementer fonctions oauth facebook
+>>>>>>> c9fcd16f4aa5189149f83dbb4c6fa4066e6e299f
 
 module.exports = router;
