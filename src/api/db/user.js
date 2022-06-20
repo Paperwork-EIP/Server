@@ -12,15 +12,21 @@ router.post('/register', async (request, response) => {
           .status(400)
           .json({ message: 'Pseudo, email or password missing' });
       }
-      const check_user = await User.find(email);
-      const check_username = await User.findUsername(username);
-      if (check_user) {
-        return response.status(409).json({ message: 'Email already used' });
-      }
-      if (check_username) {
-        return response.status(409).json({ message: 'Usename already used' });
-      }
+      // console.log('test1');
+      // const check_user = await User.find(email);
+      // console.log('test2');
+      // const check_username = await User.findUsername(username);
+      // console.log('test3');
+      // if (check_user) {
+      //   return response.status(409).json({ message: 'Email already used' });
+      // }
+      // console.log('test4');
+      // if (check_username) {
+      //   return response.status(409).json({ message: 'Usename already used' });
+      // }
+      console.log('test5');
       const user = await User.create(username, email, password);
+      console.log('test6');
       return response.status(200).json({
         message: 'User registered !',
         jwt: jwt.sign({ user }, jwt_key)
