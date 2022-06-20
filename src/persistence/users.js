@@ -1,11 +1,13 @@
 const db = require('./db');
+const sql = require('sql-template-strings');
+const bcrypt = require('bcrypt');
 
 module.exports = {
   async create(username, email, password = '') {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (pseudo, email, password)
+      INSERT INTO user_table (username, email, password)
         VALUES (${username}, ${email}, ${hashedPassword})
         RETURNING id, email;
       `);
@@ -21,6 +23,12 @@ module.exports = {
   async find(email) {
     const { rows } = await db.query(sql`
     SELECT * FROM user_table WHERE email=${email} LIMIT 1;
+    `);
+    return rows[0];
+  },
+  async findUsername(username) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM user_table WHERE username=${username} LIMIT 1;
     `);
     return rows[0];
   },

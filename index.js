@@ -7,6 +7,9 @@ const route = require('./src/api/index');
 app.use(cors());
 app.use(bodyParser.json());
 
+const init_db = require('./src/persistence/init-db')
+init_db.initAll()
+
 let server;
 module.exports = {
   start(port) {

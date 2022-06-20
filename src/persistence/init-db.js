@@ -1,4 +1,5 @@
 const db = require('./db')
+const sql = require('sql-template-strings')
 
 module.exports = {
     initAll() {
@@ -73,7 +74,7 @@ module.exports = {
             is_display int NOT NULL,
             user_id int NOT NULL,
             process_id int NOT NULL`)
-        db.query(sql`CREATE TABLE IF NOT EXISTS posts (
+        db.query(sql`CREATE TABLE IF NOT EXISTS coms (
             id SERIAL NOT NULL,
             content text NOT NULL,
             date date NOT NULL,
