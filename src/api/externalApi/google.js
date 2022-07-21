@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const router = new Router();
-<<<<<<< HEAD
 const { google_clientID, google_secret } = require('../../const.json');
 const axios = require('axios');
 const querystring = require('querystring');
@@ -119,9 +118,5 @@ router.get("/login", async (req, response) => {
         console.error(e)
     }
 })
-=======
-
-//implementer fonctions oauth google
->>>>>>> c9fcd16f4aa5189149f83dbb4c6fa4066e6e299f
 
 module.exports = router;
