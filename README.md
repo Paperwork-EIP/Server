@@ -23,15 +23,13 @@
 
 ## About The Project
 
-text
+Paperwork is a web and mobile platform, aiming to help and guide non-French speaker in their administrative process in France. Through our various functionalities, they will be able to determine which documents or appointments they will need for the necessary administrative procedures depending on their situation and the spoken language.
 
 ## Getting Started
 
-text
-
 ### Installation
 
-Clone the repo
+You can clone the repo by entering:
    ```sh
    git clone git@github.com:Paperwork-EIP/Server.git
    ```
