@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./bin/start.js",
     "dev": "nodemon ./bin/start.js",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npx husky install",
+    "lint-staged": "lint-staged"
   },
   "author": "",
   "license": "ISC",
@@ -22,7 +24,20 @@
     "querystring": "^0.2.1",
     "sql-template-strings": "^2.2.2"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js, ts, tsx}": [
+      "eslint --cache --quiet --fix"
+    ]
+  },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "eslint": "^8.20.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^9.5.0"
   }
 }
