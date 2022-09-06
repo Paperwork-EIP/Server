@@ -48,5 +48,14 @@ module.exports = {
         callback({ code: 'invalid', user: { id: -1, email: '' } })
       }
     })
+  },
+  async delete(email) {
+    try {
+      const { rows } = await db.query(sql`
+      DELETE FROM user_table where email=${email};`);
+      return rows[0];
+    } catch (error) {
+     throw error;
+    }
   }
 };

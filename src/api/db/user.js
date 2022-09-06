@@ -89,4 +89,19 @@ router.post('/register', async (request, response) => {
     }
   });
 
+  router.get('/delete', async (request, response) => {
+    try{
+      const { email } = request.body
+      const find = await User.find(email)
+      if (find) {
+        const value = await User.delete(email)
+        return response.status(200).json({ message: 'User deleted' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
 module.exports = router;
