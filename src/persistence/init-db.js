@@ -16,23 +16,22 @@ module.exports = {
           age int NOT NULL,
           number_phone int NOT NULL,
           google_token text NULL,
-          facebook_token text NULL`)
+          facebook_token text NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS role (
             id SERIAL NOT NULL,
             access_forum int NOT NULL,
             access_posts_and_comments int NOT NULL,
             access_feature_idea_submit int NOT NULL,
             is_moderator int NOT NULL,
-            is_moderator int NOT NULL,
             is_admin int NOT NULL,
-            user_id int NOT NULL`)
+            user_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS user_process (
             id SERIAL NOT NULL,
             is_done int NOT NULL,
             start_process_date date NOT NULL,
             end_process_date date NOT NULL,
             user_id int NOT NULL,
-            process_id int NOT NULL`)
+            process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS step (
             id SERIAL NOT NULL,
             title text NOT NULL,
@@ -44,25 +43,25 @@ module.exports = {
             is_unique int NOT NULL,
             delay date NOT NULL,
             process_id int NOT NULL,
-            user_process_id int NOT NULL`)
+            user_process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS report (
             id SERIAL NOT NULL,
             description text NOT NULL,
             post_id int NOT NULL,
             com_id int NOT NULL,
-            reported_user_id int NOT NULL`)
+            reported_user_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS proposed_feature (
             id SERIAL NOT NULL,
             title text NOT NULL,
             description text NOT NULL,
             date date NOT NULL,
-            user_id int NOT,
-            is_in_process int NOT`)
+            user_id int NOT NULL,
+            is_in_process int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS process (
             id SERIAL NOT NULL,
             title text NOT NULL,
             description text NOT NULL,
-            source text NOT NULL`)
+            source text NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS posts (
             id SERIAL NOT NULL,
             title text NOT NULL,
@@ -73,7 +72,7 @@ module.exports = {
             is_open int NOT NULL,
             is_display int NOT NULL,
             user_id int NOT NULL,
-            process_id int NOT NULL`)
+            process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS coms (
             id SERIAL NOT NULL,
             content text NOT NULL,
@@ -82,6 +81,6 @@ module.exports = {
             downvote int NOT NULL,
             is_display int NOT NULL,
             post_id int NOT NULL,
-            user_id int NOT NULL`)
+            user_id int NOT NULL);`)
     }
 }
