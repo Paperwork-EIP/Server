@@ -62,7 +62,7 @@ jobs:
     needs: build
     environment:
       name: 'Development'
-      url: ${{ https://eip.epitech.eu/2024/prosshelper/ }}
+      # url: ${{ https://eip.epitech.eu/2024/prosshelper/ }}
 
     steps:
     - name: Download artifact from build job
