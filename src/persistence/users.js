@@ -3,12 +3,12 @@ const sql = require('sql-template-strings');
 const bcrypt = require('bcrypt');
 
 module.exports = {
-  async create(username, email, password, language, name, firstname, adress, profile_picture, age, number_phone = '') {
+  async create(username, email, password = '') {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (username, email, password, language, name, firstname, adress, profile_picture, age, number_phone)
-        VALUES (${username}, ${email}, ${hashedPassword}, ${language}, ${name}, ${firstname}, ${adress}, ${profile_picture}, ${age}, ${number_phone})
+      INSERT INTO user_table (username, email, password)
+        VALUES (${username}, ${email}, ${hashedPassword})
         RETURNING id, email;
       `);
       const [user] = rows;

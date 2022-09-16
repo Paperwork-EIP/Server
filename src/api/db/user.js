@@ -6,7 +6,7 @@ const router = new Router();
 
 router.post('/register', async (request, response) => {
     try {
-      const { username, email, password, language, name, firstname, adress, profile_picture, age, number_phone} = request.body;
+      const { username, email, password} = request.body;
       if (!email || !password || !username) {
         return response
           .status(400)
@@ -20,7 +20,7 @@ router.post('/register', async (request, response) => {
       if (check_username) {
         return response.status(409).json({ message: 'Usename already used' });
       }
-      const user = await User.create(username, email, password, language, name, firstname, adress, profile_picture, age, number_phone);
+      const user = await User.create(username, email, password);
       return response.status(200).json({
         message: 'User registered !',
         jwt: jwt.sign({ user }, jwt_key)
