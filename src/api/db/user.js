@@ -6,27 +6,21 @@ const router = new Router();
 
 router.post('/register', async (request, response) => {
     try {
-      const { username, email, password } = request.body;
+      const { username, email, password} = request.body;
       if (!email || !password || !username) {
         return response
           .status(400)
           .json({ message: 'Pseudo, email or password missing' });
       }
-      // console.log('test1');
-      // const check_user = await User.find(email);
-      // console.log('test2');
-      // const check_username = await User.findUsername(username);
-      // console.log('test3');
-      // if (check_user) {
-      //   return response.status(409).json({ message: 'Email already used' });
-      // }
-      // console.log('test4');
-      // if (check_username) {
-      //   return response.status(409).json({ message: 'Usename already used' });
-      // }
-      console.log('test5');
+      const check_user = await User.find(email);
+      const check_username = await User.findUsername(username);
+      if (check_user) {
+        return response.status(409).json({ message: 'Email already used' });
+      }
+      if (check_username) {
+        return response.status(409).json({ message: 'Usename already used' });
+      }
       const user = await User.create(username, email, password);
-      console.log('test6');
       return response.status(200).json({
         message: 'User registered !',
         jwt: jwt.sign({ user }, jwt_key)
@@ -66,5 +60,48 @@ router.post('/register', async (request, response) => {
       response.status(500).json();
     }
   });
-  
+
+  router.get('/getbyemail', async (request, response) => {
+    try{
+      const { email } = request.body
+      const find = await User.find(email)
+      if (find) {
+        return response.status(200).json(find);
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
+  router.get('/getbyusername', async (request, response) => {
+    try{
+      const { username } = request.body
+      const find = await User.findUsername(username)
+      if (find) {
+        return response.status(200).json(find);
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
+  router.get('/delete', async (request, response) => {
+    try{
+      const { email } = request.body
+      const find = await User.find(email)
+      if (find) {
+        const value = await User.delete(email)
+        return response.status(200).json({ message: 'User deleted' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
 module.exports = router;

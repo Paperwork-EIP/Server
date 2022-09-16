@@ -7,6 +7,7 @@ const USER = require('../../persistence/users')
 const TOKEN = require('../../persistence/tokens')
 const jwt = require('jsonwebtoken');
 const { jwt_key } = require('../../const.json');
+const REDIRECT_URI = 'http://localhost:3000/home';
 
 function getGoogleAuthURL(redirect) {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -28,11 +29,12 @@ function getGoogleAuthURL(redirect) {
 }
 
 router.get("/url", (request, response) => {
-    return response.send(getGoogleAuthURL('http://localhost:8000/oauth/google'));
+    return response.send(getGoogleAuthURL(REDIRECT_URI));
 });
 
 router.get("/urlLogin", (request, response) => {
-    return response.send(getGoogleAuthURL('http://localhost:8000/login/google'));
+    console.log("test");
+    return response.send(getGoogleAuthURL(REDIRECT_URI));
 });
 
 async function getTokens(code) {
@@ -41,7 +43,7 @@ async function getTokens(code) {
         code,
         client_id: google_clientID,
         client_secret: google_secret,
-        redirect_uri: 'http://localhost:8000/oauth/google',
+        redirect_uri: REDIRECT_URI,
         grant_type: "authorization_code",
     };
     tokens = await axios
@@ -68,7 +70,7 @@ async function getLoginTokens(code) {
         code,
         client_id: google_clientID,
         client_secret: google_secret,
-        redirect_uri: 'http://localhost:8000/login/google',
+        redirect_uri: REDIRECT_URI,
         grant_type: "authorization_code",
     };
     tokens = await axios
