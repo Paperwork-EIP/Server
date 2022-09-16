@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://toto:pass@192.168.1.11:5432/paperwork
+      DATABASE_URL: postgres://user:pass@postgres:5432/db
       NODE_ENV: development
       PORT: 8080
     ports:
@@ -28,6 +28,6 @@ services:
     ports:
       - "35432:5432"
     environment:
-      POSTGRES_USER: toto
+      POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
-      POSTGRES_DB: paperwork
+      POSTGRES_DB: db
