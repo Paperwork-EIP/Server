@@ -57,5 +57,19 @@ module.exports = {
     } catch (error) {
      throw error;
     }
+  },
+  async modifyUserDatas(email) {
+    try {
+      //Ici modif user data
+    } catch (error) {
+     throw error;
+    }
+  },
+  async modifyUserSettings(email) {
+    try {
+      //Ici modif user setting
+    } catch (error) {
+     throw error;
+    }
   }
 };
