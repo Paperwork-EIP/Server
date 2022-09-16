@@ -33,7 +33,6 @@ router.get("/url", (request, response) => {
 });
 
 router.get("/urlLogin", (request, response) => {
-    console.log("test");
     return response.send(getGoogleAuthURL(REDIRECT_URI));
 });
 
