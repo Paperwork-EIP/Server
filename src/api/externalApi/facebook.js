@@ -3,15 +3,21 @@ const router = new Router();
 const axios = require('axios');
 const { messenger_clientID, messenger_secret } = require('../../const.json');
 var querystring = require('querystring');
-const REDIRECT_URI = 'http://localhost:3000/home';
+const REDIRECT_URI = 'http://localhost:3000/facebookLogin';
+const USER = require('../../persistence/users')
+const TOKEN = require('../../persistence/tokens')
+const jwt = require('jsonwebtoken');
+const { jwt_key } = require('../../const.json');
 
 function get_code() {
-    const rootUrl = "https://www.facebook.com/v13.0/dialog/oauth";
+    const rootUrl = "https://graph.facebook.com/oauth/authorize";
     const options = {
         redirect_uri: REDIRECT_URI,
         client_id: messenger_clientID,
         state: "paperwork",
         scope: [
+          'email',
+          'public_profile'
         ].join(" ")
   };
   return `${rootUrl}?${querystring.stringify(options)}`;
@@ -21,28 +27,55 @@ router.get("/url", (request, response) => {
     return response.send(get_code());
   });
 
-router.get("/", async (req, response) => {
-    const code = req.query.code;
-    const url = "https://graph.facebook.com/v13.0/oauth/access_token?";
-    const data = {
-        code,
-        client_id: messenger_clientID,
-        client_secret: messenger_secret,
-        redirect_uri: REDIRECT_URI,
-    };
-    axios
-    .post(url, querystring.stringify(data), {
+async function getAccessToken(code) {
+  const url = "https://graph.facebook.com/v13.0/oauth/access_token";
+  const values = {
+      code,
+      client_id: messenger_clientID,
+      client_secret: messenger_secret,
+      redirect_uri: REDIRECT_URI,
+      grant_type: "authorization_code",
+  };
+  tokens = await axios
+      .post(url, querystring.stringify(values), {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/x-www-form-urlencoded",
       },
-    })
-    .then((res) => {
-      response.json(res.data.access_token)
-    })
-    .catch((error) => {
-      console.error(`Failed to fetch auth tokens`, error);
-      throw new Error(error);
-    });
+      })
+  return tokens.data
+}
+
+router.get("/", async (req, response) => {
+  try {
+    const { access_token } = await getAccessToken(req.query.code)
+    const user = await axios.get(
+      `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
+      {
+      headers: {
+          Authorization: `Bearer ${access_token}`,
+      }
+      }
+    )
+    const checkUser = await USER.find(user.data.email)
+    if (checkUser) {
+      TOKEN.set(checkUser.email, 'facebook', access_token);
+      return response.status(200).json({
+        message: "Connected with facebook",
+        jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, jwt_key)
+      })
+    } else {
+      USER.create(user.data.id, user.data.email, user.data.access_token).then(user => {
+        TOKEN.set(user.email, 'facebook', access_token);
+        const jwtToken = jwt.sign({ user }, jwt_key);
+        return response.status(200).json({
+        message: "Connected with facebook",
+        jwt: jwtToken
+        })
+      })
+    }
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 module.exports = router;

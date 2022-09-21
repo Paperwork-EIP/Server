@@ -7,7 +7,7 @@ const USER = require('../../persistence/users')
 const TOKEN = require('../../persistence/tokens')
 const jwt = require('jsonwebtoken');
 const { jwt_key } = require('../../const.json');
-const REDIRECT_URI = 'http://localhost:3000/home';
+const REDIRECT_URI = 'http://localhost:3000/GoogleLogin';
 
 function getGoogleAuthURL(redirect) {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -73,7 +73,7 @@ async function getLoginTokens(code) {
         grant_type: "authorization_code",
     };
     tokens = await axios
-        .post(url, querystring.stringify(values), {
+        .get(url, querystring.stringify(values), {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -83,7 +83,6 @@ async function getLoginTokens(code) {
 
 router.get("/login", async (req, response) => {
     try {
-
         const { id_token, access_token } = await getLoginTokens(req.query.code)
         const user = await axios
         .get(
@@ -93,21 +92,17 @@ router.get("/login", async (req, response) => {
                 Authorization: `Bearer ${id_token}`,
             },
             }
-        )
+            )
         const checkUser = await USER.find(user.data.email)
         if (checkUser) {
-        TOKEN.set(checkUser.email, 'google', access_token, (status) => {
-            // pass
-        })
+        TOKEN.set(checkUser.email, 'google', access_token);
         return response.status(200).json({
             message: "Connected with google",
             jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, jwt_key)
         })
         } else {
-        USER.create(user.data.email, '').then(user => {
-            TOKEN.set(user.email, 'google', access_token, (status) => {
-            // pass
-            })
+        USER.create(user.data.id, user.data.email, user.data.access_token).then(user => {
+            TOKEN.set(user.email, 'google', access_token);
             const jwtToken = jwt.sign({ user }, jwt_key);
             return response.status(200).json({
             message: "Connected with google",
