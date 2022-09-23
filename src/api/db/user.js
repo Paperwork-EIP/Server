@@ -104,13 +104,12 @@ router.post('/register', async (request, response) => {
     }
   });
 
-  router.get('/modifyUserDatas', async (request, response) => {
+  router.get('/modifyDatas', async (request, response) => {
     try{
       const { email } = request.body
       const find = await User.find(email)
       if (find) {
-        const value = await User.delete(email)
-        //Ici modif values
+        const value = await User.modifyDatas(email)
       } else {
         return response.status(404).json({ message: 'User not found.' });
       }
@@ -119,13 +118,12 @@ router.post('/register', async (request, response) => {
     }
   });
 
-  router.get('/modifyUserSettings', async (request, response) => {
+  router.get('/modifySettings', async (request, response) => {
     try{
       const { email } = request.body
       const find = await User.find(email)
       if (find) {
-        const value = await User.delete(email)
-        //Ici modif settings
+        const value = await User.modifySettings(email)
       } else {
         return response.status(404).json({ message: 'User not found.' });
       }

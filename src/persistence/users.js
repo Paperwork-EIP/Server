@@ -58,16 +58,20 @@ module.exports = {
      throw error;
     }
   },
-  async modifyUserDatas(email) {
+  async modifyDatas(email, data) {
     try {
-      //Ici modif user data
+      for (var key in data) {
+        const { rows } = await db.query(sql`
+        UPDATE FROM user_table where email=${email} SET ${key}=${data[key]}`);
+      return rows[0];
+    }
     } catch (error) {
      throw error;
     }
   },
-  async modifyUserSettings(email) {
+  async modifySettings(email) {
     try {
-      //Ici modif user setting
+      /* const { rows } = await db.query(sql``)<--Ici modif user setting */
     } catch (error) {
      throw error;
     }
