@@ -60,10 +60,8 @@ module.exports = {
   },
   async modifyDatas(email, data) {
     try {
-      for (var key in data) {
-        const { rows } = await db.query(sql`
-        UPDATE FROM user_table where email=${email} SET ${key}=${data[key]}`);
-      }
+      const { rows } = await db.query(sql`
+      UPDATE FROM user_table where email=${email} SET ${key}=${data[key]}`);
       return rows[0];
     } catch (error) {
      throw error;
