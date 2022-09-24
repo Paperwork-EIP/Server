@@ -2,25 +2,24 @@ const { Router } = require('express');
 const router = new Router();
 const axios = require('axios');
 const { messenger_clientID, messenger_secret } = require('../../const.json');
-var querystring = require('querystring');
 const REDIRECT_URI = 'http://localhost:3000/facebookLogin';
-const USER = require('../../persistence/users')
-const TOKEN = require('../../persistence/tokens')
+const USER = require('../../persistence/users');
+const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
 const { jwt_key } = require('../../const.json');
+const {URLSearchParams} = require('url');
 
 function get_code() {
     const rootUrl = "https://graph.facebook.com/oauth/authorize";
-    const options = {
-        redirect_uri: REDIRECT_URI,
-        client_id: messenger_clientID,
-        state: "paperwork",
-        scope: [
-          'email',
-          'public_profile'
-        ].join(" ")
-  };
-  return `${rootUrl}?${querystring.stringify(options)}`;
+  return `${rootUrl}?${new URLSearchParams([
+    ['state', "paperwork"],
+    ['client_id', messenger_clientID],
+    ['scope', [
+      'email',
+      'public_profile'
+    ].join(" ")],
+    ['redirect_uri', REDIRECT_URI]
+  ]).toString()}`;
 }
 
 router.get("/url", (request, response) => {
@@ -37,7 +36,13 @@ async function getAccessToken(code) {
       grant_type: "authorization_code",
   };
   tokens = await axios
-      .post(url, querystring.stringify(values), {
+      .post(url, new URLSearchParams([
+        ['code', code],
+        ['client_id', messenger_clientID],
+        ['client_secret', messenger_secret],
+        ['redirect_uri', REDIRECT_URI],
+        ['grant_type', "authorization_code"]
+      ]).toString(), {
       headers: {
           "Content-Type": "application/x-www-form-urlencoded",
       },
