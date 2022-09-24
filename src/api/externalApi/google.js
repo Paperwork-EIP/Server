@@ -35,14 +35,14 @@ router.get("/urlLogin", (request, response) => {
     return response.send(getGoogleAuthURL());
 });
 
-// router.get("/", async (req, response) => {
-//     try {
-//         const { access_token } = await getLoginTokens(req.query.code)
-//         return response.json(access_token)
-//     } catch (e) {
-//         console.error(e)
-//     }
-// });
+router.get("/", async (req, response) => {
+    try {
+        const { access_token } = await getLoginTokens(req.query.code)
+        return response.json(access_token)
+    } catch (e) {
+        console.error(e)
+    }
+});
 
 async function getLoginTokens(code) {
     const url = "https://oauth2.googleapis.com/token";
