@@ -13,7 +13,6 @@ module.exports = {
       db.query(query).then(() => {
         callback(true)
       }).catch(e => {
-        callback(false)
       })
     } catch (error) {
       throw error;
