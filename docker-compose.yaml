@@ -20,6 +20,7 @@ services:
     volumes:
       - ./:/app
       - kms:/usr/share/data
+      - /usr/src/app/node_modules
 
   postgres:
     restart: on-failure
