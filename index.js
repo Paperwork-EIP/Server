@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const route = require('./src/api/index');
+const process = require('./src/process/index');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,7 +14,7 @@ init_db.initAll()
 let server;
 module.exports = {
   start(port) {
-    app.use(route);
+    app.use(route, process);
     server = app.listen(port, () => {
       console.log(`App started on port ${port}`);
     });
