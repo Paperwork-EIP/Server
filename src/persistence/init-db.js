@@ -35,15 +35,21 @@ module.exports = {
         db.query(sql`CREATE TABLE IF NOT EXISTS step (
             id SERIAL NOT NULL,
             title text NOT NULL,
-            is_done int NOT NULL,
             type text NOT NULL,
             description text NOT NULL,
-            source text NOT NULL,
-            expire_date date NOT NULL,
+            question text NOT NULL,
+            source text NULL,
+            expire_date date NULL,
             is_unique int NOT NULL,
-            delay date NOT NULL,
-            process_id int NOT NULL,
-            user_process_id int NOT NULL);`)
+            delay date NULL,
+            process_id int NOT NULL);`)
+        db.query(sql`CREATE TABLE IF NOT EXISTS user_step (
+            id SERIAL NOT NULL,
+            step_id int NOT NULL,
+            is_done int NOT NULL,
+            expire_date date NULL,
+            delay date NULL,
+            user_process_id int NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS report (
             id SERIAL NOT NULL,
             description text NOT NULL,
