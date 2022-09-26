@@ -16,6 +16,15 @@ module.exports = {
             throw error;
         }
     },
+    async delete(title) {
+        try {
+            const { rows } = await db.query(sql`
+            DELETE FROM process where title=${title};`);
+            return rows[0];         
+        } catch (error) {
+            throw error;
+        }
+    },
     async get(title) {
         const { rows } = await db.query(sql`
         SELECT * FROM process WHERE title=${title} LIMIT 1;

@@ -19,5 +19,21 @@ router.post('/add', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
   });
+  router.post('/delete', async (request, response) => {
+    try {
+        const { process_title } = request.body;
+        const { id } = await Process.get(process_title);
+        if (!id) {
+            return response.status(500).json({ message: 'Steps not found' });
+        }
+        const res = await Step.delete(id);
+        return response.status(200).json({
+            message: 'Steps delete!',
+            response: res 
+        });
+    } catch (error) {
+        return response.status(500).json({ message: 'System error.' });
+    }
+  });
 
 module.exports = router;

@@ -16,6 +16,15 @@ module.exports = {
             throw error;
         }
     },
+    async delete(process_id) {
+        try {
+            const { rows } = await db.query(sql`
+            DELETE FROM step where process_id=${process_id};`);
+            return rows[0];         
+        } catch (error) {
+            throw error;
+        }
+    },
     async getByProcess(process_id) {
         const { rows } = await db.query(sql`
         SELECT * FROM step WHERE process_id=${process_id};
