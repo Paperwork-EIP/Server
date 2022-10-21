@@ -21,7 +21,6 @@
     "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
-    "querystring": "^0.2.1",
     "sql-template-strings": "^2.2.2"
   },
   "husky": {
@@ -35,9 +34,9 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
     "eslint": "^8.20.0",
     "husky": "^8.0.1",
-    "lint-staged": "^9.5.0"
+    "lint-staged": "^9.5.0",
+    "nodemon": "^2.0.15"
   }
 }
