@@ -3,7 +3,7 @@ const Process = require('../persistence/process');
 const Step = require('../persistence/step');
 const router = new Router();
   
-  router.post('/get', async (request, response) => {
+  router.get('/get', async (request, response) => {
     try {
         const { title } = request.body;
         const process = await Process.get(title);
@@ -16,7 +16,7 @@ const router = new Router();
         }
         var questions = [];
         for (var i in steps) {
-            questions.push(steps[i].question);
+            questions.push([steps[i].id, steps[i].question]);
         }
         return response.status(200).json({ questions: questions })
     } catch (error) {
