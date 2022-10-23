@@ -40,11 +40,9 @@ const router = new Router();
       for (var i in userStep) {
         if (userStep[i].is_done == false) {
           step = await Step.getById(userStep[i].step_id);
-          console.log(step);
           task.push([step.title, step.type, step.description, step.source]);
         }
       }
-      console.log(task);
       return response.status(200).json({task});
     } catch (error) {
       return response.status(500).json({ message: 'System error.' });

@@ -4,9 +4,9 @@ const sql = require('sql-template-strings')
 module.exports = {
     initAll() {
         db.query(sql`CREATE TABLE IF NOT EXISTS user_table (
-          id SERIAL NOT NULL,
-          username text NOT NULL,
-          email text NOT NULL,
+          id SERIAL UNIQUE NOT NULL,
+          username text UNIQUE NOT NULL,
+          email text UNIQUE NOT NULL,
           password text NOT NULL,
           language text NULL,
           name text NULL,
@@ -18,7 +18,7 @@ module.exports = {
           google_token text NULL,
           facebook_token text NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS role (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             access_forum int NOT NULL,
             access_posts_and_comments int NOT NULL,
             access_feature_idea_submit int NOT NULL,
@@ -26,7 +26,7 @@ module.exports = {
             is_admin int NOT NULL,
             user_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS user_process (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             is_done bool NOT NULL,
             start_process_date date NOT NULL,
             end_process_date date NULL,
@@ -34,7 +34,7 @@ module.exports = {
             user_id int NOT NULL,
             process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS step (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,
             type text NOT NULL,
             description text NOT NULL,
@@ -44,7 +44,7 @@ module.exports = {
             delay date NULL,
             process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS user_step (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             step_id int NOT NULL,
             is_done bool NOT NULL,
             start_date date NOT NULL,
@@ -52,26 +52,26 @@ module.exports = {
             appoinment date NULL,
             user_process_id int NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS report (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             description text NOT NULL,
             post_id int NOT NULL,
             com_id int NOT NULL,
             reported_user_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS proposed_feature (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,
             description text NOT NULL,
             date date NOT NULL,
             user_id int NOT NULL,
             is_in_process int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS process (
-            id SERIAL NOT NULL,
-            title text NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
+            title text UNIQUE NOT NULL,
             description text NOT NULL,
             source text NOT NULL,
             delay date NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS posts (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,
             description text NOT NULL,
             date date NOT NULL,
@@ -82,7 +82,7 @@ module.exports = {
             user_id int NOT NULL,
             process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS coms (
-            id SERIAL NOT NULL,
+            id SERIAL UNIQUE NOT NULL,
             content text NOT NULL,
             date date NOT NULL,
             upvote int NOT NULL,
