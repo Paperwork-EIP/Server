@@ -67,9 +67,10 @@ module.exports = {
      throw error;
     }
   },
-  async modifySettings(email) {
+  async modifySettings(email, data) {
     try {
-      /* const { rows } = await db.query(sql``)<--Ici modif user setting */
+      const { rows } = await db.query(sql`
+      UPDATE FROM settings where email=${email} SET ${key}=${data[key]}`)
     } catch (error) {
      throw error;
     }
