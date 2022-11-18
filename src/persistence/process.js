@@ -1,13 +1,12 @@
 const db = require('./db');
 const sql = require('sql-template-strings');
-const bcrypt = require('bcrypt');
 
 module.exports = {
-    async create(title, description, source = '') {
+    async create(title, description, source = '', delay = null) {
         try {
             const { rows } = await db.query(sql`
-            INSERT INTO process (title, description, source)
-                VALUES (${title}, ${description}, ${source})
+            INSERT INTO process (title, description, source, delay)
+                VALUES (${title}, ${description}, ${source}, ${delay})
                 RETURNING id, title;
             `);
             const [process] = rows;

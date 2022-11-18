@@ -4,8 +4,8 @@ const router = new Router();
   
   router.post('/add', async (request, response) => {
     try {
-        const { title, description, source } = request.body;
-        const res = await Process.create(title, description, source);
+        const { title, description, source, delay } = request.body;
+        const res = await Process.create(title, description, source, delay);
         return response.status(200).json({
             message: 'Process created!',
             response: res 
@@ -14,7 +14,7 @@ const router = new Router();
         return response.status(500).json({ message: 'System error.' });
     }
   });
-  router.post('/delete', async (request, response) => {
+  router.get('/delete', async (request, response) => {
     try {
         const { title } = request.body;
         const res = await Process.delete(title);
