@@ -1,5 +1,3 @@
-const sql = require('sql-template-strings');
-const bcrypt = require('bcrypt');
 const db = require('./db');
 
 module.exports = {
