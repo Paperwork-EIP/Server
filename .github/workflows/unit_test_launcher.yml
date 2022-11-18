@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x] # will run builds on all of these versions
+        node-version: [14.x, 16.x] # will run builds on all of these versions
 
     steps:
     - uses: actions/checkout@v3 # check out of the repository so the workflow can access it | needs to be done for each job
