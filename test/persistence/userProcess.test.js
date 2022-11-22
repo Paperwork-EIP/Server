@@ -1,8 +1,4 @@
-const express = require("express");
 const userProcess = require("../../src/persistence/userProcess");
-
-// UNIT TEST = tester la présence des composants.
-// INTEGRATION TEST  = tester les requêtes si elles sont correct ou s'il y a des erreurs.
 
 var mockTitle = "TestTitle";
 var mockProcessTitle = "mockProcess";
