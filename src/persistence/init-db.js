@@ -41,7 +41,7 @@ module.exports = {
             question text NOT NULL,
             source text NULL,
             is_unique bool NOT NULL,
-            delay date NULL,
+            delay int NULL,
             process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS user_step (
             id SERIAL UNIQUE NOT NULL,
@@ -68,7 +68,7 @@ module.exports = {
             id SERIAL UNIQUE NOT NULL,
             title text UNIQUE NOT NULL,
             description text NOT NULL,
-            source text NOT NULL,
+            source text NULL,
             delay date NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS posts (
             id SERIAL UNIQUE NOT NULL,
