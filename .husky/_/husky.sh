@@ -26,8 +26,6 @@ if [ -z "$husky_skip_init" ]; then
 
   if [ $exitCode != 0 ]; then
     echo "husky - $hook_name hook exited with code $exitCode (error)"
-    echo "Exception exit 0 because db not initialized";
-    exit 0
   fi
 
   if [ $exitCode = 127 ]; then

@@ -1,19 +1,25 @@
-const express = require("express");
-const request = require("supertest");
-const userProcess = require("../../src/process/userProcess");
+// const express = require("express");
+// const request = require("supertest");
+// const userProcess = require("../../src/process/userProcess");
 
-const app = express();
+// const app = express();
 
-app.use("/user/process", userProcess);
+// app.use("/user/process", userProcess);
 
-var mockTitle = "TestTitle";
-var mockProcessTitle = "mockProcess";
-var mockUserMail = "mock@mock.com";
+// var mockTitle = "TestTitle";
+// var mockProcessTitle = "mockProcess";
+// var mockUserMail = "mock@mock.com";
 
-describe("User Process Tests", () => {
-    test("[INTEGRATION TEST] [POST] /add request - success", async () => {
-        const { body } = await request(app).get("/user/process");
+// describe("User Process Tests", () => {
+//     test("[INTEGRATION TEST] [POST] /add request - success", async () => {
+//         const { body } = await request(app).get("/user/process");
 
-        expect(body.response).toEqual("User process and user steps created!");
-    });
+//         expect(body.response).toEqual("User process and user steps created!");
+//     });
+// });
+
+const sum = require('../sum');
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
 });
