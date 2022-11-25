@@ -19,15 +19,15 @@ describe("User connection tests", () => {
 
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID REGISTER TESTS]", () => {
-            // test("should register an user with a 500 status code (no database)", async () => {
-            //     const response = await request(server).post("/user/register").send({
-            //         username: "username",
-            //         email: "email",
-            //         password: "password"
-            //     });
+            test("should register an user with a 500 status code (no database)", async () => {
+                const response = await request(server).post("/user/register").send({
+                    username: "username",
+                    email: "email",
+                    password: "password"
+                });
 
-            //     expect(response.statusCode).toBe(500);
-            // });
+                expect(response.statusCode).toBe(500);
+            });
         });
         describe("[INVALID REGISTER TESTS]", () => {
             test("username missing : should not register an user with a 400 status code", async () => {
