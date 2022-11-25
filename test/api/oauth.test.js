@@ -1,4 +1,5 @@
 const request = require("supertest");
+const router = require("../../src/api/externalApi/oauth");
 const { start, stop } = require('../../index');
 
 describe("OAuth connections tests", () => {
@@ -15,6 +16,12 @@ describe("OAuth connections tests", () => {
 
     describe("[UNIT TESTS]", () => {
         describe("[VALID OAUTH TESTS]", () => {
+            test("should have a router component", () => {
+                expect(router).not.toBeNull();
+            });
+            test("should have instanced the router component", () => {
+                expect(router).toBeDefined();
+            });
             describe("--- OAUTH GOOGLE ---", () => {
                 test("'/' should exist", async () => {
                     const payload = {};

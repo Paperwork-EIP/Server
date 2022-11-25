@@ -1,4 +1,5 @@
 const request = require("supertest");
+const router = require("../../src/api/db/user");
 const { start, stop } = require('../../index');
 
 describe("User connection tests", () => {
@@ -14,7 +15,12 @@ describe("User connection tests", () => {
     });
 
     describe("[UNIT TESTS]", () => {
-
+        test("should have a router component", () => {
+            expect(router).not.toBeNull();
+        });
+        test("should have instanced the router component", () => {
+            expect(router).toBeDefined();
+        });
     });
 
     describe("[INTEGRATION TESTS]", () => {
