@@ -1,10 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const route = require('./src/api/index');
 const process = require('./src/process/index');
 
+const appSecure = express();
+appSecure.disable("x-powered-by");
+
+const app = express();
+app.use(helmet.hidePoweredBy());
 app.use(cors());
 app.use(bodyParser.json());
 
