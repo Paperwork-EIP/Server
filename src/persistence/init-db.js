@@ -32,7 +32,7 @@ module.exports = {
             end_process_date date NULL,
             expire_date date NULL,
             user_id int NOT NULL,
-            process_id int NOT NULL);`)
+            process_id int UNIQUE NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS step (
             id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,

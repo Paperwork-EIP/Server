@@ -21,8 +21,16 @@ produces:
 tags:
   - name: user
     description: User management.
-  - name: token
-    description: Token management.
+  - name: oauth
+    description: Oauth management.
+  - name: process
+    description: Process management.
+  - name: step
+    description: Step management.
+  - name: userProcess
+    description: UserProcess management.
+  # - name: token
+  #   description: Token management.
 
 paths:
   /user/register:
@@ -141,7 +149,6 @@ paths:
           description: Link to google connection.
       summary: Return link to google oauth.
       tags:
-        - user
         - oauth
   /oauth/google/login:
     get:
@@ -158,7 +165,6 @@ paths:
           description: Connection with google failed.
       summary: Connect the user with his google account.
       tags:
-        - user
         - oauth
   /oauth/facebook/url:
     get:
@@ -167,7 +173,6 @@ paths:
           description: Link to facebook connection.
       summary: Return link to facebook oauth.
       tags:
-        - user
         - oauth
   /oauth/facebook/:
     get:
@@ -184,7 +189,6 @@ paths:
           description: Connection with facebook failed.
       summary: Connect the user with his facebook account.
       tags:
-        - user
         - oauth
   # /token/set:
   #   post:
@@ -246,6 +250,7 @@ paths:
           name: delay
           schema:
             type: string
+            format: date
             pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
             example: "2022-11-24"
           description: Delay of the new process (how long it last), format date "YYYY-MM-DD", it can be NULL.
@@ -273,7 +278,6 @@ paths:
       summary: Delete a process.
       tags:
         - process
-        - question
   /step/add:
     post:
       parameters:
@@ -327,7 +331,6 @@ paths:
           description: System error.
       summary: Add a step to a process.
       tags:
-        - process
         - step
   /step/deleteall:
     get:
@@ -346,7 +349,6 @@ paths:
           description: System error.
       summary: Delete all steps of a process.
       tags:
-        - process
         - step
   /processQuestions/get:
     get:
@@ -365,7 +367,7 @@ paths:
           description: System error.
       summary: Get process questions.
       tags:
-        - process
+        - question
   /userProcess/add:
     post:
       parameters:
@@ -395,8 +397,6 @@ paths:
           description: System error.
       summary: Add a user process.
       tags:
-        - process
-        - step
         - userProcess
   /userProcess/delete:
     get:
@@ -413,11 +413,20 @@ paths:
           description: System error.
       summary: Delete a user process.
       tags:
-        - process
-        - step
         - userProcess
   /userProcess/getUserSteps:
     get:
+      parameters:
+        - in: body
+          name: title
+          schema:
+            type: string
+            description: Process title
+        - in: body
+          name: email
+          schema:
+            type: string
+            description: User email
       responses:
         '200':
           description: User steps data.
@@ -425,6 +434,4 @@ paths:
           description: System error.
       summary: Get user step for a process.
       tags:
-        - process
-        - step
         - userProcess

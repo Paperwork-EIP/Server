@@ -10,13 +10,15 @@ module.exports = {
             var currentTime = new Date();
             const user = await User.find(user_email);
             const process = await Process.get(process_title);
+            if (!user || !process) {
+                return null;
+            }
             const { rows } = await db.query(sql`
             INSERT INTO user_process (is_done, start_process_date, user_id, process_id)
                 VALUES (false, ${currentTime}, ${user.id}, ${process.id})
                 RETURNING id;
             `);
-            const [userProcess] = rows;
-            return userProcess;          
+            return rows[0];          
         } catch (error) {
             throw error;
         }
@@ -45,4 +47,23 @@ module.exports = {
         `);
         return rows;
     },
+    async getUserProcess(title, user_email) {
+        const process = await Process.get(title);
+        const user = await User.find(user_email);
+        const user_process = await db.query(sql`
+        SELECT process_id FROM user_process WHERE process_id=${process.id} AND user_id=${user.id} AND is_done=false;
+        `);
+        if (user_process.rows[0] == undefined) {
+            return user_process.rows;
+        };
+        var processArray = [];
+        for (var i in user_process.rows) {
+
+            pros = await db.query(sql`
+            SELECT * FROM process WHERE id=${user_process.rows[i].process_id};
+            `);
+            processArray.push(pros);
+        }
+        return processArray;
+    }
 }

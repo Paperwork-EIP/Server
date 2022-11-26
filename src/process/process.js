@@ -17,9 +17,26 @@ const router = new Router();
   router.get('/delete', async (request, response) => {
     try {
         const { title } = request.body;
+        if (!title) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        const find = await Process.get(title);
+        if(!find) {
+          return response.status(404).json({ message: 'Process not found.' });
+        } else {
         const res = await Process.delete(title);
         return response.status(200).json({
             message: 'Process delete!',
+            response: res 
+        });}
+    } catch (error) {
+        return response.status(500).json({ message: 'System error.' });
+    }
+  });
+  router.get('/getAll', async (request, response) => {
+    try {
+        const res = await Process.getAll();
+        return response.status(200).json({
             response: res 
         });
     } catch (error) {
