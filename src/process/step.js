@@ -26,7 +26,7 @@ router.post('/add', async (request, response) => {
         if (!id) {
             return response.status(404).json({ message: 'Steps not found' });
         }
-        const res = await Step.delete(id);
+        const res = await Step.deleteAll(id);
         return response.status(200).json({
             message: 'Steps delete!',
             response: res 
