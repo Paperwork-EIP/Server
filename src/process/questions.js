@@ -6,6 +6,9 @@ const router = new Router();
   router.get('/get', async (request, response) => {
     try {
         const { title } = request.body;
+        if (!title) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
         const process = await Process.get(title);
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });

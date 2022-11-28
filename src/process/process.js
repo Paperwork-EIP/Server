@@ -1,10 +1,14 @@
 const { Router } = require('express');
 const Process = require('../persistence/process');
+const Step = require('../persistence/step');
 const router = new Router();
   
   router.post('/add', async (request, response) => {
     try {
         const { title, description, source, delay } = request.body;
+        if (!title || !description) {
+          return response.status(400).json({ message: 'Title or description missing' });
+        }
         const res = await Process.create(title, description, source, delay);
         return response.status(200).json({
             message: 'Process created!',
@@ -17,9 +21,30 @@ const router = new Router();
   router.get('/delete', async (request, response) => {
     try {
         const { title } = request.body;
-        const res = await Process.delete(title);
+        if (!title) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        const find = await Process.get(title);
+        if(!find) {
+          return response.status(404).json({ message: 'Process not found.' });
+        } else {
+          step = Step.deleteAll(find.id);
+          if (!step) {
+            return response.status(404).json({ message: 'Steps not found.' });
+          }
+          const res = await Process.delete(title);
+          return response.status(200).json({
+              message: 'Process and steps deleted!',
+              response: res
+        });}
+    } catch (error) {
+        return response.status(500).json({ message: 'System error.' });
+    }
+  });
+  router.get('/getAll', async (request, response) => {
+    try {
+        const res = await Process.getAll();
         return response.status(200).json({
-            message: 'Process delete!',
             response: res 
         });
     } catch (error) {

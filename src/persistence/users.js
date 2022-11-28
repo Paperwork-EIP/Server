@@ -1,6 +1,6 @@
 const db = require('./db');
 const sql = require('sql-template-strings');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
   async create(username, email, password = '') {

@@ -8,5 +8,5 @@ const middleware = require('../middleware/security')
 
 router.use('/user', users);
 router.use('/oauth', oauth);
-router.use('/token', middleware.checkJWT, tokens);
+//router.use('/token', middleware.checkJWT, tokens);
 module.exports = router;
