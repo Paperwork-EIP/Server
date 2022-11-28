@@ -45,6 +45,15 @@
       "src/components/index.ts"
     ]
   },
+  "jest": {
+    "verbose": true,
+    "transformIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/components/index.ts"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint-staged"
