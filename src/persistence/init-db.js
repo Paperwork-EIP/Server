@@ -32,7 +32,8 @@ module.exports = {
             end_process_date date NULL,
             expire_date date NULL,
             user_id int NOT NULL,
-            process_id int NOT NULL);`)
+            process_id int NOT NULL,
+            process_title text NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS step (
             id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,
@@ -41,14 +42,19 @@ module.exports = {
             question text NOT NULL,
             source text NULL,
             is_unique bool NOT NULL,
-            delay date NULL,
+            delay text NULL,
             process_id int NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS user_step (
             id SERIAL UNIQUE NOT NULL,
             step_id int NOT NULL,
+            step_title text NOT NULL,
+            step_type text NOT NULL,
+            step_description text NOT NULL,
+            step_source text NULL,
             is_done bool NOT NULL,
             start_date date NOT NULL,
-            expire_date date NULL,
+            end_date date NULL,
+            delay date NULL,
             appoinment date NULL,
             user_process_id int NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS report (
@@ -68,8 +74,8 @@ module.exports = {
             id SERIAL UNIQUE NOT NULL,
             title text UNIQUE NOT NULL,
             description text NOT NULL,
-            source text NOT NULL,
-            delay date NULL);`)
+            source text NULL,
+            delay text NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS posts (
             id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,

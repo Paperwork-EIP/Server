@@ -30,4 +30,10 @@ module.exports = {
         `);
         return rows[0];
     },
+    async getAll() {
+        const { rows } = await db.query(sql`
+        SELECT title, source FROM process;
+        `);
+        return rows;
+    },
 }

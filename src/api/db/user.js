@@ -63,12 +63,11 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyemail', async (request, response) => {
     try{
-      const { email } = request.body;
-
+      const { email } = request.body
       if (!email) {
-        return response.status(400).json({ message: 'Email missing.' });
+        return response.status(400).json({ message: 'Missing parameter email.' });
       }
-      const find = await User.find(email);
+      const find = await User.find(email)
       if (find) {
         return response.status(200).json(find);
       } else {
@@ -81,12 +80,11 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyusername', async (request, response) => {
     try{
-      const { username } = request.body;
-
+      const { username } = request.body
       if (!username) {
-        return response.status(400).json({ message: 'Username missing.' });
+        return response.status(400).json({ message: 'Missing parameter username.' });
       }
-      const find = await User.findUsername(username);
+      const find = await User.findUsername(username)
       if (find) {
         return response.status(200).json(find);
       } else {
@@ -99,12 +97,11 @@ router.post('/register', async (request, response) => {
 
   router.get('/delete', async (request, response) => {
     try{
-      const { email } = request.body;
-
+      const { email } = request.body
       if (!email) {
-        return response.status(400).json({ message: 'Email missing.' });
+        return response.status(400).json({ message: 'Missing parameter email.' });
       }
-      const find = await User.find(email);
+      const find = await User.find(email)
       if (find) {
         const value = await User.delete(email)
         return response.status(200).json({ message: 'User deleted' });
