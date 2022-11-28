@@ -32,7 +32,7 @@ router.post('/register', async (request, response) => {
       response.status(500).json();
     }
   });
-  
+
   router.post('/login', async (request, response) => {
     try {
       const { email, password } = request.body;

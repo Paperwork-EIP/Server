@@ -11,7 +11,7 @@ module.exports = {
                 RETURNING id, user_id, process_id;
             `);
             const [user_process] = rows;
-            return user_process;          
+            return user_process;
         } catch (error) {
             throw error;
         }
@@ -20,7 +20,7 @@ module.exports = {
         try {
             const { rows } = await db.query(sql`
             DELETE FROM user_process where user_id=${user_id} and process_id=${process_id};`);
-            return rows[0];         
+            return rows[0];
         } catch (error) {
             throw error;
         }
