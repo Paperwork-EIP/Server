@@ -22,7 +22,7 @@ router.post('/add', async (request, response) => {
         }
         user_process = await UserProcess.get(user.id, process.id);
         if (!user_process) {
-            user_process = await UserProcess.create(user.id, process.id);
+            user_process = await UserProcess.create(user.id, process.id, process.title);
         } else {
             await UserStep.deleteAll(user_process.id);
         }

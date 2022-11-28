@@ -2,12 +2,12 @@ const db = require('./db');
 const sql = require('sql-template-strings');
 
 module.exports = {
-    async create(user_id, process_id) {
+    async create(user_id, process_id, process_title) {
         try {
             var currentDate = new Date();
             const { rows } = await db.query(sql`
-            INSERT INTO user_process (is_done, start_process_date, user_id, process_id)
-                VALUES (false, ${currentDate}, ${user_id}, ${process_id})
+            INSERT INTO user_process (is_done, start_process_date, user_id, process_id, process_title)
+                VALUES (false, ${currentDate}, ${user_id}, ${process_id}, ${process_title})
                 RETURNING id, user_id, process_id;
             `);
             const [user_process] = rows;
