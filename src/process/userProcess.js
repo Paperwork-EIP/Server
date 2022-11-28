@@ -20,7 +20,7 @@ router.post('/add', async (request, response) => {
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        user_process = await UserProcess.get(user.id, process.id);
+        let user_process = await UserProcess.get(user.id, process.id);
         if (!user_process) {
             user_process = await UserProcess.create(user.id, process.id, process.title);
         } else {
