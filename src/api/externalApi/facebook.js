@@ -28,14 +28,7 @@ router.get("/url", (request, response) => {
 
 async function getAccessToken(code) {
   const url = "https://graph.facebook.com/v13.0/oauth/access_token";
-  const values = {
-      code,
-      client_id: messenger_clientID,
-      client_secret: messenger_secret,
-      redirect_uri: REDIRECT_URI,
-      grant_type: "authorization_code",
-  };
-  tokens = await axios
+  const tokens = await axios
       .post(url, new URLSearchParams([
         ['code', code],
         ['client_id', messenger_clientID],

@@ -15,6 +15,7 @@ const router = new Router();
             response: res 
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });
@@ -28,7 +29,7 @@ const router = new Router();
         if(!find) {
           return response.status(404).json({ message: 'Process not found.' });
         } else {
-          step = Step.deleteAll(find.id);
+          const step = Step.deleteAll(find.id);
           if (!step) {
             return response.status(404).json({ message: 'Steps not found.' });
           }
@@ -38,6 +39,7 @@ const router = new Router();
               response: res
         });}
     } catch (error) {
+      console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });
@@ -48,6 +50,7 @@ const router = new Router();
             response: res 
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });

@@ -27,22 +27,9 @@ function getGoogleAuthURL() {
       ]).toString()}`;
 }
 
-// router.get("/url", (request, response) => {
-//     return response.send(getGoogleAuthURL());
-// });
-
 router.get("/urlLogin", (request, response) => {
     return response.send(getGoogleAuthURL());
 });
-
-// router.get("/", async (req, response) => {
-//     try {
-//         const { access_token } = await getLoginTokens(req.query.code)
-//         return response.json(access_token)
-//     } catch (e) {
-//         console.error(e)
-//     }
-// });
 
 async function getLoginTokens(code) {
     const url = "https://oauth2.googleapis.com/token";
@@ -53,7 +40,7 @@ async function getLoginTokens(code) {
         ['client_secret', google_secret],
         ['grant_type', "authorization_code"]
     ]).toString();
-    tokens = await axios
+    const tokens = await axios
         .post(url, values, {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
