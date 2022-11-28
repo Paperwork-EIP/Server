@@ -8,10 +8,15 @@ const process = require('./src/process/index');
 const appSecure = express();
 appSecure.disable("x-powered-by");
 
+let corsOptions = {
+  origin: 'http://localhost:8080/'
+};
+
 const app = express();
 app.use(helmet.hidePoweredBy());
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 function initDatabase(port) {
   if (port === 3001) {
