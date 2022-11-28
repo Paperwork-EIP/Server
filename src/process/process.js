@@ -6,6 +6,9 @@ const router = new Router();
   router.post('/add', async (request, response) => {
     try {
         const { title, description, source, delay } = request.body;
+        if (!title || !description) {
+          return response.status(400).json({ message: 'Title or description missing' });
+        }
         const res = await Process.create(title, description, source, delay);
         return response.status(200).json({
             message: 'Process created!',

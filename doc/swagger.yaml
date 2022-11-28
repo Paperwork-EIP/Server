@@ -99,6 +99,8 @@ paths:
       responses:
         '200':
           description: User data
+        '400':
+          description: Missing parameter email.
         '404':
           description: User not found.
         '500':
@@ -117,6 +119,8 @@ paths:
       responses:
         '200':
           description: User data.
+        '400':
+          description: Missing parameter username.
         '404':
           description: User not found.
         '500':
@@ -135,6 +139,8 @@ paths:
       responses:
         '200':
           description: User delete.
+        '400':
+          description: Missing parameter email.
         '404':
           description: User not found.
         '500':
@@ -257,6 +263,8 @@ paths:
       responses:
         '200':
           description: Process added.
+        '400':
+          description: Title or description missing
         '500':
           description: System error.
       summary: Add a process.
@@ -273,9 +281,21 @@ paths:
       responses:
         '200':
           description: Process deleted.
+        '400':
+          description: Missing parameters.
         '500':
           description: System error.
       summary: Delete a process.
+      tags:
+        - process
+  /process/getAll:
+    get:
+      responses:
+        '200':
+          description: All existing process.
+        '500':
+          description: System error.
+      summary: Get all process.
       tags:
         - process
   /step/add:
@@ -325,6 +345,8 @@ paths:
       responses:
         '200':
           description: Step created.
+        '400':
+          description: Missing parameters.
         '404':
           description: Process not found.
         '500':
@@ -343,6 +365,8 @@ paths:
       responses:
         '200':
           description: Step(s) deleted.
+        '400':
+          description: Missing parameters.
         '404':
           description: Step(s) not found.
         '500':
@@ -361,6 +385,8 @@ paths:
       responses:
         '200':
           description: Process question.
+        '400':
+          description: Missing parameters.
         '404':
           description: Process or Step(s) not found.
         '500':
@@ -393,6 +419,10 @@ paths:
       responses:
         '200':
           description: User process and user steps created.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found, process not found or step not found.
         '500':
           description: System error.
       summary: Add a user process.
@@ -402,13 +432,22 @@ paths:
     get:
       parameters:
         - in: body
-          name: title
+          name: process_title
           schema:
             type: string
             description: Title of the user process we want to delete.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email of the user process we want to delete.
       responses:
         '200':
           description: User process and user steps deleted.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User or process not found.
         '500':
           description: System error.
       summary: Delete a user process.
@@ -418,20 +457,44 @@ paths:
     get:
       parameters:
         - in: body
-          name: title
+          name: process_title
           schema:
             type: string
-            description: Process title
+            description: Process title of the user process.
         - in: body
-          name: email
+          name: user_email
           schema:
             type: string
-            description: User email
+            description: User email of the user process.
       responses:
         '200':
           description: User steps data.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User or process not found.
         '500':
           description: System error.
       summary: Get user step for a process.
+      tags:
+        - userProcess
+  /userProcess/getUserProcesses:
+    get:
+      parameters:
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email of the user processes.
+      responses:
+        '200':
+          description: User processes.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all user processes.
       tags:
         - userProcess
