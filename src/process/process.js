@@ -39,7 +39,7 @@ const router = new Router();
               response: res
         });}
     } catch (error) {
-      console.error(error);
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });
