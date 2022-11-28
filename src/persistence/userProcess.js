@@ -4,7 +4,7 @@ const sql = require('sql-template-strings');
 module.exports = {
     async create(user_id, process_id, process_title) {
         try {
-            var currentDate = new Date();
+            const currentDate = new Date();
             const { rows } = await db.query(sql`
             INSERT INTO user_process (is_done, start_process_date, user_id, process_id, process_title)
                 VALUES (false, ${currentDate}, ${user_id}, ${process_id}, ${process_title})

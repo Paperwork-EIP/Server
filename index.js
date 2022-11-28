@@ -14,7 +14,6 @@ let corsOptions = {
 
 const app = express();
 app.use(helmet.hidePoweredBy());
-app.use(cors());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 

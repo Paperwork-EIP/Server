@@ -5,9 +5,9 @@ const Step = require('./step');
 module.exports = {
     async create(user_process_id, step_id, is_done) {
         try {
-            var currentDate = new Date();
-            var delay = null;
-            step = await Step.getById(step_id);
+            const currentDate = new Date();
+            let delay = null;
+            const step = await Step.getById(step_id);
             const invalidDate = step.delay.split("-");
             const year = parseInt(invalidDate[0]);
             const month = parseInt(invalidDate[1]);
