@@ -26,9 +26,9 @@ router.post('/add', async (request, response) => {
         } else {
             await UserStep.deleteAll(user_process.id);
         }
-        for (var i in questions) {
-            step_id = questions[i][0];
-            answer = questions[i][1];
+        for (let i in questions) {
+            let step_id = questions[i][0];
+            let answer = questions[i][1];
             if (!await Step.getById(step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }

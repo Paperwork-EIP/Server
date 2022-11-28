@@ -13,6 +13,7 @@ module.exports = {
             const [user_process] = rows;
             return user_process;
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
@@ -22,6 +23,7 @@ module.exports = {
             DELETE FROM user_process where user_id=${user_id} and process_id=${process_id};`);
             return rows[0];
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
