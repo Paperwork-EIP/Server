@@ -26,6 +26,7 @@ module.exports = {
             const [user_step] = rows;
             return user_step;          
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
@@ -35,6 +36,7 @@ module.exports = {
             DELETE FROM user_step where user_process_id=${user_process_id};`);
             return rows[0];   
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },

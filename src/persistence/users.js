@@ -17,6 +17,7 @@ module.exports = {
       if (error.constraint === 'users_email_key') {
         return null;
       }
+      console.error(error);
       throw error;
     }
   },
@@ -55,7 +56,8 @@ module.exports = {
       DELETE FROM user_table where email=${email};`);
       return rows[0];
     } catch (error) {
-     throw error;
+      console.error(error);
+      throw error;
     }
   }
 };
