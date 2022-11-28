@@ -15,7 +15,7 @@ module.exports = {
             throw error;
         }
     },
-    async delete(process_id) {
+    async deleteAll(process_id) {
         try {
             const { rows } = await db.query(sql`
             DELETE FROM step where process_id=${process_id};`);

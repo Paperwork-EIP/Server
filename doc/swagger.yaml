@@ -1,0 +1,500 @@
+swagger: '2.0'
+info:
+  title: Paperwork - API Documentation
+  description: Paperwork API documentation for Epitech Project.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact: 
+    name: Paperwork Team
+    url: http://eip.epitech.eu/2024/prosshelper
+    email: prosshelper_2024@labeip.epitech.eu
+host: 'localhost:3000'
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: user
+    description: User management.
+  - name: oauth
+    description: Oauth management.
+  - name: process
+    description: Process management.
+  - name: step
+    description: Step management.
+  - name: userProcess
+    description: UserProcess management.
+  # - name: token
+  #   description: Token management.
+
+paths:
+  /user/register:
+    post:
+      parameters:
+        - in: body
+          name: email
+          schema:
+            type: string
+          description: User email.
+        - in: body
+          name: username
+          schema:
+            type: string
+          description: User username.
+        - in: body
+          name: password
+          schema:
+            type: string
+          description: User password.
+      responses:
+        '200':
+          description: User registered.
+        '400':
+          description: Pseudo, email or password missing.
+        '409':
+          description: Username or email already used.
+        '500':
+          description: System error.
+      summary: Register a new user.
+      tags:
+        - user
+  /user/login:
+    post:
+      parameters:
+        - in: body
+          name: email
+          schema:
+            type: string
+          description: User email.
+        - in: body
+          name: password
+          schema:
+            type: string
+          description: User password.
+      responses:
+        '200':
+          description: User logged in.
+        '404':
+          description: User does not exist.
+        '400':
+          description: Email or password missing / invalid email or password.
+        '500':
+          description: System error.
+      summary: Login a user.
+      tags:
+        - user
+  /user/getbyemail:
+    get:
+      parameters:
+        - in: body
+          name: email
+          schema:
+            type: string
+          description: User email.
+      responses:
+        '200':
+          description: User data
+        '400':
+          description: Missing parameter email.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get user information by email.
+      tags:
+          - user
+  /user/getbyusername:
+    get:
+      parameters:
+        - in: body
+          name: username
+          schema:
+            type: string
+          description: User username.
+      responses:
+        '200':
+          description: User data.
+        '400':
+          description: Missing parameter username.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get user information by username.
+      tags:
+          - user
+  /user/delete:
+    get:
+      parameters:
+        - in: body
+          name: email
+          schema:
+            type: string
+          description: User email.
+      responses:
+        '200':
+          description: User delete.
+        '400':
+          description: Missing parameter email.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Delete user.
+      tags:
+          - user
+  /oauth/google/urlLogin:
+    get:
+      responses:
+        '200':
+          description: Link to google connection.
+      summary: Return link to google oauth.
+      tags:
+        - oauth
+  /oauth/google/login:
+    get:
+      parameters:
+        - in: body
+          name: code
+          schema:
+            type: string
+          description: The code return by google at the end of the result /oauth/google/urlLogin Paperwork home path.
+      responses:
+        '200':
+          description: Connected with google.
+        '500':
+          description: Connection with google failed.
+      summary: Connect the user with his google account.
+      tags:
+        - oauth
+  /oauth/facebook/url:
+    get:
+      responses:
+        '200':
+          description: Link to facebook connection.
+      summary: Return link to facebook oauth.
+      tags:
+        - oauth
+  /oauth/facebook/:
+    get:
+      parameters:
+        - in: body
+          name: code
+          schema:
+            type: string
+          description: The code return by facebook at the end of the result /oauth/facebook/url Paperwork home path.
+      responses:
+        '200':
+          description: Connected with facebook.
+        '500':
+          description: Connection with facebook failed.
+      summary: Connect the user with his facebook account.
+      tags:
+        - oauth
+  # /token/set:
+  #   post:
+  #     responses:
+  #       '200':
+  #         description: Set a token
+  #     summary: Set a token
+  #     tags:
+  #       - token
+  # /token/get:
+  #   get:
+  #     responses:
+  #       '200':
+  #         description: Get a token
+  #     summary: Get a token
+  #     tags:
+  #       - token
+  # /token/getAll:
+  #   get:
+  #     responses:
+  #       '200':
+  #         description: Get all tokens
+  #     summary: Get all tokens
+  #     tags:
+  #       - token
+  # /token/delete/{service}:
+  #   delete:
+  #     responses:
+  #       '200':
+  #         description: Delete a token
+  #     parameters:
+  #       - name: service
+  #         in: path
+  #         description: Service name
+  #         required: true
+  #         type: string
+  #     summary: Delete a token
+  #     tags:
+  #       - token
+  /process/add:
+    post:
+      parameters:
+        - in: body
+          name: title
+          schema:
+            type: string
+          description: Title of the new process.
+        - in: body
+          name: description
+          schema:
+            type: string
+          description: Description of the new process.
+        - in: body
+          name: source
+          schema:
+            type: string
+          description: Link of the source of the new process (governement website etc), can be NULL.
+        - in: body
+          name: delay
+          schema:
+            type: string
+            format: date
+            pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+            example: "2022-11-24"
+          description: Delay of the new process (how long it last), format date "YYYY-MM-DD", it can be NULL.
+      responses:
+        '200':
+          description: Process added.
+        '400':
+          description: Title or description missing
+        '500':
+          description: System error.
+      summary: Add a process.
+      tags:
+        - process
+  /process/delete:
+    get:
+      parameters:
+        - in: body
+          name: title
+          schema:
+            type: string
+            description: Title of the process.
+      responses:
+        '200':
+          description: Process deleted.
+        '400':
+          description: Missing parameters.
+        '500':
+          description: System error.
+      summary: Delete a process.
+      tags:
+        - process
+  /process/getAll:
+    get:
+      responses:
+        '200':
+          description: All existing process.
+        '500':
+          description: System error.
+      summary: Get all process.
+      tags:
+        - process
+  /step/add:
+    post:
+      parameters:
+        - in: body
+          name: title
+          schema:
+            type: string
+            description: Title of the step.
+        - in: body
+          name: type
+          schema:
+            type: string
+            example: appointment
+            description: Type of the step (appointment or document).
+        - in: body
+          name: description
+          schema:
+            type: string
+            description: Description of the step.
+        - in: body
+          name: question
+          schema:
+            type: string
+            description: Question of the step (the one used for the intelligent quizz).
+        - in: body
+          name: source
+          schema:
+            type: string
+            description: Source of the step (link of a document for exemple) can be NULL.
+        - in: body
+          name: is_unique
+          schema:
+            type: boolean
+            description: If the step is mandatory or not in every process it appear.
+        - in: body
+          name: delay
+          schema:
+            type: integer
+            description: Number of days before the deadline of the step (if there is one) can be NULL.
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title of the process of the step.
+      responses:
+        '200':
+          description: Step created.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: Process not found.
+        '500':
+          description: System error.
+      summary: Add a step to a process.
+      tags:
+        - step
+  /step/deleteall:
+    get:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title of the process where we want to delete all steps.
+      responses:
+        '200':
+          description: Step(s) deleted.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: Step(s) not found.
+        '500':
+          description: System error.
+      summary: Delete all steps of a process.
+      tags:
+        - step
+  /processQuestions/get:
+    get:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title  of the process the user want to start.
+      responses:
+        '200':
+          description: Process question.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: Process or Step(s) not found.
+        '500':
+          description: System error.
+      summary: Get process questions.
+      tags:
+        - question
+  /userProcess/add:
+    post:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title  of the process the user want to start.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: Email of the user.
+        - in: body
+          name: questions
+          schema:
+            type: array
+            example: [
+                [id, true/false],
+                ...
+              ]
+            description: User responses to the intelligent quizz.
+      responses:
+        '200':
+          description: User process and user steps created.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found, process not found or step not found.
+        '500':
+          description: System error.
+      summary: Add a user process.
+      tags:
+        - userProcess
+  /userProcess/delete:
+    get:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title of the user process we want to delete.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email of the user process we want to delete.
+      responses:
+        '200':
+          description: User process and user steps deleted.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User or process not found.
+        '500':
+          description: System error.
+      summary: Delete a user process.
+      tags:
+        - userProcess
+  /userProcess/getUserSteps:
+    get:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Process title of the user process.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email of the user process.
+      responses:
+        '200':
+          description: User steps data.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User or process not found.
+        '500':
+          description: System error.
+      summary: Get user step for a process.
+      tags:
+        - userProcess
+  /userProcess/getUserProcesses:
+    get:
+      parameters:
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email of the user processes.
+      responses:
+        '200':
+          description: User processes.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all user processes.
+      tags:
+        - userProcess
