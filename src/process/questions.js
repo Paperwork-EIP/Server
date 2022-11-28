@@ -17,12 +17,13 @@ const router = new Router();
         if (!steps) {
             return response.status(404).json({ message: 'Steps not found.' });
         }
-        var questions = [];
-        for (var i in steps) {
+        let questions = [];
+        for (let i in steps) {
             questions.push([steps[i].id, steps[i].question]);
         }
         return response.status(200).json({ questions: questions })
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });

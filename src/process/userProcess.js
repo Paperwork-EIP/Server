@@ -39,6 +39,7 @@ router.post('/add', async (request, response) => {
             response: user_process.id
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });
@@ -57,7 +58,7 @@ router.get('/delete', async (request, response) => {
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        user_process = await UserProcess.get(user.id, process.id);
+        const user_process = await UserProcess.get(user.id, process.id);
         await UserStep.deleteAll(user_process.id);
         const res = await UserProcess.delete(user.id, process.id);
         return response.status(200).json({
@@ -65,6 +66,7 @@ router.get('/delete', async (request, response) => {
             response: res
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });
@@ -92,6 +94,7 @@ router.get('/getUserSteps', async (request, response) => {
             response: res
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });
@@ -111,6 +114,7 @@ router.get('/getUserProcesses', async (request, response) => {
             response: res
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });
