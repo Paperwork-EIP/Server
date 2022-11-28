@@ -19,6 +19,7 @@ router.post('/add', async (request, response) => {
             response: res 
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });
@@ -38,6 +39,7 @@ router.post('/add', async (request, response) => {
             response: res 
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
   });
