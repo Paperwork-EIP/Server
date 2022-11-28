@@ -13,6 +13,7 @@ module.exports = {
       }).catch(e => {
       })
     } catch (error) {
+      console.error(error);
       throw error;
     }
   },

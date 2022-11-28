@@ -12,6 +12,7 @@ module.exports = {
             const [process] = rows;
             return process;          
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
@@ -21,6 +22,7 @@ module.exports = {
             DELETE FROM process where title=${title};`);
             return rows[0];         
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
