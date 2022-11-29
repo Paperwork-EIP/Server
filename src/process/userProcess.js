@@ -72,7 +72,7 @@ router.get('/delete', async (request, response) => {
 });
 router.get('/getUserSteps', async (request, response) => {
     try {
-        const { user_email, process_title } = request.body;
+        const { user_email, process_title } = request.query;
         if (!user_email || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
@@ -100,7 +100,7 @@ router.get('/getUserSteps', async (request, response) => {
 });
 router.get('/getUserProcesses', async (request, response) => {
     try {
-        const { user_email } = request.body;
+        const { user_email } = request.query;
         if (!user_email) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
