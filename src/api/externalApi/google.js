@@ -51,7 +51,13 @@ async function getLoginTokens(code) {
 
 router.get("/login", async (req, response) => {
     try {
-        const { id_token, access_token } = await getLoginTokens(req.query.code)
+        const { code } = req.query;
+        if (!code) {
+            return response.status(409).json({
+                message: "Missing code param.",
+            })
+        }
+        const { id_token, access_token } = await getLoginTokens(code)
         const user = await axios
         .get(
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
