@@ -201,8 +201,7 @@ describe("User connection tests", () => {
         });
         describe("[VALID DELETE TESTS]", () => {
             test("should delete an user with a 200 status code", async () => {
-                const response = await request(server).get("/user/delete").send({
-                    email: "emaillllllllllllllllllllllllllllllll"
+                const response = await request(server).get("/user/delete?email=emaillllllllllllllllllllllllllllllll").send({
                 });
 
                 expect(response.statusCode).toBe(200);

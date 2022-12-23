@@ -25,7 +25,7 @@ router.post('/add', async (request, response) => {
   });
   router.get('/deleteall', async (request, response) => {
     try {
-        const { process_title } = request.body;
+        const { process_title } = request.query;
         if (!process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
