@@ -41,12 +41,15 @@ module.exports = {
     `)
     if (rows.length == 0) {
       callback({ code: 'no email', user: { id: -1, email: '' } })
+      return;
     }
     bcrypt.compare(password, rows[0].password, (err, result) => {
       if (result === true) {
         callback({ code: 'valid', user: { id: rows[0].id, email: rows[0].email } })
+        return;
       } else {
         callback({ code: 'invalid', user: { id: -1, email: '' } })
+        return;
       }
     })
   },

@@ -45,7 +45,7 @@ router.post('/register', async (request, response) => {
         if (check_connect.code === 'no email') {
           return response.status(404).json({ message: 'User does not exists' });
         } else if (check_connect.code === "invalid") {
-          return response.status(400).json({ message: 'Invalid email or password' });
+          return response.status(400).json({ message: 'Invalid password' });
         } else {
           return response.status(200).json({
             message: 'User logged in !',
