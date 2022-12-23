@@ -170,6 +170,13 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(404);
             });
         });
+        describe("[VALID GETBYUSERNAME TESTS]", () => {
+            test("should get an user data with a 200 status code", async () => {
+                const response = await request(server).get("/user/getbyusername?username=usernameeeeeeeeeeeeeeeeeeeeeeeeee").send({});
+                
+                expect(response.statusCode).toBe(200);
+            });
+        });
         describe("[VALID GETBYEMAIL TESTS]", () => {
             test("should get an user data with a 200 status code", async () => {
                 const response = await request(server).get("/user/getbyemail?email=emaillllllllllllllllllllllllllllllll").send({});
