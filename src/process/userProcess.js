@@ -46,7 +46,7 @@ router.post('/add', async (request, response) => {
 
 router.get('/delete', async (request, response) => {
     try {
-        const { user_email, process_title } = request.body;
+        const { user_email, process_title } = request.query;
         if (!user_email || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
@@ -87,7 +87,8 @@ router.get('/getUserSteps', async (request, response) => {
         const user_process = await UserProcess.get(user.id, process.id);
         const res = await UserStep.getAll(user_process.id);
         const notDone = await UserStep.getNotDone(user_process.id);
-        const pourcentage = (res.length - notDone.length) / res.length * 100;
+        const x = (res.length - notDone.length) / res.length * 100;
+        const pourcentage = Math.round(x);
         return response.status(200).json({
             message: 'User process steps',
             pourcentage: pourcentage,

@@ -63,7 +63,7 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyemail', async (request, response) => {
     try{
-      const { email } = request.body
+      const { email } = request.query
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }
@@ -81,7 +81,7 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyusername', async (request, response) => {
     try{
-      const { username } = request.body
+      const { username } = request.query
       if (!username) {
         return response.status(400).json({ message: 'Missing parameter username.' });
       }
@@ -99,7 +99,7 @@ router.post('/register', async (request, response) => {
 
   router.get('/delete', async (request, response) => {
     try{
-      const { email } = request.body
+      const { email } = request.query
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }

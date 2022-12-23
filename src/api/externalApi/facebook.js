@@ -45,7 +45,13 @@ async function getAccessToken(code) {
 
 router.get("/", async (req, response) => {
   try {
-    const { access_token } = await getAccessToken(req.query.code)
+    const { code } = req.query;
+    if (!code) {
+        return response.status(409).json({
+            message: "Missing code param.",
+        })
+    }
+    const { access_token } = await getAccessToken(code)
     const user = await axios.get(
       `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
       {

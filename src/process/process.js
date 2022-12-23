@@ -21,7 +21,7 @@ const router = new Router();
   });
   router.get('/delete', async (request, response) => {
     try {
-        const { title } = request.body;
+        const { title } = request.query;
         if (!title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
