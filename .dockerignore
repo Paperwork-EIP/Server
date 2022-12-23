@@ -1,2 +1,9 @@
 node_modules
 package-lock
+.github
+.gitignore
+.eslintcache
+doc
+coverage
+README.md
+sonar-project.properties

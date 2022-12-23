@@ -10,8 +10,7 @@
     "test:watch": "jest --watchAll=true",
     "test:coverage": "jest --coverage=true",
     "test:all": "jest --watchAll=true --coverage=true",
-    "prepare": "npx husky install",
-    "lint-staged": "lint-staged"
+    "prepare": "npx husky install"
   },
   "author": "",
   "license": "ISC",
@@ -36,33 +35,10 @@
       "src/components/index.ts"
     ]
   },
-  "jest": {
-    "verbose": true,
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "src/components/index.ts"
-    ]
-  },
-  "jest": {
-    "verbose": true,
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "src/components/index.ts"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint-staged"
     }
-  },
-  "lint-staged": {
-    "*.{js, ts, tsx}": [
-      "eslint --cache --quiet --fix"
-    ]
   },
   "devDependencies": {
     "eslint": "^8.25.0",

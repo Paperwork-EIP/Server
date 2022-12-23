@@ -3,7 +3,7 @@ const router = require("../../src/api/db/user");
 const { start, stop } = require('../../index');
 
 describe("User connection tests", () => {
-    const port = 3001;
+    const port = 3002;
     let server;
 
     beforeAll(() => {
@@ -25,14 +25,13 @@ describe("User connection tests", () => {
 
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID REGISTER TESTS]", () => {
-            test("should register an user with a 500 status code (no database)", async () => {
+            test("should register an user with a 200 status code", async () => {
                 const response = await request(server).post("/user/register").send({
-                    username: "username",
-                    email: "email",
+                    username: "usernameeeeeeeeeeeeeeeeeeeeeeeeee",
+                    email: "emaillllllllllllllllllllllllllllllll",
                     password: "password"
                 });
-
-                expect(response.statusCode).toBe(500);
+                expect(response.statusCode).toBe(200);
             });
         });
         describe("[INVALID REGISTER TESTS]", () => {
@@ -151,6 +150,62 @@ describe("User connection tests", () => {
                 const response = await request(server).get("/user/getbyusername").send({});
 
                 expect(response.statusCode).toBe(400);
+            });
+        });
+        describe("[VALID LOGIN TESTS]", () => {
+            test("should login an user with a 200 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    email: "emaillllllllllllllllllllllllllllllll",
+                    password: "password"
+                });
+
+                expect(response.statusCode).toBe(200);
+            });
+        });
+        describe("[INVALID LOGIN TESTS]", () => {
+            test("email unknow : should not login an user with a 404 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    email: "unknownemaiaaaaaaaaaaaaaaalllllllllllll"
+                });
+
+                expect(response.statusCode).toBe(400);
+            });
+            test("email null : should not login an user with a 400 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    password: "password"
+                });
+
+                expect(response.statusCode).toBe(400);
+            });
+            test("email empty : should not login an user with a 400 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    email: "",
+                    password: "password"
+                });
+
+                expect(response.statusCode).toBe(400);
+            });
+            test("password null : should not login an user with a 400 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    email: "emaillllllllllllllllllllllllllllllll"
+                });
+                expect(response.statusCode).toBe(400);
+            });
+            test("password empty : should not login an user with a 400 status code", async () => {
+                const response = await request(server).post("/user/login").send({
+                    email: "emaillllllllllllllllllllllllllllllll",
+                    password: ""
+                });
+                expect(response.statusCode).toBe(400);
+            });
+        });
+        describe("[VALID DELETE TESTS]", () => {
+            test("should delete an user with a 200 status code", async () => {
+                const response = await request(server).get("/user/delete").send({
+                    email: "emaillllllllllllllllllllllllllllllll"
+                });
+
+                expect(response.statusCode).toBe(200);
             });
         });
         describe("[INVALID DELETE TESTS]", () => {
