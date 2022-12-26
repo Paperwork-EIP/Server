@@ -34,6 +34,7 @@ describe("Process test", () => {
                 });
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
             });
             test("should delete a process with a 200 status code", async () => {
                 const response = await request(server).get("/process/delete").query({
@@ -41,6 +42,11 @@ describe("Process test", () => {
                 });
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
+            });
+            test("should get all process with a 200 status code", async () => {
+                const response = await request(server).get("/process/getAll").send({});
+                expect(response.statusCode).toBe(200);
+                expect(response.response).not.toBeNull();
             });
         });
         describe("[INVALID ADD PROCESS TESTS]", () => {
