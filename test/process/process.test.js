@@ -105,7 +105,7 @@ describe("Process tests", () => {
                 expect(response.message).not.toBeNull();
                 expect(clone.statusCode).toBe(400);
                 expect(clone.message).not.toBeNull();
-                expect(del.statusCode).not.toBe(200);
+                expect(del.statusCode).toBe(200);
                 expect(del.message).not.toBeNull();
             });
             test("[DELETE] title missing : should not delete a process with a 400 status code", async () => {
@@ -132,11 +132,11 @@ describe("Process tests", () => {
                 const response_put = await request(server).put("/process/getAll").query({});
                 const response_delete = await request(server).delete("/process/getAll").query({});
 
-                expect(response_post.statusCode).not.toBe(200);
+                expect(response_post.statusCode).toBe(404);
                 expect(response_post.message).not.toBeNull();
-                expect(response_put.statusCode).not.toBe(200);
+                expect(response_put.statusCode).toBe(404);
                 expect(response_put.message).not.toBeNull();
-                expect(response_delete.statusCode).not.toBe(200);
+                expect(response_delete.statusCode).toBe(404);
                 expect(response_delete.message).not.toBeNull();
             });
         });
