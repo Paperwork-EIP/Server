@@ -33,11 +33,30 @@ describe("Questions tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID TESTS]", () => {
             test("[GET] should get questions with a 200 status code", async () => {
-                const response = await request(server).get("/processQuestions/get").query({
-                    title: "vital"
+                const create = await request(server).post("/process/add").send({
+                    title: "Test",
+                    description: "This is a test",
+                    source: "https://google.com",
+                    delay: null
                 });
+
+                const response = await request(server).get("/processQuestions/get").query({
+                    title: "Test"
+                });
+
+                const del = await request(server).get("/process/delete").query({
+                    title: "Test"
+                });
+                
+                expect(create.statusCode).toBe(200);
+                expect(create.message).not.toBeNull();
+                expect(create.response).not.toBeNull();
+
                 expect(response.statusCode).toBe(200);
                 expect(response.questions).not.toBeNull();
+
+                expect(del.statusCode).toBe(200);
+                expect(del.questions).not.toBeNull();
             });
         });
         describe("[INVALID TESTS]", () => {

@@ -97,14 +97,16 @@ describe("Process tests", () => {
                     description: "test"
                 });
 
-                await request(server).get("/process/delete").query({
+                const del = await request(server).get("/process/delete").query({
                     title: "Test"
                 });
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-                expect(clone.statusCode).not.toBe(200);
+                expect(clone.statusCode).toBe(400);
                 expect(clone.message).not.toBeNull();
+                expect(del.statusCode).not.toBe(200);
+                expect(del.message).not.toBeNull();
             });
             test("[DELETE] title missing : should not delete a process with a 400 status code", async () => {
                 const response = await request(server).get("/process/delete").query({});
