@@ -22,7 +22,7 @@ module.exports = {
         try {
             const process = await Process.getById(process_id);
             const currentDate = new Date();
-            expire_date = null;
+            let expire_date = null;
             const invalidDate = process.delay.split("-");
             const year = parseInt(invalidDate[0]);
             const month = parseInt(invalidDate[1]);
