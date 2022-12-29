@@ -120,6 +120,9 @@ router.get('/getUserSteps', async (request, response) => {
             return response.status(404).json({ message: 'Process not found.' });
         }
         const user_process = await UserProcess.get(user.id, process.id);
+        if (!user_process) {
+            return response.status(404).json({ message: 'User process not found.' });
+        }
         const res = await UserStep.getAll(user_process.id);
         const notDone = await UserStep.getNotDone(user_process.id);
         const x = (res.length - notDone.length) / res.length * 100;
