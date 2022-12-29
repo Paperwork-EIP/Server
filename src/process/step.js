@@ -9,11 +9,11 @@ router.post('/add', async (request, response) => {
         if (!title || !type || !description || !question || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const { id } = await Process.get(process_title);
-        if (!id) {
+        const process = await Process.get(process_title);
+        if (!process) {
             return response.status(404).json({ message: 'Process not found' });
         }
-        const res = await Step.create(title, type, description, question, source, delay, id, is_unique);
+        const res = await Step.create(title, type, description, question, source, delay, process.id, is_unique);
         return response.status(200).json({
             message: 'Step created!',
             response: res 
