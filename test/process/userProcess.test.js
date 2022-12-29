@@ -32,10 +32,75 @@ describe("User process", () => {
 
     describe("[INTEGRATION TESTS", () => {
         describe("[VALID USER PROCESS TESTS]", () => {
-
+            // test("[ADD] should add a user process with a 200 status code", async () => {
+            //     const response = await request(server).post("/userProcess/add").send({
+            //         user_email: "test@test.com",
+            //         process_title: "Test",
+            //         questions: []
+            //     }));
+                
+            //     expect(response.statusCode).toBe(200);
+            //     expect(response.response).not.toBeNull();
+            // });
         });
         describe("[INVALID USER PROCESS TESTS]", () => {
-            
+            test("[ADD] user email missing : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: "Test",
+                    questions: []
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[ADD] user email empty : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    user_email: "",
+                    process_title: "Test",
+                    questions: []
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[ADD] process title missing : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    user_email: "test@test.com",
+                    questions: []
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[ADD] process title empty : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    user_email: "test@test.com",
+                    process_title: "",
+                    questions: []
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[ADD] questions missing : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    user_email: "test@test.com",
+                    process_title: "Test"
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[ADD] questions empty : should add a user process with a 400 status code", async () => {
+                const response = await request(server).post("/userProcess/add").send({
+                    user_email: "test@test.com",
+                    process_title: "Test",
+                    questions: null
+                });
+                
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
         });
     });
 });
