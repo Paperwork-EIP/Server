@@ -9,6 +9,10 @@ const router = new Router();
         if (!title || !description) {
           return response.status(400).json({ message: 'Title or description missing' });
         }
+        const find = await Process.get(title);
+        if (find) {
+          return response.status(400).json({ message: 'Process already exists.' });
+        }
         const res = await Process.create(title, description, source, delay);
         return response.status(200).json({
             message: 'Process created!',
