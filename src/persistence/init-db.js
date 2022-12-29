@@ -55,7 +55,7 @@ module.exports = {
             start_date date NOT NULL,
             end_date date NULL,
             delay date NULL,
-            appoinment date NULL,
+            appoinment timestamp NULL,
             user_process_id int NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS report (
             id SERIAL UNIQUE NOT NULL,
