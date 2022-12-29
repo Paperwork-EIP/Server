@@ -19,7 +19,7 @@ router.post("/set", async (request, response) => {
         }
         const meeting = await Calendar.set(date, user_process_id, step_id);
         if (!meeting) {
-            return response.status(404).json({ message: 'Meeting not found. '});
+            return response.status(404).json({ message: 'Meeting not found.'});
         }
         return response.status(200).json({ message: 'Meeting updated!', response: meeting });
     } catch (error) {
@@ -34,23 +34,25 @@ router.get("/getAll", async (request, response) => {
         if (!email) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = User.find(email);
+        const user = await User.find(email);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
-        const processes = UserProcess.getAll(user.id);
+        const processes = await UserProcess.getAll(user.id);
         if (!processes) {
             return response.status(404).json({ message: 'Process not found.'});
         }
         let res = [];
         for (let i in processes) {
-            let userStep = UserStep.getAllAppoinment(processes[i].id);
+            let userStep = await UserStep.getAllAppoinment(processes[i].id);
             if (userStep) {
-                res.push({
-                    "date": userStep.appoinment,
-                    "user_process_id": userStep.user_process_id,
-                    "step_id": userStep.step_id
-                });
+                for (let j in userStep) {
+                    res.push({
+                        "date": userStep[j].appoinment,
+                        "user_process_id": userStep[j].user_process_id,
+                        "step_id": userStep[j].step_id
+                    });
+                }
             }
         }
         return response.status(200).json({ message: "User appoinments.", appoinment: res });
