@@ -89,7 +89,7 @@ paths:
   /user/getbyemail:
     get:
       parameters:
-        - in: body
+        - in: query
           name: email
           schema:
             type: string
@@ -109,7 +109,7 @@ paths:
   /user/getbyusername:
     get:
       parameters:
-        - in: body
+        - in: query
           name: username
           schema:
             type: string
@@ -129,7 +129,7 @@ paths:
   /user/delete:
     get:
       parameters:
-        - in: body
+        - in: query
           name: email
           schema:
             type: string
@@ -157,7 +157,7 @@ paths:
   /oauth/google/login:
     get:
       parameters:
-        - in: body
+        - in: query
           name: code
           schema:
             type: string
@@ -181,7 +181,7 @@ paths:
   /oauth/facebook/:
     get:
       parameters:
-        - in: body
+        - in: query
           name: code
           schema:
             type: string
@@ -233,7 +233,7 @@ paths:
   /process/delete:
     get:
       parameters:
-        - in: body
+        - in: query
           name: title
           schema:
             type: string
@@ -253,6 +253,17 @@ paths:
       responses:
         '200':
           description: All existing process.
+          schema:
+            type: object
+            example:
+              {
+                "response": [
+                    {
+                        "title": "Vital card",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F265?lang=en"
+                    }
+                ]
+              }
         '500':
           description: System error.
       summary: Get all process.
@@ -317,7 +328,7 @@ paths:
   /step/deleteall:
     get:
       parameters:
-        - in: body
+        - in: query
           name: process_title
           schema:
             type: string
@@ -337,14 +348,33 @@ paths:
   /processQuestions/get:
     get:
       parameters:
-        - in: body
+        - in: query
           name: process_title
           schema:
             type: string
             description: Title  of the process the user want to start.
       responses:
         '200':
-          description: Process question.
+          description: Process questions.
+          schema:
+            type: object
+            example:
+              {
+                "questions": [
+                  [
+                      1,
+                      "stepQuestion1"
+                  ],
+                  [
+                      2,
+                      "stepQuestion2"
+                  ],
+                  [
+                      3,
+                      "stepQuestion3"
+                  ]
+                ]
+              }
         '400':
           description: Missing parameters.
         '404':
@@ -371,7 +401,8 @@ paths:
           name: questions
           schema:
             type: array
-            example: [
+            example:
+              [
                 [id, true/false],
                 ...
               ]
@@ -391,12 +422,12 @@ paths:
   /userProcess/delete:
     get:
       parameters:
-        - in: body
+        - in: query
           name: process_title
           schema:
             type: string
             description: Title of the user process we want to delete.
-        - in: body
+        - in: query
           name: user_email
           schema:
             type: string
@@ -416,12 +447,12 @@ paths:
   /userProcess/getUserSteps:
     get:
       parameters:
-        - in: body
+        - in: query
           name: process_title
           schema:
             type: string
             description: Process title of the user process.
-        - in: body
+        - in: query
           name: user_email
           schema:
             type: string
@@ -429,6 +460,31 @@ paths:
       responses:
         '200':
           description: User steps data.
+          schema:
+            type: object
+            example:
+              {
+                "message": "User process steps",
+                "pourcentage": 33,
+                "response":
+                [
+                  {
+                      "id": 1,
+                      "step_id": 1,
+                      "step_title": "stepTitle1",
+                      "step_type": "stepType",
+                      "step_description": "stepDescription",
+                      "step_source": "stepSource",
+                      "is_done": false,
+                      "start_date": "2052-12-29T00:00:00.000Z",
+                      "end_date": null,
+                      "delay": "2052-12-29T00:00:00.000Z",
+                      "appoinment": null,
+                      "user_process_id": 2
+                  },
+                  ...
+                ]
+              }
         '400':
           description: Missing parameters.
         '404':
@@ -441,7 +497,7 @@ paths:
   /userProcess/getUserProcesses:
     get:
       parameters:
-        - in: body
+        - in: query
           name: user_email
           schema:
             type: string
@@ -449,6 +505,25 @@ paths:
       responses:
         '200':
           description: User processes.
+          schema:
+            type: object
+            example:
+              {
+                "message": "User processes",
+                "response": [
+                    {
+                        "id": 1,
+                        "is_done": false,
+                        "start_process_date": "2022-12-29T00:00:00.000Z",
+                        "end_process_date": null,
+                        "expire_date": null,
+                        "user_id": 1,
+                        "process_id": 1,
+                        "process_title": "Vital card"
+                    },
+                    ...
+                ]
+              }
         '400':
           description: Missing parameters.
         '404':
