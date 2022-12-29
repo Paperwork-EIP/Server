@@ -30,6 +30,18 @@ module.exports = {
             throw error;
         }
     },
+    async update(user_process_id, step_id, is_done) {
+        try {
+            const { rows } = await db.query(sql`
+            UPDATE user_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND id=${step_id} RETURNING id;
+            `);
+            const [user_step] = rows;
+            return user_step;          
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }  
+    },
     async deleteAll(user_process_id) {
         try {
             const { rows } = await db.query(sql`
