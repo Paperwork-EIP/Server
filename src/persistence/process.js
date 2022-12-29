@@ -32,6 +32,12 @@ module.exports = {
         `);
         return rows[0];
     },
+    async getById(id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM process WHERE id=${id} LIMIT 1;
+        `);
+        return rows[0];
+    },
     async getAll() {
         const { rows } = await db.query(sql`
         SELECT title, source FROM process;
