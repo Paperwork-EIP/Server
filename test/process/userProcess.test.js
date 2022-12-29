@@ -1,25 +1,41 @@
-// const express = require("express");
-// const request = require("supertest");
-// const userProcess = require("../../src/process/userProcess");
+const request = require("supertest");
+const router = require("../../src/process/index");
+const routerUserProcess = require("../../src/process/userProcess");
+const { start, stop } = require("../../index");
 
-// const app = express();
+describe("User process", () => {
+    const port = 3006;
+    let server;
 
-// app.use("/user/process", userProcess);
+    beforeAll(() => {
+        server = start(port);
+    });
 
-// var mockTitle = "TestTitle";
-// var mockProcessTitle = "mockProcess";
-// var mockUserMail = "mock@mock.com";
+    afterAll(() => {
+        stop();
+    });
 
-// describe("User Process Tests", () => {
-//     test("[INTEGRATION TEST] [POST] /add request - success", async () => {
-//         const { body } = await request(app).get("/user/process");
+    describe("[UNIT TESTS]", () => {
+        test("[index.js] should have a router component", () => {
+            expect(router).not.toBeNull();
+        });
+        test("[index.js] should have instanced the router component", () => {
+            expect(router).toBeDefined();
+        });
+        test("[process.js] should have a router component", () => {
+            expect(routerUserProcess).not.toBeNull();
+        });
+        test("[process.js] should have instanced the router component", () => {
+            expect(routerUserProcess).toBeDefined();
+        });
+    });
 
-//         expect(body.response).toEqual("User process and user steps created!");
-//     });
-// });
+    describe("[INTEGRATION TESTS", () => {
+        describe("[VALID USER PROCESS TESTS]", () => {
 
-const sum = require('../sum');
-
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
+        });
+        describe("[INVALID USER PROCESS TESTS]", () => {
+            
+        });
+    });
 });
