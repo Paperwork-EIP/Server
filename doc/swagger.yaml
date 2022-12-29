@@ -97,6 +97,24 @@ paths:
       responses:
         '200':
           description: User data
+          schema:
+            type: object
+            example:
+              {
+                "id": 1,
+                "username": "test",
+                "email": "test@test.test",
+                "password": "...",
+                "language": null,
+                "name": null,
+                "firstname": null,
+                "adress": null,
+                "profile_picture": null,
+                "age": null,
+                "number_phone": null,
+                "google_token": null,
+                "facebook_token": null
+              }
         '400':
           description: Missing parameter email.
         '404':
@@ -117,6 +135,24 @@ paths:
       responses:
         '200':
           description: User data.
+          schema:
+            type: object
+            example:
+              {
+                "id": 1,
+                "username": "test",
+                "email": "test@test.test",
+                "password": "...",
+                "language": null,
+                "name": null,
+                "firstname": null,
+                "adress": null,
+                "profile_picture": null,
+                "age": null,
+                "number_phone": null,
+                "google_token": null,
+                "facebook_token": null
+              }
         '400':
           description: Missing parameter username.
         '404':
