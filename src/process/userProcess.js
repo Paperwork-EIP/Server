@@ -137,6 +137,30 @@ router.get('/getUserSteps', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+router.get('/getUserStepsById', async (request, response) => {
+    try {
+        const { user_process_id } = request.query;
+        if (!user_process_id) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        const user_process = await UserProcess.getById(user_process_id);
+        if (!user_process) {
+            return response.status(404).json({ message: 'User process not found.' });
+        }
+        const res = await UserStep.getAll(user_process.id);
+        const notDone = await UserStep.getNotDone(user_process.id);
+        const x = (res.length - notDone.length) / res.length * 100;
+        const pourcentage = Math.round(x);
+        return response.status(200).json({
+            message: 'User process steps',
+            pourcentage: pourcentage,
+            response: res
+        });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
 router.get('/getUserProcesses', async (request, response) => {
     try {
         const { user_email } = request.query;

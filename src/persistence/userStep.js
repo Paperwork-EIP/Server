@@ -58,6 +58,12 @@ module.exports = {
         `);
         return rows;
     },
+    async getAllAppoinment(user_process_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND appoinment IS NOT NULL;
+        `);
+        return rows;
+    },
     async getNotDone(user_process_id) {
         const { rows } = await db.query(sql`
         SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND is_done=false;
