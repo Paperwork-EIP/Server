@@ -22,6 +22,7 @@
     "express": "^4.17.2",
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "pg": "^8.7.1",
     "sql-template-strings": "^2.2.2",
     "swagger-ui": "^4.15.5"

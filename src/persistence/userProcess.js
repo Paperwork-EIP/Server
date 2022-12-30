@@ -61,6 +61,12 @@ module.exports = {
         `);
         return rows[0];
     },
+    async getById(user_process_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_process WHERE id=${user_process_id} LIMIT 1;
+        `);
+        return rows[0];
+    },
     async getAll(user_id) {
         const { rows } = await db.query(sql`
         SELECT * FROM user_process WHERE user_id=${user_id};
