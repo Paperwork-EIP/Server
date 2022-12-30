@@ -1,9 +1,8 @@
 const { Router } = require('express');
 const UserProcess = require('../persistence/userProcess');
 const User = require('../persistence/users');
-const Process = require('../persistence/process');
-const Step = require('../persistence/step');
 const UserStep = require('../persistence/userStep');
+const Step = require('../persistence/step');
 const Calendar = require("../persistence/calendar");
 const router = new Router();
 
@@ -19,7 +18,7 @@ router.post("/set", async (request, response) => {
         }
         const meeting = await Calendar.set(date, user_process_id, step_id);
         if (!meeting) {
-            return response.status(404).json({ message: 'Meeting not found.'});
+            return response.status(404).json({ message: 'Meeting not found.' });
         }
         return response.status(200).json({ message: 'Meeting updated!', response: meeting });
     } catch (error) {
@@ -40,7 +39,7 @@ router.get("/getAll", async (request, response) => {
         }
         const processes = await UserProcess.getAll(user.id);
         if (!processes) {
-            return response.status(404).json({ message: 'Process not found.'});
+            return response.status(404).json({ message: 'Process not found.' });
         }
         let res = [];
         for (let i in processes) {
@@ -71,10 +70,13 @@ router.get("/delete", async (request, response) => {
         const user_process = await UserProcess.getById(user_process_id);
         if (!user_process) {
             return response.status(404).json({ message: 'User process not found.' });
-        } else {
-            const res = await Calendar.set(null, user_process_id, step_id);
-            return response.status(200).json({ message: 'Appoinment deleted.', res });
         }
+        const step = await Step.getById(step_id);
+        if (!step) {
+            return response.status(404).json({ message: 'Step not found.' });
+        }
+        const res = await Calendar.set(null, user_process_id, step_id);
+        return response.status(200).json({ message: 'Appoinment deleted.', res });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ message: "System error." });
