@@ -8,6 +8,11 @@ yarn-error.log
 /coverage/lcov-report
 /coverage/clover.xml
 /coverage/coverage-final.json
+/coverage/lcov.info
 
 # ESlint
 .eslintcache
+
+#Docker-compose
+docker-compose.yaml
+docker-compose.yml
