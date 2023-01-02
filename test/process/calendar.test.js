@@ -7,6 +7,12 @@ describe("Calendar tests", () => {
     const port = 3009;
     let server;
 
+    const user_email = "blablabla@bla.com";
+    const password = "blablabla";
+    const username = "blablabla";
+    const date = "2011-11-11 20:20:20";
+    const process_title = "Processsssssssssss";
+
     beforeAll(() => {
         server = start(port);
     });
@@ -33,29 +39,19 @@ describe("Calendar tests", () => {
         describe("[VALID CALENDAR TESTS]", () => {
             test("[SET] should add a meeting in calendar table with a 200 status code", async () => {
                 const register = await request(server).post("/user/register").send({
-                    email: "blablabla@bla.com",
-                    username: "blablabla",
-                    password: "blablabla"
+                    email: user_email,
+                    username: username,
+                    password: password
                 });
                 const login = await request(server).post("/user/login").send({
-                    email: "blablabla@bla.com",
-                    password: "blablabla"
+                    email: user_email,
+                    password: password
                 });
                 const createProcess = await request(server).post("/process/add").send({
-                    title: "Processsssssssssss",
+                    title: process_title,
                     description: "dhsdjsvvj",
                     source: "https://google.com",
-                    delay: "2001-50-30"
-                });
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: "Processsssssssssss",
-                    user_email: "blablabla@bla.com",
-                    questions: [
-                        [
-                            1,
-                            true
-                        ]
-                    ]
+                    delay: date
                 });
                 const createStep = await request(server).post("/step/add").send({
                     title: "VLS-TS",
@@ -64,26 +60,40 @@ describe("Calendar tests", () => {
                     question: "Do you have the french nationality or a resident permit ? 2",
                     source: "stepSource",
                     is_unique: false,
-                    delay: "0030-00-00",
-                    process_title: "Processsssssssssss"
+                    delay: date,
+                    process_title: process_title
                 });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const createUserProcess = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_email: user_email,
+                    questions: [
+                        [
+                            step_id,
+                            true
+                        ]
+                    ]
+                });
+                const createdUserProcessParsed = JSON.parse(createUserProcess.text);
+                const user_process_id = createdUserProcessParsed.response;
                 const response = await request(server).post("/calendar/set").send({
-                    date: "2011-11-11",
-                    user_process_id: 1,
-                    step_id: 1
+                    date: date,
+                    user_process_id: user_process_id,
+                    step_id: step_id
                 });
                 const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "Processsssssssssss"
+                    process_title: process_title
                 });
                 const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "blablabla@bla.com",
-                    process_title: "Processsssssssssss"
+                    user_email: user_email,
+                    process_title: process_title
                 });
                 const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "Processsssssssssss"
+                    title: process_title
                 });
                 const deleteUser = await request(server).get("/user/delete").query({
-                    email: "blablabla@bla.com"
+                    email: user_email
                 });
 
                 expect(register.statusCode).toBe(200);
@@ -122,29 +132,19 @@ describe("Calendar tests", () => {
             });
             test("[GET ALL] should get all meeting from calendar table with a 200 status code", async () => {
                 const register = await request(server).post("/user/register").send({
-                    email: "blablabla@bla.com",
-                    username: "blablabla",
-                    password: "blablabla"
+                    email: user_email,
+                    username: username,
+                    password: password
                 });
                 const login = await request(server).post("/user/login").send({
-                    email: "blablabla@bla.com",
-                    password: "blablabla"
+                    email: user_email,
+                    password: password
                 });
                 const createProcess = await request(server).post("/process/add").send({
-                    title: "Processsssssssssss",
+                    title: process_title,
                     description: "dhsdjsvvj",
                     source: "https://google.com",
-                    delay: "2001-50-30"
-                });
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: "Processsssssssssss",
-                    user_email: "blablabla@bla.com",
-                    questions: [
-                        [
-                            1,
-                            true
-                        ],
-                    ]
+                    delay: date
                 });
                 const createStep = await request(server).post("/step/add").send({
                     title: "VLS-TkS",
@@ -153,24 +153,36 @@ describe("Calendar tests", () => {
                     question: "Do you have the french nationality or a resident permit ? 2",
                     source: "stepSource",
                     is_unique: false,
-                    delay: "0030-00-00",
-                    process_title: "Processsssssssssss"
+                    delay: date,
+                    process_title: process_title
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const createUserProcess = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_email: user_email,
+                    questions: [
+                        [
+                            step_id,
+                            true
+                        ],
+                    ]
                 });
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "blablabla@bla.com"
+                    email: user_email
                 });
                 const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "Processsssssssssss"
+                    process_title: process_title
                 });
                 const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "blablabla@bla.com",
-                    process_title: "Processsssssssssss"
+                    user_email: user_email,
+                    process_title: process_title
                 });
                 const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "Processsssssssssss"
+                    title: process_title
                 });
                 const deleteUser = await request(server).get("/user/delete").query({
-                    email: "blablabla@bla.com"
+                    email: user_email
                 });
 
                 expect(register.statusCode).toBe(200);
@@ -271,29 +283,19 @@ describe("Calendar tests", () => {
             });
             test("[SET] step id not existing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const register = await request(server).post("/user/register").send({
-                    email: "blablabla@bla.com",
-                    username: "blablabla",
-                    password: "blablabla"
+                    email: user_email,
+                    username: username,
+                    password: password
                 });
                 const login = await request(server).post("/user/login").send({
-                    email: "blablabla@bla.com",
-                    password: "blablabla"
+                    email: user_email,
+                    password: password
                 });
                 const createProcess = await request(server).post("/process/add").send({
-                    title: "Processsssssssssss",
+                    title: process_title,
                     description: "dhsdjsvvj",
                     source: "https://google.com",
                     delay: "2001-50-30"
-                });
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: "Processsssssssssss",
-                    user_email: "blablabla@bla.com",
-                    questions: [
-                        [
-                            1,
-                            true
-                        ]
-                    ]
                 });
                 const createStep = await request(server).post("/step/add").send({
                     title: "VLS-TS",
@@ -303,7 +305,19 @@ describe("Calendar tests", () => {
                     source: "stepSource",
                     is_unique: false,
                     delay: "0030-00-00",
-                    process_title: "Processsssssssssss"
+                    process_title: process_title
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                let id = createStepResultParsed.response.id;
+                const createUserProcess = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_email: user_email,
+                    questions: [
+                        [
+                            id,
+                            true
+                        ]
+                    ]
                 });
                 const response = await request(server).post("/calendar/set").send({
                     date: "2011-11-11 20:20:20",
@@ -311,17 +325,17 @@ describe("Calendar tests", () => {
                     step_id: 19194
                 });
                 const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "Processsssssssssss"
+                    process_title: process_title
                 });
                 const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "blablabla@bla.com",
-                    process_title: "Processsssssssssss"
+                    user_email: user_email,
+                    process_title: process_title
                 });
                 const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "Processsssssssssss"
+                    title: process_title
                 });
                 const deleteUser = await request(server).get("/user/delete").query({
-                    email: "blablabla@bla.com"
+                    email: user_email
                 });
 
                 expect(register.statusCode).toBe(200);
@@ -417,29 +431,19 @@ describe("Calendar tests", () => {
             });
             test("[DELETE] step id not existing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const register = await request(server).post("/user/register").send({
-                    email: "blablabla@bla.com",
-                    username: "blablabla",
-                    password: "blablabla"
+                    email: user_email,
+                    username: username,
+                    password: password
                 });
                 const login = await request(server).post("/user/login").send({
-                    email: "blablabla@bla.com",
-                    password: "blablabla"
+                    email: user_email,
+                    password: password
                 });
                 const createProcess = await request(server).post("/process/add").send({
-                    title: "Processsssssssssss",
+                    title: process_title,
                     description: "dhsdjsvvj",
                     source: "https://google.com",
-                    delay: "2001-50-30"
-                });
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: "Processsssssssssss",
-                    user_email: "blablabla@bla.com",
-                    questions: [
-                        [
-                            1,
-                            true
-                        ]
-                    ]
+                    delay: date
                 });
                 const createStep = await request(server).post("/step/add").send({
                     title: "VLS-TS",
@@ -448,25 +452,37 @@ describe("Calendar tests", () => {
                     question: "Do you have the french nationality or a resident permit ? 2",
                     source: "stepSource",
                     is_unique: false,
-                    delay: "0030-00-00",
-                    process_title: "Processsssssssssss"
+                    delay: date,
+                    process_title: process_title
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const createUserProcess = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_email: user_email,
+                    questions: [
+                        [
+                            step_id,
+                            true
+                        ]
+                    ]
                 });
                 const response = await request(server).get("/calendar/delete").query({
                     user_process_id: 1,
                     step_id: 5495
                 });
                 const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "Processsssssssssss"
+                    process_title: process_title
                 });
                 const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "blablabla@bla.com",
-                    process_title: "Processsssssssssss"
+                    user_email: user_email,
+                    process_title: process_title
                 });
                 const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "Processsssssssssss"
+                    title: process_title
                 });
                 const deleteUser = await request(server).get("/user/delete").query({
-                    email: "blablabla@bla.com"
+                    email: user_email
                 });
 
                 expect(register.statusCode).toBe(200);
