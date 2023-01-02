@@ -7,11 +7,11 @@ describe("User process", () => {
     const port = 3006;
     let server;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         server = start(port);
     });
 
-    afterAll(() => {
+    afterAll(async () => {
         stop();
     });
 

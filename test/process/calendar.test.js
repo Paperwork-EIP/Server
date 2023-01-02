@@ -13,11 +13,11 @@ describe("Calendar tests", () => {
     const date = "2011-11-11 20:20:20";
     const process_title = "Processsssssssssss";
 
-    beforeAll(() => {
+    beforeAll(async () => {
         server = start(port);
     });
 
-    afterAll(() => {
+    afterAll(async () => {
         stop();
     });
 
