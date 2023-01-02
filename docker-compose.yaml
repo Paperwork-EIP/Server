@@ -19,3 +19,31 @@ services:
       - ./:/app
       - kms:/usr/share/data
       - /usr/src/app/node_modules
+
+  database:
+    restart: on-failure
+    container_name: database
+    image: postgres:latest
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+
+  test:
+      container_name: paperwork-test
+      image: node:lts
+      depends_on:
+        - database
+      environment:
+        DATABASE_URL: postgres://user:pass@database:5432/db
+        NODE_ENV: development
+        PORT: 8181
+      ports:
+        - "8181:8181"
+      command: "sh -c 'cd /app && npm install && npm run test:coverage'"
+      volumes:
+        - ./:/app
+        - kms:/usr/share/data
+        - /usr/src/app/node_modules
