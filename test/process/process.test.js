@@ -7,11 +7,11 @@ describe("Process tests", () => {
     const port = 3003;
     let server;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         server = start(port);
     });
 
-    afterAll(() => {
+    afterAll(async () => {
         stop();
     });
 
