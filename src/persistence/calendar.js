@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = {
     async set(date, user_process_id, step_id) {
         try {
-            var convertedDate = null;
+            let convertedDate = null;
             if (date != null) {
                 convertedDate = moment(date, "yyyy-MM-dd HH:mm:ss").toDate();
             }
