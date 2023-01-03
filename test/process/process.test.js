@@ -34,7 +34,7 @@ describe("Process tests", () => {
         describe("[VALID PROCESS TESTS]", () => {
             test("[ADD] should create and add a process in the database with a 200 status code", async () => {
                 const response = await request(server).post("/process/add").send({
-                    title: "Test",
+                    title: "testProcess",
                     description: "This is a test",
                     source: "https://google.com",
                     delay: null
@@ -45,7 +45,7 @@ describe("Process tests", () => {
             });
             test("[DELETE] should delete a process with a 200 status code", async () => {
                 const response = await request(server).get("/process/delete").query({
-                    title: "Test"
+                    title: "testProcess"
                 });
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
