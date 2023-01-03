@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const UserProcess = require('../persistence/userProcess');
+const Process = require('../persistence/process');
 const User = require('../persistence/users');
 const UserStep = require('../persistence/userStep');
 const Step = require('../persistence/step');
@@ -43,14 +44,27 @@ router.get("/getAll", async (request, response) => {
         }
         let res = [];
         for (let i in processes) {
+            let process = await Process.getById(processes[i].process_id);
             let userStep = await UserStep.getAllAppoinment(processes[i].id);
-            if (userStep) {
+            if (!userStep, !process) {
+                return response.status(404).json({ message: 'Process or user step not found.' });
+            }
+            if (userStep && process) {
                 for (let j in userStep) {
-                    res.push({
-                        "date": userStep[j].appoinment,
-                        "user_process_id": userStep[j].user_process_id,
-                        "step_id": userStep[j].step_id
-                    });
+                    let step = await Step.getById(userStep[j].step_id);
+                    if (!step) {
+                        return response.status(404).json({ message: 'Step not found.' });
+                    }
+                    if (step) {
+                        res.push({
+                            "date": userStep[j].appoinment,
+                            "user_process_id": userStep[j].user_process_id,
+                            "process_title": process.title,
+                            "step_id": userStep[j].step_id,
+                            "step_title": step.title,
+                            "step_description": step.description,
+                        });
+                    }
                 }
             }
         }
