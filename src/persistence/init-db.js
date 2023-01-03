@@ -63,13 +63,14 @@ module.exports = {
             post_id int NOT NULL,
             com_id int NOT NULL,
             reported_user_id int NOT NULL);`)
-        db.query(sql`CREATE TABLE IF NOT EXISTS proposed_feature (
+        db.query(sql`CREATE TABLE IF NOT EXISTS process_proposal (
             id SERIAL UNIQUE NOT NULL,
             title text NOT NULL,
             description text NOT NULL,
+            content text NOT NULL,
             date date NOT NULL,
             user_id int NOT NULL,
-            is_in_process int NOT NULL);`)
+            is_in_process bool NOT NULL);`)
         db.query(sql`CREATE TABLE IF NOT EXISTS process (
             id SERIAL UNIQUE NOT NULL,
             title text UNIQUE NOT NULL,
