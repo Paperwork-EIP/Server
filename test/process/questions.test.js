@@ -7,11 +7,11 @@ describe("Questions tests", () => {
     const port = 3004;
     let server;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         server = start(port);
     });
 
-    afterAll(() => {
+    afterAll(async () => {
         stop();
     });
 
