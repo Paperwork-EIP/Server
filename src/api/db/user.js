@@ -23,6 +23,7 @@ router.post('/register', async (request, response) => {
       const user = await User.create(username, email, password);
       return response.status(200).json({
         message: 'User registered !',
+        email: user.email,
         jwt: jwt.sign({ user }, jwt_key)
       });
     } catch (error) {

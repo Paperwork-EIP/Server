@@ -56,6 +56,14 @@ paths:
       responses:
         '200':
           description: User registered.
+          schema:
+            type: object
+            example:
+              {
+                "message": "User registered !",
+                "email": "test@test.com",
+                "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNjcyNzUyMDY2fQ.oAEpSW-SKnhAvmxMnLMVKuMevsRWqF9Y8ar15JNft6U"
+              }
         '400':
           description: Pseudo, email or password missing.
         '409':
