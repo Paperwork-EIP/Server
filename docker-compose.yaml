@@ -40,9 +40,9 @@ services:
     environment:
       DATABASE_URL: postgres://user:pass@database:5432/db
       NODE_ENV: development
-      PORT: 8080
+      PORT: 8282
     ports:
-      - "8080:8080"
+      - "8282:8282"
     command: "sh -c 'cd /app && npm install && npm run dev'"
     volumes:
       - ./:/app
