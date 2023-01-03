@@ -35,6 +35,8 @@ services:
     restart: on-failure
     container_name: paperwork-server-local
     image: node:lts
+    depends_on:
+        - database
     environment:
       DATABASE_URL: postgres://user:pass@database:5432/db
       NODE_ENV: development

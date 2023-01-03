@@ -29,6 +29,10 @@ tags:
     description: Step management.
   - name: userProcess
     description: UserProcess management.
+  - name: calendar
+    description: Calendar management.
+  - name: processProposal
+    description: ProcessProposal management.
 
 paths:
   /user/register:
@@ -52,6 +56,14 @@ paths:
       responses:
         '200':
           description: User registered.
+          schema:
+            type: object
+            example:
+              {
+                "message": "User registered !",
+                "email": "test@test.com",
+                "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6InRlc3RAdGVzdC5jb20ifSwiaWF0IjoxNjcyNzUyMDY2fQ.oAEpSW-SKnhAvmxMnLMVKuMevsRWqF9Y8ar15JNft6U"
+              }
         '400':
           description: Pseudo, email or password missing.
         '409':
@@ -569,3 +581,204 @@ paths:
       summary: Get all user processes.
       tags:
         - userProcess
+  /calendar/set:
+    post:
+      parameters:
+        - in: body
+          name: date
+          schema:
+            type: string
+            example: "YYYY-MM-DD hh:mm:ss"
+            description: Date and time of the appointment
+        - in: body
+          name: user_process_id
+          schema:
+            type: integer
+            description: Id of the user process linked to the new appointment.
+        - in: body
+          name: step_id
+          schema:
+            type: integer
+            description: Id of the step linked to the new appointment.
+      responses:
+        '200':
+            description: Appointment created.
+            schema:
+              type: object
+              example:
+                {
+                    "message": "Meeting updated!",
+                    "response": {
+                        "id": 1,
+                        "appoinment": "2022-12-01T12:30:00.000Z"
+                    }
+                }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: Step or user process not found.
+        '500':
+          description: System error.
+      summary: Create a new appointment.
+      tags:
+        - calendar
+  /calendar/getAll:
+    get:
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            description: Email of the user.
+      responses:
+        '200':
+            description: All the user appointments.
+            schema:
+              type: object
+              example:
+                {
+                    "message": "User appoinments.",
+                    "appoinment": [
+                        {
+                            "date": "2022-12-01T12:30:00.000Z",
+                            "user_process_id": 1,
+                            "step_id": 1
+                        }
+                    ]
+                }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all the user appointments.
+      tags:
+        - calendar
+  /calendar/delete:
+    get:
+      parameters:
+        - in: query
+          name: user_process_id
+          schema:
+            type: integer
+            description: Id of the user process linked to the appointment to delete.
+        - in: query
+          name: step_id
+          schema:
+            type: integer
+            description: Id of the step linked to the appointment to delete.
+      responses:
+        '200':
+            description: Delete the user appointment.
+            schema:
+              type: object
+              example:
+                {
+                  "message": "Appoinment deleted.",
+                  "res": {
+                      "id": 1,
+                      "appoinment": null
+                  }
+                }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User process or step not found.
+        '500':
+          description: System error.
+      summary: Delete an user appointment.
+      tags:
+        - calendar
+  /processProposal/add:
+    post:
+      parameters:
+        - in: body
+          name: title
+          schema:
+            type: string
+            description: Title of the proposed process.
+        - in: body
+          name: description
+          schema:
+            type: string
+            description: Description of the proposed process.
+        - in: body
+          name: content
+          schema:
+            type: string
+            description: Content of the proposed process.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: User email.
+      responses:
+        '200':
+          description: process proposal created.
+          schema:
+            type: object
+            example:
+              {
+                "message": "Proposal added.",
+                "response": {
+                    "id": 1,
+                    "title": "..."
+                }
+              }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Create a new process proposal.
+      tags:
+        - processProposal
+  /processProposal/getAll:
+    get:
+      responses:
+        '200':
+          description: List of all the proposed process.
+          schema:
+            type: object
+            example:
+              {
+                "message":  "Proposals found.",
+                "response": [
+                  {
+                    "id": 1,
+                    "title": "test",
+                    "description": "test description",
+                    "content": "test content",
+                    "date": "2023-01-03T00:00:00.000Z",
+                    "user_id": 1,
+                    "is_in_process": false
+                  }
+                ]
+              }
+        '500':
+          description: System error.
+      summary: Get all the proposed process.
+      tags:
+        - processProposal
+  /processProposal/delete:
+    get:
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            description: Id of the proposed process to delete.
+      responses:
+        '200':
+          description: process proposal deleted.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: Process proposal not found.
+        '500':
+          description: System error.
+      summary: Delete a process proposal.
+      tags:
+        - processProposal
