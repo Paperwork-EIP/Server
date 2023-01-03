@@ -50,6 +50,7 @@ router.post('/register', async (request, response) => {
         } else {
           return response.status(200).json({
             message: 'User logged in !',
+            email: check_connect.user.email,
             jwt: jwt.sign({ user: check_connect.user }, jwt_key)
           });
         }
