@@ -65,6 +65,7 @@ router.get("/", async (req, response) => {
       TOKEN.set(checkUser.email, 'facebook', access_token);
       return response.status(200).json({
         message: "Connected with facebook",
+        email: checkUser.email,
         jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, jwt_key)
       })
     } else {
