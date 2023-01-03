@@ -588,7 +588,7 @@ paths:
           name: date
           schema:
             type: string
-            example: "YYYY-MM-DD hh:mm:ss"
+            example: "YYYY-MM-DD HH:mm:ss"
             description: Date and time of the appointment
         - in: body
           name: user_process_id
@@ -642,7 +642,10 @@ paths:
                         {
                             "date": "2022-12-01T12:30:00.000Z",
                             "user_process_id": 1,
-                            "step_id": 1
+                            "process_title": "Process title",
+                            "step_id": 1,
+                            "step_title": "Step title",
+                            "step_description": "Description of the step."
                         }
                     ]
                 }
