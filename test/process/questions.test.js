@@ -34,18 +34,18 @@ describe("Questions tests", () => {
         describe("[VALID TESTS]", () => {
             test("[GET] should get questions with a 200 status code", async () => {
                 const create = await request(server).post("/process/add").send({
-                    title: "Test",
+                    title: "TestQuestions",
                     description: "This is a test",
                     source: "https://google.com",
                     delay: null
                 });
 
                 const response = await request(server).get("/processQuestions/get").query({
-                    title: "Test"
+                    title: "TestQuestions"
                 });
 
                 const del = await request(server).get("/process/delete").query({
-                    title: "Test"
+                    title: "TestQuestions"
                 });
                 
                 expect(create.statusCode).toBe(200);
