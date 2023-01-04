@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const moment = require('moment');
 const UserProcess = require('../persistence/userProcess');
 const Process = require('../persistence/process');
 const User = require('../persistence/users');
@@ -7,11 +8,20 @@ const Step = require('../persistence/step');
 const Calendar = require("../persistence/calendar");
 const router = new Router();
 
+moment().format(); 
+
 router.post("/set", async (request, response) => {
     try {
         const { date, user_process_id, step_id } = request.body;
+        const formats = [
+            moment.ISO_8601,
+            "MM/DD/YYYY  :)  HH*mm*ss"
+        ];
         if (!date || !user_process_id || !step_id) {
             return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        if (!moment(date, formats, true).isValid()) {
+            return response.status(400).json({ message: 'Invalid date format. '});
         }
         const user_process = await UserProcess.getById(user_process_id);
         if (!user_process) {
