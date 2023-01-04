@@ -8,7 +8,6 @@ module.exports = {
             let convertedDate = null;
             if (date != null) {
                 convertedDate = moment(date, "YYYY-MM-DD HH:mm:ss").toDate();
-                console.log(convertedDate);
             }
             const { rows } = await db.query(sql`
             UPDATE user_step SET appoinment=${convertedDate} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, appoinment
