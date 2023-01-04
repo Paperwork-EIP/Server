@@ -46,7 +46,7 @@ router.post('/add', async (request, response) => {
 router.post('/update', async (request, response) => {
     try {
         const { user_email, process_title, step_id, is_done } = request.body;
-        if (!user_email || !process_title || !step_id || !is_done) {
+        if (!user_email || !process_title || !step_id) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
         const user = await User.find(user_email);
