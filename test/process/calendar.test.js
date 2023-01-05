@@ -238,6 +238,186 @@ describe("Calendar tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
+            test("[SET] date invalid year : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "aaaa-11-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid year : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2aaa-11-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid year : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "a0aa-11-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid year : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "aa2a-11-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid year : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "aaa2-11-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid month : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-aa-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid month : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-1a-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid month : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-a1-11 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid day : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-aa 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid day : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-1a 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid day : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-a1 20:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid hour : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 aa:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid hour : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 1a:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid hour : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 a1:20:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid minute : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:aa:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid minute : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:1a:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid minute : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:a1:20",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid second : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:20:aa",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid second : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:20:1a",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("[SET] date invalid second : should not set a meeting in calendar table with a 400 status code", async () => {
+                const response = await request(server).post("/calendar/set").send({
+                    date: "2011-11-11 20:20:a1",
+                    user_process_id: "test",
+                    step_id: 2
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
             test("[SET] user process id missing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const response = await request(server).post("/calendar/set").send({
                     date: "2005-10-22 03:01:50",

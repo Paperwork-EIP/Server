@@ -22,6 +22,9 @@ init_db.initAll()
 let server;
 module.exports = {
   start(port) {
+    if (!port) {
+      return null;
+    }
     app.use(route, Process);
     server = app.listen(port, () => {
       console.log(`App started on port ${port}`);
