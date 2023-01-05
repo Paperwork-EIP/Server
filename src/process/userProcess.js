@@ -66,7 +66,6 @@ router.post('/update', async (request, response) => {
         }
         const res = await UserStep.update(user_process.id, step_id, is_done);
         const notDone = await UserStep.getNotDone(user_process.id);
-        console.log(notDone);
         if (notDone.length === 0) {
             await UserProcess.update(user_process.id, process.id);
         }

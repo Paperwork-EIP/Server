@@ -15,7 +15,7 @@ router.post('/add', async (request, response) => {
         }
         const result = await ProcessProposal.create(title, description, content, user.id);
         if (result) {
-            return response.status(200).json({ message: 'Proposal added.', responde: result });
+            return response.status(200).json({ message: 'Proposal added.', response: result });
         }
     } catch (error) {
         console.error(error);
@@ -25,7 +25,7 @@ router.post('/add', async (request, response) => {
 router.get('/getAll', async (request, response) => {
     try {
         const result = await ProcessProposal.getAll();
-        return response.status(200).json({ message: 'Proposals found.', responde: result });
+        return response.status(200).json({ message: 'Proposals found.', response: result });
     } catch (error) {
         console.error(error);
         return response.status(500).json({ message: 'System error.' });
@@ -42,7 +42,7 @@ router.get('/delete', async (request, response) => {
             return response.status(400).json({ message: 'Proposal not found.' });
         }
         const result = await ProcessProposal.delete(processProposal.id);
-        return response.status(200).json({ message: 'Proposal deleted.', responde: result });
+        return response.status(200).json({ message: 'Proposal deleted.', response: result });
     } catch (error) {
         console.error(error);
         return response.status(500).json({ message: 'System error.' });

@@ -38,6 +38,33 @@ router.post("/set", async (request, response) => {
     }
 });
 
+async function getMeeting(processes) {
+    let res = [];
+    for (let i in processes) {
+        let process = await Process.getById(processes[i].process_id);
+        let userStep = await UserStep.getAllAppoinment(processes[i].id);
+        if (!userStep || !process) {
+            return response.status(404).json({ message: 'Process or user step not found.' });
+        }
+        for (let j in userStep) {
+            let step = await Step.getById(userStep[j].step_id);
+            if (!step) {
+                return response.status(404).json({ message: 'Step not found.' });
+            } else {
+                res.push({
+                    "date": userStep[j].appoinment,
+                    "user_process_id": userStep[j].user_process_id,
+                    "process_title": process.title,
+                    "step_id": userStep[j].step_id,
+                    "step_title": step.title,
+                    "step_description": step.description,
+                });
+            }
+        }
+    }
+    return res;
+}
+
 router.get("/getAll", async (request, response) => {
     try {
         const { email } = request.query;
@@ -52,32 +79,7 @@ router.get("/getAll", async (request, response) => {
         if (!processes) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        let res = [];
-        for (let i in processes) {
-            let process = await Process.getById(processes[i].process_id);
-            let userStep = await UserStep.getAllAppoinment(processes[i].id);
-            if (!userStep, !process) {
-                return response.status(404).json({ message: 'Process or user step not found.' });
-            }
-            if (userStep && process) {
-                for (let j in userStep) {
-                    let step = await Step.getById(userStep[j].step_id);
-                    if (!step) {
-                        return response.status(404).json({ message: 'Step not found.' });
-                    }
-                    if (step) {
-                        res.push({
-                            "date": userStep[j].appoinment,
-                            "user_process_id": userStep[j].user_process_id,
-                            "process_title": process.title,
-                            "step_id": userStep[j].step_id,
-                            "step_title": step.title,
-                            "step_description": step.description,
-                        });
-                    }
-                }
-            }
-        }
+        let res = await getMeeting(processes);
         return response.status(200).json({ message: "User appoinments.", appoinment: res });
     } catch (error) {
         console.log(error);
