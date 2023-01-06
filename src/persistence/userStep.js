@@ -58,6 +58,12 @@ module.exports = {
         `);
         return rows[0];
     },
+    async getByStepId(user_process_id, step_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND step_id=${step_id} LIMIT 1;
+        `);
+        return rows[0];
+    },
     async getAll(user_process_id) {
         const { rows } = await db.query(sql`
         SELECT * FROM user_step WHERE user_process_id=${user_process_id};

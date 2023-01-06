@@ -435,6 +435,76 @@ describe("Calendar tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
+            test("[SET] user process id not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "hhhhhhhhhhhhhhh",
+                    username: "kkkkkkkkkkkkkkk",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "hhhhhhhhhhhhhhh",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: process_title,
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: process_title
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const response = await request(server).post("/calendar/set").send({
+                    date: date,
+                    user_process_id: 12,
+                    step_id: step_id
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: process_title
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: process_title
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "hhhhhhhhhhhhhhh"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
             test("[SET] step id missing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const response = await request(server).post("/calendar/set").send({
                     date: "2005-10-22 03:01:50",
@@ -447,11 +517,59 @@ describe("Calendar tests", () => {
                 const response = await request(server).post("/calendar/set").send({
                     date: "2011-11-11 20:20:20",
                     user_process_id: 1,
-                    step_id: 19194
+                    step_id: null
                 });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+            });
+            test("[SET] step not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "hhhhhhhhhhhhhhh",
+                    username: "kkkkkkkkkkkkkkk",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "hhhhhhhhhhhhhhh",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: process_title,
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const response = await request(server).post("/calendar/set").send({
+                    date: date,
+                    user_process_id: 12,
+                    step_id: 54
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: process_title
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "hhhhhhhhhhhhhhh"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
             });
             test("[GET ALL] email missing : should not get all meeting from calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/getAll").query({});
@@ -512,12 +630,12 @@ describe("Calendar tests", () => {
             });
             test("[DELETE] step id not existing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const register = await request(server).post("/user/register").send({
-                    email: user_email,
-                    username: username,
+                    email: "hhhhhhhhhhhhhhh",
+                    username: "kkkkkkkkkkkkkkk",
                     password: password
                 });
                 const login = await request(server).post("/user/login").send({
-                    email: user_email,
+                    email: "hhhhhhhhhhhhhhh",
                     password: password
                 });
                 const createProcess = await request(server).post("/process/add").send({
@@ -540,7 +658,7 @@ describe("Calendar tests", () => {
                 const step_id = createStepResultParsed.response.id;
                 const createUserProcess = await request(server).post("/userProcess/add").send({
                     process_title: process_title,
-                    user_email: user_email,
+                    user_email: "hhhhhhhhhhhhhhh",
                     questions: [
                         [
                             step_id,
@@ -556,14 +674,14 @@ describe("Calendar tests", () => {
                     process_title: process_title
                 });
                 const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: user_email,
+                    user_email: "hhhhhhhhhhhhhhh",
                     process_title: process_title
                 });
                 const deleteProcess = await request(server).get("/process/delete").query({
                     title: process_title
                 });
                 const deleteUser = await request(server).get("/user/delete").query({
-                    email: user_email
+                    email: "hhhhhhhhhhhhhhh"
                 });
 
                 expect(register.statusCode).toBe(200);

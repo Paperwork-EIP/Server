@@ -16,10 +16,10 @@ module.exports = {
             throw error;
         }
     },
-    async delete(title) {
+    async delete(id) {
         try {
             const { rows } = await db.query(sql`
-            DELETE FROM process where title=${title};`);
+            DELETE FROM process where id=${id};`);
             return rows[0];         
         } catch (error) {
             console.error(error);
