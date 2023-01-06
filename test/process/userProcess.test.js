@@ -353,6 +353,208 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
+            test("[ADD] user not found : should not add a user process with a 404 status code", async () => {
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    user_email: "l",
+                    questions: [
+                        [
+                            step_id,
+                            true
+                        ],
+                    ]
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+            });
+            test("[ADD] process not found : should not add a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "swedfgtyhujikujyhnbgfvdce",
+                    username: "vdbvfdbvfdbd        dsssssssssss",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "swedfgtyhujikujyhnbgfvdce",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: "t",
+                    user_email: "swedfgtyhujikujyhnbgfvdce",
+                    questions: [
+                        [
+                            step_id,
+                            true
+                        ],
+                    ]
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "swedfgtyhujikujyhnbgfvdce"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+            test("[ADD] step not found : should not add a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "cefevced   fefefe",
+                    username: "thtyhjyuhynbtbthyhy",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "cefevced   fefefe",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    user_email: "cefevced   fefefe",
+                    questions: [
+                        [
+                            1829394938,
+                            true
+                        ],
+                    ]
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "cefevced   fefefe"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "Test",
@@ -416,6 +618,347 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
+            test("[UPDATE] user not found : should not update a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "dsadasd",
+                    username: "vfgfdgdf",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "dsadasd",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const userProcess = await request(server).post("/userProcess/add").send({
+                    user_email: "dsadasd",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    questions: [
+                        [
+                            step_id,
+                            false
+                        ]
+                    ]
+                });
+                const response = await request(server).post("/userProcess/update").send({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    user_email: "h",
+                    is_done: true,
+                    step_id: step_id
+                });
+                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
+                    user_email: "dsadasd",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "dsadasd"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(userProcess.statusCode).toBe(200);
+                expect(userProcess.message).not.toBeNull();
+                expect(userProcess.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteUserProcess.statusCode).toBe(200);
+                expect(deleteUserProcess.message).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+            test("[UPDATE] process not found : should not update a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "qqqqqqqq",
+                    username: "gd",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "qqqqqqqq",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const userProcess = await request(server).post("/userProcess/add").send({
+                    user_email: "qqqqqqqq",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    questions: [
+                        [
+                            step_id,
+                            false
+                        ]
+                    ]
+                });
+                const response = await request(server).post("/userProcess/update").send({
+                    process_title: "t",
+                    user_email: "qqqqqqqq",
+                    is_done: true,
+                    step_id: step_id
+                });
+                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
+                    user_email: "qqqqqqqq",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "qqqqqqqq"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(userProcess.statusCode).toBe(200);
+                expect(userProcess.message).not.toBeNull();
+                expect(userProcess.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteUserProcess.statusCode).toBe(200);
+                expect(deleteUserProcess.message).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+            test("[UPDATE] userProcess not found : should not update a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "wwwwwwww",
+                    username: "sd",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "wwwwwwww",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const response = await request(server).post("/userProcess/update").send({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    user_email: "wwwwwwww",
+                    is_done: true,
+                    step_id: step_id
+                });
+                const deleteStep = await request(server).get("/step/deleteall").query({
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "wwwwwwww"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteStep.statusCode).toBe(200);
+                expect(deleteStep.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+            test("[UPDATE] step not found : should not update a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "emaimvaafg",
+                    username: "siuuuuuuuuuuuuuuuuuuuuuuuuu",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "emaimvaafg",
+                    password: password
+                });
+                const createProcess = await request(server).post("/process/add").send({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    description: "dhsdjsvvj",
+                    source: "https://google.com",
+                    delay: date
+                });
+                const createStep = await request(server).post("/step/add").send({
+                    title: "VLS-TkS",
+                    type: "stepType",
+                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
+                    question: "Do you have the french nationality or a resident permit ? 2",
+                    source: "stepSource",
+                    is_unique: false,
+                    delay: date,
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const createStepResultParsed = JSON.parse(createStep.text);
+                const step_id = createStepResultParsed.response.id;
+                const userProcess = await request(server).post("/userProcess/add").send({
+                    user_email: "emaimvaafg",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
+                    questions: [
+                        [
+                            step_id,
+                            false
+                        ]
+                    ]
+                });
+                const response = await request(server).post("/userProcess/update").send({
+                    process_title: "t",
+                    user_email: "emaimvaafg",
+                    is_done: true,
+                    step_id: 8734
+                });
+                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
+                    user_email: "emaimvaafg",
+                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteProcess = await request(server).get("/process/delete").query({
+                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "emaimvaafg"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(createProcess.statusCode).toBe(200);
+                expect(createProcess.message).not.toBeNull();
+                expect(createProcess.response).not.toBeNull();
+
+                expect(createStep.statusCode).toBe(200);
+                expect(createStep.message).not.toBeNull();
+                expect(createStep.response).not.toBeNull();
+
+                expect(userProcess.statusCode).toBe(200);
+                expect(userProcess.message).not.toBeNull();
+                expect(userProcess.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteUserProcess.statusCode).toBe(200);
+                expect(deleteUserProcess.message).not.toBeNull();
+
+                expect(deleteProcess.statusCode).toBe(200);
+                expect(deleteProcess.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
             test("[DELETE] user email empty : should not delete a user process with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/delete").query({
                     user_email: "",
@@ -431,6 +974,15 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[DELETE] user email not found : should not delete a user process with a 404 status code", async () => {
+                const response = await request(server).get("/userProcess/delete").query({
+                    user_email: "asdasda",
+                    process_title: "Test"
+                });
+
+                expect(response.statusCode).toBe(404);
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] process title empty : should not delete a user process with a 400 status code", async () => {
@@ -450,9 +1002,48 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
+            test("[DELETE] process not found : should not delete a user process with a 404 status code", async () => {
+                const register = await request(server).post("/user/register").send({
+                    email: "uuuuuudnelfeklfmlemfklmel",
+                    username: "uuuuuuuuvmrinfeikdmcoefe  cdcdbvftguuuuuuu",
+                    password: password
+                });
+                const login = await request(server).post("/user/login").send({
+                    email: "uuuuuudnelfeklfmlemfklmel",
+                    password: password
+                });
+                const response = await request(server).post("/userProcess/delete").send({
+                    user_email: "uuuuuudnelfeklfmlemfklmel",
+                    process_title: "t",
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "uuuuuudnelfeklfmlemfklmel"
+                });
+
+                expect(register.statusCode).toBe(200);
+                expect(register.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+                expect(response.response).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
             test("[GET USER STEPS] email empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_email: "",
+                    process_title: "Test"
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET USER STEPS] email missing : should not get a user step with a 400 status code", async () => {
+                const response = await request(server).get("/userProcess/getUserSteps").query({
                     process_title: "Test"
                 });
 

@@ -37,7 +37,7 @@ const router = new Router();
           if (!step) {
             return response.status(404).json({ message: 'Steps not found.' });
           }
-          const res = await Process.delete(title);
+          const res = await Process.delete(find.id);
           return response.status(200).json({
               message: 'Process and steps deleted!',
               response: res

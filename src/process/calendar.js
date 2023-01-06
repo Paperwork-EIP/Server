@@ -27,10 +27,11 @@ router.post("/set", async (request, response) => {
         if (!user_process) {
             return response.status(404).json({ message: 'User process not found.' });
         }
-        const meeting = await Calendar.set(date, user_process_id, step_id);
-        if (!meeting) {
-            return response.status(404).json({ message: 'Meeting not found.' });
+        const step = await Step.getById(step_id);
+        if (!step) {
+            return response.status(404).json({ message: 'Step not found.' });
         }
+        const meeting = await Calendar.set(date, user_process_id, step_id);
         return response.status(200).json({ message: 'Meeting updated!', response: meeting });
     } catch (error) {
         console.log(error);
