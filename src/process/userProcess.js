@@ -104,6 +104,15 @@ router.get('/delete', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+
+async function getPercentage(user_process_id) {
+    const res = await UserStep.getAll(user_process_id);
+    const notDone = await UserStep.getNotDone(user_process_id);
+    const x = (res.length - notDone.length) / res.length * 100;
+    const pourcentage = Math.round(x);
+    return pourcentage;
+}
+
 router.get('/getUserSteps', async (request, response) => {
     try {
         const { user_email, process_title } = request.query;
@@ -123,9 +132,7 @@ router.get('/getUserSteps', async (request, response) => {
             return response.status(404).json({ message: 'User process not found.' });
         }
         const res = await UserStep.getAll(user_process.id);
-        const notDone = await UserStep.getNotDone(user_process.id);
-        const x = (res.length - notDone.length) / res.length * 100;
-        const pourcentage = Math.round(x);
+        const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
             pourcentage: pourcentage,
@@ -147,9 +154,7 @@ router.get('/getUserStepsById', async (request, response) => {
             return response.status(404).json({ message: 'User process not found.' });
         }
         const res = await UserStep.getAll(user_process.id);
-        const notDone = await UserStep.getNotDone(user_process.id);
-        const x = (res.length - notDone.length) / res.length * 100;
-        const pourcentage = Math.round(x);
+        const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
             pourcentage: pourcentage,
@@ -170,7 +175,15 @@ router.get('/getUserProcesses', async (request, response) => {
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
-        const res = await UserProcess.getAll(user.id);
+        const userProcesses = await UserProcess.getAll(user.id);
+        let res = [];
+        for (i in userProcesses) {
+            const percentage = await getPercentage(userProcesses[i].id);
+            res.push({
+                pourcentage: percentage,
+                userProcess: userProcesses[i]
+            });  
+        }
         return response.status(200).json({
             message: 'User processes',
             response: res

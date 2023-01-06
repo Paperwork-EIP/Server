@@ -33,7 +33,7 @@ module.exports = {
     async update(user_process_id, step_id, is_done) {
         try {
             const { rows } = await db.query(sql`
-            UPDATE user_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND id=${step_id} RETURNING id;
+            UPDATE user_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, is_done;
             `);
             const [user_step] = rows;
             return user_step;          
@@ -51,6 +51,18 @@ module.exports = {
             console.error(error);
             throw error;
         }
+    },
+    async getById(user_step_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_step WHERE id=${user_step_id} LIMIT 1;
+        `);
+        return rows[0];
+    },
+    async getByStepId(user_process_id, step_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND step_id=${step_id} LIMIT 1;
+        `);
+        return rows[0];
     },
     async getAll(user_process_id) {
         const { rows } = await db.query(sql`
