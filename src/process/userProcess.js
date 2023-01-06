@@ -177,7 +177,7 @@ router.get('/getUserProcesses', async (request, response) => {
         }
         const userProcesses = await UserProcess.getAll(user.id);
         let res = [];
-        for (i in userProcesses) {
+        for (let i in userProcesses) {
             const percentage = await getPercentage(userProcesses[i].id);
             res.push({
                 pourcentage: percentage,
