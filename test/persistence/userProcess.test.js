@@ -1,31 +1,81 @@
-// const userProcess = require("../../src/persistence/userProcess");
+const rewire = require("rewire");
+const userProcess = require("../../src/persistence/userProcess");
 
-// var mockTitle = "TestTitle";
-// var mockProcessTitle = "mockProcess";
-// var mockUserMail = "mock@mock.com";
+afterEach(() => {
+    jest.restoreAllMocks();
+});
 
-// describe("User Process Tests", () => {
-//     test("[UNIT TEST] Call create an account function - success", () => {
-//         var result = userProcess.create(mockProcessTitle, mockUserMail);
+describe("User Process Persistence Tests", () => {
+    const user_id = 1234234234;
+    const user_process_id = 11231231;
+    const process_id = 1234234;
+    const process_title = "testtesttesttesttesttest";
+    const moduleUserProcess = rewire("../../src/persistence/userProcess");
 
-//         expect(result).not.toBeNull();
-//     });
+    describe("[UNIT TESTS]", () => {
+        describe("[VALID TESTS]", () => {
+            test("[userProcess.js] should have a user process component", async () => {
+                expect(userProcess).not.toBeNull();
+            });
+            test("[CREATE] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "create");
+                const create = await userProcess.create(user_id, process_id, process_title);
 
-//     test("[UNIT TEST] Call delete an account - success", () => {
-//         var result = userProcess.delete(mockTitle);
+                expect(spy).toHaveBeenCalled();
+                expect(create).not.toBeNull();
+            });
+            test("[CREATE] should define current date", async () => {
+                const date = moduleUserProcess.__set__("currentDate", Date());
+                const checkDate = moduleUserProcess.__get__("currentDate");
 
-//         expect(result).not.toBeNull();
-//     });
+                expect(date).not.toBeNull();
+                expect(checkDate).toBe(Date());
+            });
+            test("[UPDATE] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "update");
+                const update = await userProcess.update(user_process_id, process_id);
 
-//     test("[UNIT TEST] Call get user's steps - success", () => {
-//         var result = userProcess.getUserSteps(mockProcessTitle, mockUserMail);
+                expect(spy).toHaveBeenCalled();
+                expect(update).toBeNull();
+            });
+            test("[DELETE] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "delete");
+                const deleteFn = await userProcess.delete(user_id, process_id);
 
-//         expect(result).not.toBeNull();
-//     });
-// });
+                expect(spy).toHaveBeenCalled();
+                expect(deleteFn).not.toBeNull();
+            });
+            test("[GET] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "get");
+                const get = await userProcess.get(user_id, process_id);
 
-const sum = require('../sum');
+                expect(spy).toHaveBeenCalled();
+                expect(get).not.toBeNull();
+            });
+            test("[GET BY ID] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "getById");
+                const getById = await userProcess.getById(user_process_id);
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
+                expect(spy).toHaveBeenCalled();
+                expect(getById).not.toBeNull();
+            });
+            test("[GET ALL] should be called", async () => {
+                const spy = jest.spyOn(userProcess, "getAll");
+                const getAll = await userProcess.getAll(user_id);
+
+                expect(spy).toHaveBeenCalled();
+                expect(getAll).not.toBeNull();
+            });
+        });
+        describe("[INVALID TESTS]", () => {
+            // test("[CREATE] try catch statement should return an error ", async () => {
+            //     const response = userProcess.create(user_id, process_id, process_title);
+            //     const spy = jest.spyOn(response, 'error').mockImplementation(() => {
+            //         throw new Error();
+            //     })
+
+            //     expect(spy).toHaveBeenCalled();
+            // });
+        });
+    });
 });
