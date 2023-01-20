@@ -118,4 +118,36 @@ router.post('/register', async (request, response) => {
     }
   });
 
+  router.get('/modifyDatas', async (request, response) => {
+    try{
+      const { email, new_email, language,
+              username, firstname, name, age,
+              adress, number_phone, profile_picture,
+            } = request.query
+      const find = await User.find(email)
+      if (find) {
+        data =
+        {"language":language,
+          "username":username, "firstname":firstname, "name":name, "age":age,
+          "adress":adress, "profile_picture":profile_picture, "number_phone":number_phone,
+          "email":new_email, 
+        }
+        if (await User.find(new_email) && new_email != email) {
+          return response.status(409).json({ message: 'Email already used' });
+        }
+        if (await User.findUsername(username) && username != find.username) {
+          return response.status(409).json({ message: 'Usename already used' });
+        }
+        for (let key in data) {
+          await User.modifyDatas(email, key, data[key])
+        }
+        return response.status(200).json({ message: 'User updated' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
 module.exports = router;
