@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const User = require('../../persistence/users');
+const Settings = require('../../persistence/userSettings');
 const jwt = require('jsonwebtoken');
 const { jwt_key } = require('../../const');
 const router = new Router();
@@ -21,6 +22,7 @@ router.post('/register', async (request, response) => {
         return response.status(409).json({ message: 'Usename already used' });
       }
       const user = await User.create(username, email, password);
+      await Settings.create(user.id);
       return response.status(200).json({
         message: 'User registered !',
         email: user.email,
@@ -99,6 +101,25 @@ router.post('/register', async (request, response) => {
     }
   });
 
+  router.get('/getSettings', async (request, response) => {
+    try{
+      const { email } = request.query
+      if (!email) {
+        return response.status(400).json({ message: 'Missing parameter email.' });
+      }
+      const find = await User.find(email)
+      if (find) {
+        const settings = await Settings.get(find.id)
+        return response.status(200).json(settings);
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
   router.get('/delete', async (request, response) => {
     try{
       const { email } = request.query
@@ -108,6 +129,7 @@ router.post('/register', async (request, response) => {
       const find = await User.find(email)
       if (find) {
         await User.delete(email)
+        await Settings.delete(find.id)
         return response.status(200).json({ message: 'User deleted' });
       } else {
         return response.status(404).json({ message: 'User not found.' });
@@ -124,6 +146,9 @@ router.post('/register', async (request, response) => {
               username, firstname, name, age,
               adress, number_phone, profile_picture,
             } = request.query
+      if (!email) {
+        return response.status(400).json({ message: 'Missing parameter email.' });
+      }
       const find = await User.find(email)
       if (find) {
         data =
@@ -142,6 +167,28 @@ router.post('/register', async (request, response) => {
           await User.modifyDatas(email, key, data[key])
         }
         return response.status(200).json({ message: 'User updated' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
+  router.get('/modifySettings', async (request, response) => {
+    try{
+      const { email, night_mode } = request.query
+      if (!email) {
+        return response.status(400).json({ message: 'Missing parameter email.' });
+      }
+      const find = await User.find(email)
+      if (find) {
+        id = find.id
+        data = {"night_mode":night_mode,}
+        for (const key in data) {
+          const value = await Settings.modifySettings(id, key, data[key])
+        }
+        return response.status(200).json({ message: 'User setting updated' });
       } else {
         return response.status(404).json({ message: 'User not found.' });
       }

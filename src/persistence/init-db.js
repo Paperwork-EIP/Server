@@ -97,5 +97,10 @@ module.exports = {
             is_display int NOT NULL,
             post_id int NOT NULL,
             user_id int NOT NULL);`)
+        db.query(sql`CREATE TABLE IF NOT EXISTS user_settings (
+            id SERIAL UNIQUE NOT NULL,
+            user_id int UNIQUE NOT NULL,
+            night_mode boolean
+        );`)
     }
 }
