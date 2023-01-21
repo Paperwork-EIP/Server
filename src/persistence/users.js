@@ -111,6 +111,12 @@ module.exports = {
         UPDATE user_table SET profile_picture=${value} where email=${email};`);
         return rows[0];
       }
+      if (data === "password") {
+        const hashedPassword = await bcrypt.hash(value, 10);
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET password=${hashedPassword} where email=${email};`);
+        return rows[0];
+      }
     } catch (error) {
      throw error;
     }
