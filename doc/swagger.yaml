@@ -206,7 +206,7 @@ paths:
           name: new_email
           schema:
             type: string
-          description: New password value.
+          description: New email value.
         - in: query
           name: password
           schema:
