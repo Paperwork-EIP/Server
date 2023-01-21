@@ -144,7 +144,7 @@ router.post('/register', async (request, response) => {
     try{
       const { email, new_email, language,
               username, firstname, name, age,
-              adress, number_phone, profile_picture,
+              adress, number_phone, profile_picture, password
             } = request.query
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
@@ -152,7 +152,7 @@ router.post('/register', async (request, response) => {
       const find = await User.find(email)
       if (find) {
         data =
-        {"language":language,
+        {"language":language, "password": password,
           "username":username, "firstname":firstname, "name":name, "age":age,
           "adress":adress, "profile_picture":profile_picture, "number_phone":number_phone,
           "email":new_email, 
