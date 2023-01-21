@@ -208,6 +208,11 @@ paths:
             type: string
           description: New email value.
         - in: query
+          name: password
+          schema:
+            type: string
+          description: New password value.
+        - in: query
           name: language
           schema:
             type: string
