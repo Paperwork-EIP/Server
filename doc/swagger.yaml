@@ -211,7 +211,7 @@ paths:
           name: password
           schema:
             type: string
-          description: New email value.
+          description: New password value.
         - in: query
           name: language
           schema:
