@@ -1033,6 +1033,15 @@ describe("User process", () => {
                 expect(deleteUser.statusCode).toBe(200);
                 expect(deleteUser.message).not.toBeNull();
             });
+            test("[DELETE] user not found : should not delete a user process with a 404 status code", async () => {
+                const response = await request(server).post("/userProcess/delete").send({
+                    user_email: " ",
+                    process_title: "Test"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.response).not.toBeNull();
+            });
             test("[GET USER STEPS] email empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_email: "",
@@ -1075,6 +1084,38 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
+            test("[GET USER STEPS] user not found : should not get a user step with a 404 status code", async () => {
+                const response = await request(server).get("/userProcess/getUserSteps").query({
+                    user_email: " ",
+                    process_title: "Test"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET USER STEPS] process not found : should not get a user step with a 404 status code", async () => {
+                const user = await request(server).post("/user/register").send({
+                    email: "ghjkdhicudhsnklvnsdvnds",
+                    username: "cdcdbvftguuuuuuuhgfdsssssu",
+                    password: password
+                });
+                const response = await request(server).get("/userProcess/getUserSteps").query({
+                    user_email: "ghjkdhicudhsnklvnsdvnds",
+                    process_title: "hahaha"
+                });
+                const deleteUser = await request(server).get("/user/delete").query({
+                    email: "ghjkdhicudhsnklvnsdvnds"
+                });
+
+                expect(user.statusCode).toBe(200);
+                expect(user.message).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.response).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
             test("[GET USER STEP BY ID] user process id empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
                     user_process_id: null
@@ -1089,6 +1130,14 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
+            test("[GET USER STEPS BY ID] user process not found : should not get a user step with a 404 status code", async () => {
+                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                    user_process_id: 4567865,
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.response).not.toBeNull();
+            });
             test("[GET USER PROCESSES] email empty : should not get a user processes with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserProcesses").query({
                     user_email: ""
@@ -1101,6 +1150,14 @@ describe("User process", () => {
                 const response = await request(server).get("/userProcess/getUserProcesses").query({});
 
                 expect(response.statusCode).toBe(400);
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET USER PROCESSES] user not found : should not get a user processes with a 404 status code", async () => {
+                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                    user_email: " "
+                });
+
+                expect(response.statusCode).toBe(404);
                 expect(response.response).not.toBeNull();
             });
         });

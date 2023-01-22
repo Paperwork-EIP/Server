@@ -14,7 +14,7 @@ const router = new Router();
             return response.status(404).json({ message: 'Process not found.' });
         }
         const steps = await Step.getByProcess(process.id);
-        if (!steps) {
+        if (!steps || steps.length === 0) {
             return response.status(404).json({ message: 'Steps not found.' });
         }
         let questions = [];
