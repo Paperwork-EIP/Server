@@ -29,11 +29,11 @@ router.post('/add', async (request, response) => {
         if (!process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const { id } = await Process.get(process_title);
-        if (!id) {
+        const process = await Process.get(process_title);
+        if (!process) {
             return response.status(404).json({ message: 'Steps not found' });
         }
-        const res = await Step.deleteAll(id);
+        const res = await Step.deleteAll(process.id);
         return response.status(200).json({
             message: 'Steps delete!',
             response: res 
