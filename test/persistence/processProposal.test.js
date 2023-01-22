@@ -66,7 +66,6 @@ describe('Process Proposal Persistence Tests', () => {
 
         const create_response = await ProcessProposal.create(title, description, content, user_id);
         const response = await ProcessProposal.get(create_response.id);
-        console.log(response);
         await ProcessProposal.delete(create_response.id);
 
         expect(response).not.toBeNull();
