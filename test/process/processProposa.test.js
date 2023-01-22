@@ -39,10 +39,10 @@ describe("Process proposal tests", () => {
                     password: "ppppppppppppppppppppppppppppppp"
                 });
                 const response = await request(server).post("/processProposal/add").send({
-                    title: "TestTitle",
+                    title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt"
+                    user_email: "ttttttttttttttttttttttttttttttt",
                 });
                 const proposal = JSON.parse(response.text);
                 const del = await request(server).get("/processProposal/delete").query({
@@ -70,7 +70,7 @@ describe("Process proposal tests", () => {
                     password: "ppppppppppppppppppppppppppppppp"
                 });
                 const addProposal = await request(server).post("/processProposal/add").send({
-                    title: "TestTitle",
+                    title: "TestTitlemmmmmmmmmmmmmmmmmmmmm",
                     description: "TestDescription",
                     content: "TestContent",
                     user_email: "lllllllllllllllllllllllll"
@@ -106,7 +106,7 @@ describe("Process proposal tests", () => {
                     password: "ppppppppppppppppppppppppppppppp"
                 });
                 const addProposal = await request(server).post("/processProposal/add").send({
-                    title: "TestTitle",
+                    title: "TestTitlennnnnnnnnnnnnnnnnnnnn",
                     description: "TestDescription",
                     content: "TestContent",
                     user_email: "hhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
