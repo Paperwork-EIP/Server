@@ -1,4 +1,3 @@
-const db = require('../../src/persistence/db');
 const Process = require('../../src/persistence/process');
 
 describe('Process Persistence Tests', () => {
@@ -115,14 +114,14 @@ describe('Process Persistence Tests', () => {
         expect(response).toEqual(expectedResponse);
     });
     it('[GET ALL] should return an array of objects with title and source properties', async () => {
-        const title = 'Random Test That Title Is Unique 349345';
+        const title = 'Random Test That Title Is Unique 38678345';
         const description = 'This is a test process';
         
-        await Process.create(title, description);
+        const created_process = await Process.create(title, description);
     
         const response = await Process.getAll();
         
-        await Process.delete(response.id);
+        await Process.delete(created_process.id);
 
         expect(response).toBeInstanceOf(Array);
         expect(response[0]).toHaveProperty('title');
