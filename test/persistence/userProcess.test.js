@@ -67,15 +67,5 @@ describe("User Process Persistence Tests", () => {
                 expect(getAll).not.toBeNull();
             });
         });
-        describe("[INVALID TESTS]", () => {
-            // test("[CREATE] try catch statement should return an error ", async () => {
-            //     const response = userProcess.create(user_id, process_id, process_title);
-            //     const spy = jest.spyOn(response, 'error').mockImplementation(() => {
-            //         throw new Error();
-            //     })
-
-            //     expect(spy).toHaveBeenCalled();
-            // });
-        });
     });
 });

@@ -1,32 +1,43 @@
 const router = require("../index");
+const bodyParser = require('body-parser');
+const route = require('../src/api/index');
 const { start, stop } = require("../index");
 
 describe("Index tests", () => {
     const port = 3080;
+    const corsOptions = {
+        origin: '*'
+    };
 
     describe("[UNIT TESTS]", () => {
-        describe("[VALID TESTS", () => {
-            test("[index.js] should have a router component", () => {
+        describe("[VALID TESTS]", () => {
+            it('should use body parser middleware', () => {
+                expect(bodyParser.json()).toBeDefined();
+            });
+
+            it('should use route and process middleware', () => {
+                expect(route).toBeDefined();
+            });
+            it("should have a router component", () => {
                 expect(router).not.toBeNull();
             });
-            test("[index.js] should have instanced the router component", () => {
+            it("should have instanced the router component", () => {
                 expect(router).toBeDefined();
             });
-            test("port existing : should start the server", async () => {
+            it("port existing : should start the server", async () => {
                 let server = start(port);
-                stop();
 
                 expect(server).toBeDefined();
             });
         });
         describe("[INVALID TESTS]", () => {
-            test("port missing : should start the server", async () => {
+            it("port missing : should not start the server", async () => {
                 let server = start();
                 stop();
 
                 expect(server).toBeNull();
             });
-            test("port missing : should start the server", async () => {
+            it("port missing : should not start the server", async () => {
                 let server = start(0);
                 stop();
 
