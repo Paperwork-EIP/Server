@@ -194,6 +194,103 @@ paths:
       summary: Delete user.
       tags:
           - user
+  /user/modifyDatas:
+    get:
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Current user email.
+        - in: query
+          name: new_email
+          schema:
+            type: string
+          description: New email value.
+        - in: query
+          name: password
+          schema:
+            type: string
+          description: New password value.
+        - in: query
+          name: language
+          schema:
+            type: string
+          description: New language value.
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: New username value.
+        - in: query
+          name: firstname
+          schema:
+            type: string
+          description: New firstname value.
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: New name value.
+        - in: query
+          name: age
+          schema:
+            type: integer
+          description: New age value.
+        - in: query
+          name: adress
+          schema:
+            type: string
+          description: New adress value.
+        - in: query
+          name: profile_picture
+          schema:
+            type: string
+          description: New profile picture link value.
+        - in: query
+          name: number_phone
+          schema:
+            type: integer
+          description: New phone number value.
+      responses:
+        '200':
+          description: User updated.
+        '400':
+          description: Missing parameter email.
+        '404':
+          description: User not found.
+        '409':
+          description: Email or username already used.
+        '500':
+          description: System error.
+      summary: Modify user data.
+      tags:
+          - user
+  /user/modifySettings:
+    get:
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: User email.
+        - in: query
+          name: night_mode
+          schema:
+            type: boolean
+          description: User preference ( true = night mode, false = light mode).
+      responses:
+        '200':
+          description: User settings updated.
+        '400':
+          description: Missing parameter email.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Update user's settings.
+      tags:
+          - user
   /oauth/google/urlLogin:
     get:
       responses:

@@ -34,7 +34,7 @@ describe("Process tests", () => {
         describe("[VALID PROCESS TESTS]", () => {
             test("[ADD] should create and add a process in the database with a 200 status code", async () => {
                 const response = await request(server).post("/process/add").send({
-                    title: "testProcess",
+                    title: "hyyyydhshdjjdsdisiiiii",
                     description: "This is a test",
                     source: "https://google.com",
                     delay: null
@@ -45,7 +45,7 @@ describe("Process tests", () => {
             });
             test("[DELETE] should delete a process with a 200 status code", async () => {
                 const response = await request(server).get("/process/delete").query({
-                    title: "testProcess"
+                    title: "hyyyydhshdjjdsdisiiiii"
                 });
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
@@ -89,16 +89,16 @@ describe("Process tests", () => {
             });
             test("[ADD] process already created : should not create a process with a 400 status code", async () => {
                 const response = await request(server).post("/process/add").send({
-                    title: "Test",
+                    title: "Testtttthhhhhhyyyyyy",
                     description: "test"
                 });
                 const clone = await request(server).post("/process/add").send({
-                    title: "Test",
+                    title: "Testtttthhhhhhyyyyyy",
                     description: "test"
                 });
 
                 const del = await request(server).get("/process/delete").query({
-                    title: "Test"
+                    title: "Testtttthhhhhhyyyyyy"
                 });
 
                 expect(response.statusCode).toBe(200);
@@ -123,6 +123,13 @@ describe("Process tests", () => {
             test("[DELETE] invalid title : should not delete a process with a 404 status code", async () => {
                 const response = await request(server).get("/process/delete").query({
                     title: "123456"
+                });
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+            test("[DELETE] process not found : should not delete a process with a 404 status code", async () => {
+                const response = await request(server).get("/process/delete").query({
+                    title: " "
                 });
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();

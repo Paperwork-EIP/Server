@@ -60,5 +60,65 @@ module.exports = {
       console.error(error);
       throw error;
     }
+  },
+  async modifyDatas(email, data, value) {
+    try {
+      if (value === undefined) {
+        return;
+      }
+      if (data === "email") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET email=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "language") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET language=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "username") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET username=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "firstname") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET firstname=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "name") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET name=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "age") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET age=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "adress") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET adress=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "number_phone") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET number_phone=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "profile_picture") {
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET profile_picture=${value} where email=${email};`);
+        return rows[0];
+      }
+      if (data === "password") {
+        const hashedPassword = await bcrypt.hash(value, 10);
+        const { rows } = await db.query(sql`
+        UPDATE user_table SET password=${hashedPassword} where email=${email};`);
+        return rows[0];
+      }
+    } catch (error) {
+     throw error;
+    }
   }
 };
