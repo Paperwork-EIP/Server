@@ -1,6 +1,10 @@
+const db = require('../../src/persistence/db');
 const Process = require('../../src/persistence/process');
 
 describe('Process Persistence Tests', () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
     it('[CREATE] should create a process', async () => {
         const title = 'Random Test That Title Is Unique';
         const description = 'This is a test process';
@@ -66,7 +70,7 @@ describe('Process Persistence Tests', () => {
         expect(create_response).not.toBeNull();
         expect(response).not.toBeNull();
     });
-    it('[DELETE] should throw an error if an error occurs', async () => {
+    it('[DELETE] should throw an error if invalid id', async () => {
         const id = 645675471;
 
         try {
@@ -75,6 +79,10 @@ describe('Process Persistence Tests', () => {
             expect(error).not.toBeNull();
             expect(error).toEqual('Error');
         }
+    });
+    it('[DELETE] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        await expect(Process.delete()).rejects.toThrow();
     });
     it('[GET] should return the process with the given title', async () => {
         const title = 'Random Test That Title Is Unique 3454';
