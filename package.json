@@ -6,10 +6,11 @@
   "scripts": {
     "start": "node ./bin/start.js",
     "dev": "nodemon ./bin/start.js",
-    "test": "jest",
+    "test": "jest --silent",
+    "test:no-silent": "jest",
     "test:watch": "jest --watchAll=true",
-    "test:coverage": "jest --coverage=true",
-    "test:all": "jest --watchAll=true --coverage=true",
+    "test:coverage": "jest --silent --coverage=true",
+    "test:all": "jest --silent --watchAll=true --coverage=true",
     "prepare": "npx husky install"
   },
   "author": "",
@@ -48,6 +49,7 @@
     "jest": "^29.1.2",
     "lint-staged": "^9.5.0",
     "nodemon": "^2.0.15",
+    "rewire": "^6.0.0",
     "supertest": "^6.3.1"
   }
 }

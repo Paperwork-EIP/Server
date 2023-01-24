@@ -1,4 +1,5 @@
 const request = require("supertest");
+const rewire = require("rewire");
 const router = require("../../src/process/index");
 const routerUserProcess = require("../../src/process/userProcess");
 const { start, stop } = require("../../index");
@@ -22,17 +23,24 @@ describe("User process", () => {
     });
 
     describe("[UNIT TESTS]", () => {
-        test("[index.js] should have a router component", () => {
+        test("[index.js] should have a router component", async () => {
             expect(router).not.toBeNull();
         });
-        test("[index.js] should have instanced the router component", () => {
+        test("[index.js] should have instanced the router component", async () => {
             expect(router).toBeDefined();
         });
-        test("[process.js] should have a router component", () => {
+        test("[process.js] should have a router component", async () => {
             expect(routerUserProcess).not.toBeNull();
         });
-        test("[process.js] should have instanced the router component", () => {
+        test("[process.js] should have instanced the router component", async () => {
             expect(routerUserProcess).toBeDefined();
+        });
+        test("[GetPercentage()] should be called", async () => {
+            const id = 5435978;
+            const moduleUserProcess = rewire("../../src/process/userProcess");
+            const getPercentage = moduleUserProcess.__get__("getPercentage");
+
+            expect(getPercentage(id)).not.toBeNull();
         });
     });
 
