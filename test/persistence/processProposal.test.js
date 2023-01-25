@@ -1,6 +1,10 @@
 const ProcessProposal = require('../../src/persistence/processProposal');
+const db = require('../../src/persistence/db');
 
 describe('Process Proposal Persistence Tests', () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
     it('[CREATE] should create a process', async () => {
         const title = 'Random Test That Title Is Unique';
         const description = 'This is a test process';
@@ -49,6 +53,10 @@ describe('Process Proposal Persistence Tests', () => {
             expect(error).toEqual('Error');
         }
     });
+    it('[DELETE] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        await expect(ProcessProposal.delete()).rejects.toThrow();
+    });
     it('[GET] should return the process with the given title', async () => {
         const title = 'Random Test That Title Is Unique 3455754';
         const description = 'This is a test process';
@@ -76,5 +84,18 @@ describe('Process Proposal Persistence Tests', () => {
         expect(response.date).toEqual(expectedResponse.date);
         expect(response.user_id).toEqual(expectedResponse.user_id);
         expect(response.is_in_process).toEqual(expectedResponse.is_in_process);
+    });
+    it('[GET] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        await expect(ProcessProposal.get()).rejects.toThrow();
+    });
+    it('[GET ALL] should return all process', async () => {
+        const response = await ProcessProposal.getAll();
+
+        expect(response).toEqual(expect.any(Object));
+    });
+    it('[GET ALL] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockRejectedValueOnce(() => { throw new Error });
+        await expect(ProcessProposal.getAll()).rejects.toThrow();
     });
 });

@@ -10,7 +10,7 @@ module.exports = {
                 RETURNING id, user_id;
             `);
             const [user_settings] = rows;
-            return user_settings;          
+            return user_settings;
         } catch (error) {
             console.error(error);
             throw error;
@@ -20,7 +20,7 @@ module.exports = {
         try {
             const { rows } = await db.query(sql`
             DELETE FROM user_settings where user_id=${user_id};`);
-            return rows[0];         
+            return rows[0];
         }
         catch (error) {
             console.error(error);
@@ -35,16 +35,18 @@ module.exports = {
     },
     async modifySettings(id, data, value) {
         try {
-          if (value === undefined) {
-            return;
-          }
-          if (data === "night_mode") {
-            const { rows } = await db.query(sql`
+            if (value === undefined) {
+                return null;
+            }
+            if (data === "night_mode") {
+                const { rows } = await db.query(sql`
             UPDATE user_settings SET night_mode=${value} where user_id=${id};`);
-            return rows[0];
-          }
+                return rows[0];
+            }
+            return null;
         } catch (error) {
-         throw error;
+            console.error(error);
+            throw error;
         }
     }
 };

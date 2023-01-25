@@ -24,11 +24,11 @@ module.exports = {
             if (process) {
                 const currentDate = new Date();
                 let expire_date = null;
-                const invalidDate = process.delay.split("-");
-                const year = parseInt(invalidDate[0]);
-                const month = parseInt(invalidDate[1]);
-                const day = parseInt(invalidDate[2]);
                 if (process.delay != null) {
+                    const invalidDate = process.delay.split("-");
+                    const year = parseInt(invalidDate[0]);
+                    const month = parseInt(invalidDate[1]);
+                    const day = parseInt(invalidDate[2]);
                     expire_date = currentDate;
                     expire_date.setFullYear(expire_date.getFullYear() + year);
                     expire_date.setMonth(expire_date.getMonth() + month);

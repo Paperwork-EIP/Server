@@ -1,4 +1,5 @@
 const Step = require('../../src/persistence/step');
+const db = require('../../src/persistence/db');
 
 describe("Step Persistence Tests", () => {
     it('[CREATE] should create a step', async () => {
@@ -55,7 +56,7 @@ describe("Step Persistence Tests", () => {
         expect(create_response).not.toBeNull();
         expect(response).not.toBeNull();
     });
-    it('[DELETE ALL] should throw an error if an error occurs', async () => {
+    it('[DELETE ALL] should throw an error if invalid id', async () => {
         const id = 645675471;
 
         try {
@@ -64,6 +65,10 @@ describe("Step Persistence Tests", () => {
             expect(error).not.toBeNull();
             expect(error).toEqual('Error');
         }
+    });
+    it('[DELETE ALL] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockRejectedValueOnce(() => { throw new Error });
+        await expect(Step.deleteAll()).rejects.toThrow();
     });
     it('[GET BY PROCESS] should return the step with the given process id', async () => {
         const process_id = 7;
@@ -75,6 +80,6 @@ describe("Step Persistence Tests", () => {
         const id = 7;
         const response = await Step.getById(id);
 
-        expect(response).toBe(undefined);
+        expect(response).not.toBeDefined();
     });
 });
