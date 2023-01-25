@@ -66,7 +66,7 @@ describe("Step Persistence Tests", () => {
             expect(error).toEqual('Error');
         }
     });
-    it('[DELETE] should throw an error if an error occurs', async () => {
+    it('[DELETE ALL] should throw an error if an error occurs', async () => {
         jest.spyOn(db, 'query').mockRejectedValueOnce(() => { throw new Error });
         await expect(Step.deleteAll()).rejects.toThrow();
     });
@@ -80,6 +80,6 @@ describe("Step Persistence Tests", () => {
         const id = 7;
         const response = await Step.getById(id);
 
-        expect(response).toBe(undefined);
+        expect(response).not.toBeDefined();
     });
 });

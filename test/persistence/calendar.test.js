@@ -16,7 +16,7 @@ describe('Calendar Peristence Tests', () => {
 
         jest.spyOn(db, 'query').mockResolvedValue({ rows: [{ appoinment: appoinment, id: 1 }] });
         await Calendar.set(date, user_process_id, step_id);
-        await Calendar.set(null, user_process_id, step_id)
+        await Calendar.set(null, user_process_id, step_id);
 
         expect(db.query).toHaveBeenCalled();
     });

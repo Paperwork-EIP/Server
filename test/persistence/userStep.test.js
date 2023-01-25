@@ -41,6 +41,54 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
+    it('[CREATE] should return null if no step found', async () => {
+        const user_process_id = 1;
+        const step_id = 1;
+        const is_done = true;
+
+        Step.getById = jest.fn().mockReturnValue(null);
+        const response = await UserStep.create(user_process_id, step_id, is_done);
+
+        expect(response).toBeNull();
+    });
+    it('[CREATE] should return null if no step delay', async () => {
+        const user_process_id = 1;
+        const step_id = 1;
+        const is_done = true;
+        const result = {
+            id: 1,
+            user_process_id: user_process_id,
+            step_id: step_id,
+            is_done: is_done,
+        };
+        const expectedResponse = {
+            id: 1,
+            user_process_id: 1,
+            step_id: 1,
+            is_done: true,
+        }
+
+        Step.getById = jest.fn().mockReturnValue({
+            title: 'Random Test',
+            type: 'Test type',
+            description: 'this is a test process',
+            question: 'question',
+            source: 'source',
+            is_unique: true,
+            delay: null,
+            process_id: 5
+        });
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
+        const response = await UserStep.create(user_process_id, step_id, is_done);
+
+        expect(response).toEqual(expect.any(Object));
+        expect(response).toEqual(expectedResponse);
+        expect(db.query).toHaveBeenCalled();
+    });
+    it('[CREATE] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        await expect(UserStep.create()).rejects.toThrow();
+    });
     it('[UPDATE] should update the user step id', async () => {
         const user_process_id = 1;
         const step_id = 2;
@@ -143,21 +191,26 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
+    it('[UPDATE] should throw an error if an error occurs', async () => {
+        jest.spyOn(db, 'query').mockReturnValue(() => { throw new Error });
+        await expect(UserStep.update()).rejects.toThrow();
+    });
     it('[DELETE ALL] should delete all user steps for a given user process id', async () => {
-        const user_process_id = 1;
+        const userProcessId = 1;
         const expectedResponse = {
             id: 1,
             user_process_id: 1,
             step_id: 1,
-            is_done: false,
-        }
-        const response = await UserStep.deleteAll(user_process_id);
+            is_done: true,
+        };
 
-        if (response) {
-            expect(response).toEqual(expectedResponse);
-        } else {
-            expect(response).not.toBeDefined();
-        }
+        db.query = jest.fn().mockReturnValue({ rows: [expectedResponse] });
+
+        const response = await UserStep.deleteAll(userProcessId);
+
+        expect(db.query).toHaveBeenCalled();
+        expect(response).toBeTruthy();
+        expect(response).toEqual(expectedResponse);
     });
     it('[DELETE ALL] should throw an error if something goes wrong', async () => {
         const user_process_id = 1;
@@ -180,7 +233,7 @@ describe("User Step Persistence Tests", () => {
             step_id: 1,
             is_done: true,
         };
-        
+
         db.query = jest.fn().mockResolvedValue({ rows: [expectedResponse] });
 
         const response = await UserStep.getById(userStepId);
@@ -188,23 +241,23 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
         expect(response).toEqual(expectedResponse);
     });
-    // it('[GET BY STEP ID] should return the user step with the given step id', async () => {
-    //     const stepId = 1;
-    //     const userProcessId = 1;
-    //     const expectedResponse = {
-    //         id: 1,
-    //         user_process_id: 1,
-    //         step_id: 1,
-    //         is_done: true,
-    //     };
-        
-    //     db.query = jest.fn().mockResolvedValue({ rows: expectedResponse });
+    it('[GET BY STEP ID] should return the user step with the given user process and step id', async () => {
+        const userStepId = 1;
+        const stepId = 1;
+        const expectedResponse = {
+            id: 1,
+            user_process_id: 1,
+            step_id: 1,
+            is_done: true,
+        };
 
-    //     const response = await UserStep.getByStepId(userProcessId, stepId);
+        db.query = jest.fn().mockResolvedValue({ rows: [expectedResponse] });
 
-    //     expect(db.query).toHaveBeenCalled();
-    //     expect(response).toEqual(expectedResponse);
-    // });
+        const response = await UserStep.getByStepId(userStepId, stepId);
+
+        expect(db.query).toHaveBeenCalled();
+        expect(response).toEqual(expectedResponse);
+    });
     it('[GET ALL] should return the user step with the given user process id', async () => {
         const userProcessId = 1;
         const expectedResponse = {
@@ -213,7 +266,7 @@ describe("User Step Persistence Tests", () => {
             step_id: 1,
             is_done: true,
         };
-        
+
         db.query = jest.fn().mockResolvedValue({ rows: expectedResponse });
 
         const response = await UserStep.getAll(userProcessId);
@@ -229,7 +282,7 @@ describe("User Step Persistence Tests", () => {
             step_id: 1,
             is_done: true,
         };
-        
+
         db.query = jest.fn().mockResolvedValue({ rows: expectedResponse });
 
         const response = await UserStep.getAllAppoinment(userProcessId);
@@ -245,7 +298,7 @@ describe("User Step Persistence Tests", () => {
             step_id: 1,
             is_done: true,
         };
-        
+
         db.query = jest.fn().mockResolvedValue({ rows: expectedResponse });
 
         const response = await UserStep.getNotDone(userProcessId);
