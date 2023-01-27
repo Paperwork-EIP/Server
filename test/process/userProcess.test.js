@@ -3,16 +3,22 @@ const rewire = require("rewire");
 const router = require("../../src/process/index");
 const routerUserProcess = require("../../src/process/userProcess");
 const { start, stop } = require("../../index");
+const Users = require("../../src/persistence/users");
+const Step = require("../../src/persistence/step");
+const Process = require("../../src/persistence/process");
+const UserProcess = require("../../src/persistence/userProcess");
+const UserStep = require("../../src/persistence/userStep");
 
 describe("User process", () => {
     const port = 3006;
     let server;
-    
+
     const user_email = "blablazbla@bla.com";
-    const password = "blablabla";
-    const username = "blablkabla";
-    const date = "2011-11-11 20:20:20";
     const process_title = "Kebab";
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     beforeAll(() => {
         server = start(port);
@@ -47,260 +53,60 @@ describe("User process", () => {
     describe("[INTEGRATION TESTS", () => {
         describe("[VALID USER PROCESS TESTS]", () => {
             test("[ADD] should add a user process with a 200 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: user_email,
-                    username: username,
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: user_email,
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: process_title,
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: process_title
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+
                 const response = await request(server).post("/userProcess/add").send({
                     process_title: process_title,
                     user_email: user_email,
                     questions: [
                         [
-                            step_id,
+                            1,
                             true
                         ],
                     ]
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: process_title
-                });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: user_email,
-                    process_title: process_title
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: process_title
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: user_email
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[UPDATE] should update user process with receive data with a 200 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: user_email,
-                    username: username,
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: user_email,
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: process_title,
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: process_title
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: process_title,
-                    user_email: user_email,
-                    questions: [
-                        [
-                            step_id,
-                            false
-                        ]
-                    ]
-                });
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
+
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: user_email,
                     process_title: process_title,
-                    step_id: step_id,
+                    step_id: 1,
                     is_done: true
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: process_title
-                });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: user_email,
-                    process_title: process_title
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: process_title
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: user_email
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
-
-                expect(createUserProcess.statusCode).toBe(200);
-                expect(createUserProcess.message).not.toBeNull();
-                expect(createUserProcess.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[DELETE] should delete user process with a 200 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: user_email,
-                    username: username,
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: user_email,
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: process_title,
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: process_title
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: process_title,
-                    user_email: user_email,
-                    questions: [
-                        [
-                            step_id,
-                            true
-                        ]
-                    ]
-                });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: process_title
-                });
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
                 const response = await request(server).get("/userProcess/delete").query({
                     user_email: user_email,
                     process_title: process_title
                 });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: process_title
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: user_email
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createUserProcess.statusCode).toBe(200);
-                expect(createUserProcess.message).not.toBeNull();
-                expect(createUserProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
         });
         describe("[INVALID USER PROCESS TESTS]", () => {
@@ -362,160 +168,71 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] user not found : should not add a user process with a 404 status code", async () => {
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
+                Users.find = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/add").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "l",
                     questions: [
                         [
-                            step_id,
+                            1,
                             true
                         ],
                     ]
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
             });
             test("[ADD] process not found : should not add a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "swedfgtyhujikujyhnbgfvdce",
-                    username: "vdbvfdbvfdbd        dsssssssssss",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "swedfgtyhujikujyhnbgfvdce",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
+                Users.find = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/add").send({
                     process_title: "t",
                     user_email: "swedfgtyhujikujyhnbgfvdce",
                     questions: [
                         [
-                            step_id,
+                            1,
                             true
                         ],
                     ]
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "swedfgtyhujikujyhnbgfvdce"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('Process not found.');
                 expect(response.response).not.toBeNull();
+            });
+            test("[ADD] user process not found : should not add a user process with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue(null);
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
 
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: "t",
+                    user_email: "swedfgtyhujikujyhnbgfvdce",
+                    questions: [
+                        [
+                            1,
+                            true
+                        ],
+                    ]
+                });
 
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual('User process created!');
+                expect(response.response).not.toBeNull();
             });
             test("[ADD] step not found : should not add a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "cefevced   fefefe",
-                    username: "thtyhjyuhynbtbthyhy",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "cefevced   fefefe",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
+                Users.find = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserProcess.get = jest.fn().mockReturnValue({ something: 'not null' });
+                Step.getById = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/add").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "cefevced   fefefe",
@@ -526,42 +243,10 @@ describe("User process", () => {
                         ],
                     ]
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "cefevced   fefefe"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
@@ -627,345 +312,66 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] user not found : should not update a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "dsadasd",
-                    username: "vfgfdgdf",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "dsadasd",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const userProcess = await request(server).post("/userProcess/add").send({
-                    user_email: "dsadasd",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    questions: [
-                        [
-                            step_id,
-                            false
-                        ]
-                    ]
-                });
+                Users.find = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "h",
                     is_done: true,
-                    step_id: step_id
+                    step_id: 1
                 });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "dsadasd",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "dsadasd"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
-
-                expect(userProcess.statusCode).toBe(200);
-                expect(userProcess.message).not.toBeNull();
-                expect(userProcess.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User not found.');
                 expect(response.response).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[UPDATE] process not found : should not update a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "qqqqqqqq",
-                    username: "gd",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "qqqqqqqq",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const userProcess = await request(server).post("/userProcess/add").send({
-                    user_email: "qqqqqqqq",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    questions: [
-                        [
-                            step_id,
-                            false
-                        ]
-                    ]
-                });
+                Users.find = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "t",
                     user_email: "qqqqqqqq",
                     is_done: true,
-                    step_id: step_id
+                    step_id: 1
                 });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "qqqqqqqq",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "qqqqqqqq"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
-
-                expect(userProcess.statusCode).toBe(200);
-                expect(userProcess.message).not.toBeNull();
-                expect(userProcess.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('Process not found.');
                 expect(response.response).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[UPDATE] userProcess not found : should not update a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "wwwwwwww",
-                    username: "sd",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "wwwwwwww",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
+                Users.find = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                UserProcess.get = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "wwwwwwww",
                     is_done: true,
-                    step_id: step_id
+                    step_id: 1
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "wwwwwwww"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User process not found.');
                 expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[UPDATE] step not found : should not update a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "emaimvaafg",
-                    username: "siuuuuuuuuuuuuuuuuuuuuuuuuu",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "emaimvaafg",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const userProcess = await request(server).post("/userProcess/add").send({
-                    user_email: "emaimvaafg",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    questions: [
-                        [
-                            step_id,
-                            false
-                        ]
-                    ]
-                });
+                Users.find = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                UserProcess.get = jest.fn().mockReturnValue({ something: 'not null' });
+                Step.getById = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).post("/userProcess/update").send({
-                    process_title: "t",
+                    process_title: 1,
                     user_email: "emaimvaafg",
                     is_done: true,
                     step_id: 8734
                 });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "emaimvaafg",
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "emaimvaafg"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
-
-                expect(userProcess.statusCode).toBe(200);
-                expect(userProcess.message).not.toBeNull();
-                expect(userProcess.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('Step not found.');
                 expect(response.response).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[DELETE] user email empty : should not delete a user process with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/delete").query({
@@ -985,13 +391,15 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] user email not found : should not delete a user process with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue(null);
+
                 const response = await request(server).get("/userProcess/delete").query({
                     user_email: "asdasda",
                     process_title: "Test"
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response.response).not.toBeNull();
+                expect(response._body.message).toEqual('User not found.');
             });
             test("[DELETE] process title empty : should not delete a user process with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/delete").query({
@@ -1011,35 +419,15 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] process not found : should not delete a user process with a 404 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "uuuuuudnelfeklfmlemfklmel",
-                    username: "uuuuuuuuvmrinfeikdmcoefe  cdcdbvftguuuuuuu",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "uuuuuudnelfeklfmlemfklmel",
-                    password: password
-                });
+                Users.find = jest.fn().mockReturnValue(null);
                 const response = await request(server).post("/userProcess/delete").send({
                     user_email: "uuuuuudnelfeklfmlemfklmel",
                     process_title: "t",
                 });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "uuuuuudnelfeklfmlemfklmel"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[DELETE] user not found : should not delete a user process with a 404 status code", async () => {
                 const response = await request(server).post("/userProcess/delete").send({
@@ -1102,27 +490,14 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER STEPS] process not found : should not get a user step with a 404 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "ghjkdhicudhsnklvnsdvnds",
-                    username: "cdcdbvftguuuuuuuhgfdsssssu",
-                    password: password
-                });
+                Users.find = jest.fn().mockReturnValue(null);
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_email: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "ghjkdhicudhsnklvnsdvnds"
-                });
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
 
                 expect(response.statusCode).toBe(404);
                 expect(response.response).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
             test("[GET USER STEP BY ID] user process id empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
