@@ -1,5 +1,6 @@
 const db = require('../../src/persistence/db');
 const sql = require('sql-template-strings');
+const bcrypt = require('bcryptjs');
 const User = require('../../src/persistence/users');
 
 afterEach(() => {
@@ -23,10 +24,6 @@ describe("User Persistence Tests", () => {
         jest.spyOn(db, 'query').mockReturnValue(() => { throw new Error });
         await expect(User.create()).rejects.toThrow();
     });
-    // it('[CREATE] should return null if an error occurs with users_email_key', async () => {
-    //     jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error({ constraint: 'users_email_key' })});
-    //     await expect(User.create()).toBeNull();
-    // });
     it('[FIND] should find a user by email', async () => {
         const username = 'testUser2';
         const email = 'test2@example.com';
@@ -117,7 +114,7 @@ describe("User Persistence Tests", () => {
         const value = 'newemail@cool.conm';
         const data = 'email';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ email: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ email: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ email: value });
@@ -127,7 +124,7 @@ describe("User Persistence Tests", () => {
         const value = 'english';
         const data = 'language';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ language: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ language: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ language: value });
@@ -137,7 +134,7 @@ describe("User Persistence Tests", () => {
         const value = 'testUsername';
         const data = 'username';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ username: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ username: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ username: value });
@@ -147,7 +144,7 @@ describe("User Persistence Tests", () => {
         const value = 'John';
         const data = 'firstname';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ firstname: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ firstname: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ firstname: value });
@@ -157,7 +154,7 @@ describe("User Persistence Tests", () => {
         const value = 'Doe';
         const data = 'name';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ name: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ name: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ name: value });
@@ -167,7 +164,7 @@ describe("User Persistence Tests", () => {
         const value = 13;
         const data = 'age';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ age: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ age: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ age: value });
@@ -177,7 +174,7 @@ describe("User Persistence Tests", () => {
         const value = 'adress';
         const data = 'adress';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ adress: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ adress: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ adress: value });
@@ -187,7 +184,7 @@ describe("User Persistence Tests", () => {
         const value = '00 00 00 00 00';
         const data = 'number_phone';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ number_phone: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ number_phone: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ number_phone: value });
@@ -197,7 +194,7 @@ describe("User Persistence Tests", () => {
         const value = 'url';
         const data = 'profile_picture';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ profile_picture: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ profile_picture: value }] });
         const result = await User.modifyDatas(email, data, value);
 
         expect(result).toEqual({ profile_picture: value });
@@ -207,9 +204,12 @@ describe("User Persistence Tests", () => {
         const value = 'fsfghseruogsregfhsbreuf';
         const data = 'password';
 
-        db.query = jest.fn().mockReturnValue({ rows: [{ password: value }]});
+        db.query = jest.fn().mockReturnValue({ rows: [{ password: value }] });
+
+        const spy = jest.spyOn(bcrypt, 'hash');
         const result = await User.modifyDatas(email, data, value);
 
+        expect(spy).toHaveBeenCalled();
         expect(result).toEqual({ password: value });
     });
     it('[MODIFY DATA] should throw an error if an error occurs', async () => {
