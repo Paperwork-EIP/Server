@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "pg": "^8.7.1",
+    "sinon": "^15.0.1",
     "sql-template-strings": "^2.2.2",
     "swagger-ui": "^4.15.5"
   },

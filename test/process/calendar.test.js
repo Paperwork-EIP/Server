@@ -1,22 +1,23 @@
 const request = require("supertest");
+const sinon = require("sinon");
 const router = require("../../src/process/index");
 const routerCalendar = require("../../src/process/calendar");
 const UserProcess = require("../../src/persistence/userProcess");
+const Process = require("../../src/persistence/process");
 const Step = require("../../src/persistence/step");
+const Users = require("../../src/persistence/users");
+const UserStep = require("../../src/persistence/userStep");
 const { start, stop } = require("../../index");
 
 describe("Calendar tests", () => {
     const port = 3009;
     let server;
 
-    const user_email = "blabglabla@bla.com";
-    const password = "blablabla";
-    const username = "blabhlabla";
     const date = "2011-11-11 20:20:20";
-    const process_title = "Processsssssssssss";
 
     afterEach(() => {
         jest.restoreAllMocks();
+        sinon.restore();
     });
 
     beforeAll(async () => {
@@ -44,186 +45,32 @@ describe("Calendar tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID CALENDAR TESTS]", () => {
             test("[SET] should add a meeting in calendar table with a 200 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: user_email,
-                    username: username,
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: user_email,
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: process_title,
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: process_title
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: process_title,
-                    user_email: user_email,
-                    questions: [
-                        [
-                            step_id,
-                            true
-                        ]
-                    ]
-                });
-                const createdUserProcessParsed = JSON.parse(createUserProcess.text);
-                const user_process_id = createdUserProcessParsed.response;
+                UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ id: 1 });
+
                 const response = await request(server).post("/calendar/set").send({
                     date: date,
-                    user_process_id: user_process_id,
-                    step_id: step_id
+                    user_process_id: 1,
+                    step_id: 1
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: process_title
-                });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: user_email,
-                    process_title: process_title
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: process_title
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: user_email
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createUserProcess.statusCode).toBe(200);
-                expect(createUserProcess.message).not.toBeNull();
-                expect(createUserProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-                expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
+                expect(response._body.message).toEqual("Meeting updated!");
+                expect(response._body.response).not.toBeNull();
             });
             test("[GET ALL] should get all meeting from calendar table with a 200 status code", async () => {
-                const register = await request(server).post("/user/register").send({
-                    email: "hbjhbj",
-                    username: "bhanc",
-                    password: password
-                });
-                const login = await request(server).post("/user/login").send({
-                    email: "hbjhbj",
-                    password: password
-                });
-                const createProcess = await request(server).post("/process/add").send({
-                    title: "bchdbchd",
-                    description: "dhsdjsvvj",
-                    source: "https://google.com",
-                    delay: date
-                });
-                const createStep = await request(server).post("/step/add").send({
-                    title: "VLS-TkS",
-                    type: "stepType",
-                    description: "You must go to your appointement with your identity card and your residence permit (adress : 3 Pl. Adolphe Chérioux, 75015 Paris)",
-                    question: "Do you have the french nationality or a resident permit ? 2",
-                    source: "stepSource",
-                    is_unique: false,
-                    delay: date,
-                    process_title: "bchdbchd"
-                });
-                const createStepResultParsed = JSON.parse(createStep.text);
-                const step_id = createStepResultParsed.response.id;
-                const createUserProcess = await request(server).post("/userProcess/add").send({
-                    process_title: "bchdbchd",
-                    user_email: "hbjhbj",
-                    questions: [
-                        [
-                            step_id,
-                            true
-                        ],
-                    ]
-                });
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+
                 const response = await request(server).get("/calendar/getAll").query({
                     email: "hbjhbj"
                 });
-                const deleteStep = await request(server).get("/step/deleteall").query({
-                    process_title: "bchdbchd"
-                });
-                const deleteUserProcess = await request(server).get("/userProcess/delete").query({
-                    user_email: "hbjhbj",
-                    process_title: "bchdbchd"
-                });
-                const deleteProcess = await request(server).get("/process/delete").query({
-                    title: "bchdbchd"
-                });
-                const deleteUser = await request(server).get("/user/delete").query({
-                    email: "hbjhbj"
-                });
-
-                expect(register.statusCode).toBe(200);
-                expect(register.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(createProcess.statusCode).toBe(200);
-                expect(createProcess.message).not.toBeNull();
-                expect(createProcess.response).not.toBeNull();
-
-                expect(createUserProcess.statusCode).toBe(200);
-                expect(createUserProcess.message).not.toBeNull();
-                expect(createUserProcess.response).not.toBeNull();
-
-                expect(createStep.statusCode).toBe(200);
-                expect(createStep.message).not.toBeNull();
-                expect(createStep.response).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-                expect(response.response).not.toBeNull();
-
-                expect(deleteStep.statusCode).toBe(200);
-                expect(deleteStep.message).not.toBeNull();
-
-                expect(deleteUserProcess.statusCode).toBe(200);
-                expect(deleteUserProcess.message).not.toBeNull();
-
-                expect(deleteProcess.statusCode).toBe(200);
-                expect(deleteProcess.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
+                expect(response._body.message).toEqual("User appoinments.");
+                expect(response._body.appoinment).not.toBeNull();
             });
         });
         describe("[INVALID CALENDAR TESTS]", () => {
@@ -483,6 +330,16 @@ describe("Calendar tests", () => {
                 expect(response._body.message).toEqual('Step not found.');
                 expect(response.response).not.toBeNull();
             });
+            test("[SET] should return 500 status code if an error occurs", async () => {
+                sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
+                const response = await request(server).post("/calendar/set").send({
+                    date: date,
+                    user_process_id: 12,
+                    step_id: 5345435
+                });
+
+                expect(response.statusCode).toBe(500);
+            });
             test("[GET ALL] email missing : should not get all meeting from calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/getAll").query({});
                 expect(response.statusCode).toBe(400);
@@ -495,12 +352,77 @@ describe("Calendar tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("[GET ALL] email not existing : should not get all meeting from calendar table with a 400 status code", async () => {
+            test("[GET ALL] user not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue(null);
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "notexistingemail@google.com"
+                    email: "123"
                 });
+
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] process not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getAll").query({
+                    email: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Process not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] user step not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getAll").query({
+                    email: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] process not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getAll").query({
+                    email: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] step not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+                Step.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getAll").query({
+                    email: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] should return 500 status code if an error occurs", async () => {
+                sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                const response = await request(server).get("/calendar/getAll").query({
+                    email: "123"
+                });
+
+                expect(response.statusCode).toBe(500);
             });
             test("[DELETE] user process id missing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/delete").query({
@@ -551,6 +473,27 @@ describe("Calendar tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
+            });
+            test("[DELETE] user process not found : should a 404 status code", async () => {
+                UserProcess.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/delete").query({
+                    user_process_id: 1,
+                    step_id: 5495
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('User process not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[DELETE] should return 500 status code if an error occurs", async () => {
+                sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
+                const response = await request(server).get("/calendar/delete").query({
+                    user_process_id: 1,
+                    step_id: 5495
+                });
+
+                expect(response.statusCode).toBe(500);
             });
         });
     });

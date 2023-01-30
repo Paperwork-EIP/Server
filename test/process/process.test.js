@@ -1,9 +1,9 @@
 const request = require("supertest");
+const sinon = require("sinon");
 const router = require("../../src/process/index");
 const routerProcess = require("../../src/process/process");
 const Process = require("../../src/persistence/process");
 const { start, stop } = require("../../index");
-const db = require('../../src/persistence/db');
 const Step = require("../../src/persistence/step");
 
 describe("Process tests", () => {
@@ -12,6 +12,7 @@ describe("Process tests", () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
+        sinon.restore();
     });
 
     beforeAll(async () => {
@@ -106,18 +107,19 @@ describe("Process tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            // test('[ADD] should throw an error if an error occurs', async () => {
-            //     Process.create = jest.fn().mockRejectedValueOnce(() => { throw new Error });
-            //     let response = await request(server).post("/process/add").send({
-            //         title: 'qwe',
-            //         description: "This is a test",
-            //         source: null,
-            //         delay: null
-            //     });
-            //     expect(response.statusCode).toBe(500);
-            //     expect(JSON.parse(response.text).message).toEqual('System error.');
+            test('[ADD] should throw an error if an error occurs', async () => {
+                sinon.stub(Process, 'get').throws(new Error('db query failed'));
 
-            // });
+                const response = await request(server).post("/process/add").send({
+                    title: 'qwe',
+                    description: "This is a test",
+                    source: null,
+                    delay: null
+                });
+                expect(response.statusCode).toBe(500);
+                expect(JSON.parse(response.text).message).toEqual('System error.');
+
+            });
             test("[DELETE] title missing : should not delete a process with a 400 status code", async () => {
                 const response = await request(server).get("/process/delete").query({});
                 expect(response.statusCode).toBe(400);
@@ -147,19 +149,16 @@ describe("Process tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(JSON.parse(response.text).message).toEqual('Steps not found.');
             });
-            // test('DELETE] should throw an error if an error occurs', async () => {
-            //     db.query = jest.fn().mockReturnValue(() => { throw new Error });
-            //     let response;
+            test('DELETE] should throw an error if an error occurs', async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
 
-            //     try {
-            //         response = await request(server).post("/process/delete").query({
-            //             title: 'qwe'
-            //         });
-            //     } catch (error) {
-            //         expect(response.statusCode).toBe(500);
-            //         expect(JSON.parse(response.text).message).toEqual('System error.');
-            //     }
-            // });
+                const response = await request(server).get("/process/delete").query({
+                    title: 'qwe'
+                });
+
+                expect(response.statusCode).toBe(500);
+            });
             test("[GET ALL] wrong type of request : should be a GET request", async () => {
                 const response_post = await request(server).post("/process/getAll").query({});
                 const response_put = await request(server).put("/process/getAll").query({});
@@ -172,18 +171,6 @@ describe("Process tests", () => {
                 expect(response_delete.statusCode).toBe(404);
                 expect(response_delete.message).not.toBeNull();
             });
-            // test('[GET ALL] should throw an error if an error occurs', async () => {
-            //     db.query = jest.fn().mockReturnValue(() => { throw new Error });
-            //     Process.getAll = jest.fn().mockReturnValue(null);
-            //     let response;
-
-            //     try {
-            //         response = await request(server).post("/process/getAll").send({});
-            //     } catch (error) {
-            //         expect(response.statusCode).toBe(500);
-            //         expect(JSON.parse(response.text).message).toEqual('System error.');
-            //     }
-            // });
         });
     });
 });
