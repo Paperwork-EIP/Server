@@ -1,11 +1,19 @@
 const request = require("supertest");
+const sinon = require("sinon");
 const router = require("../../src/process/index");
 const routerProcess = require("../../src/process/process");
+const Process = require("../../src/persistence/process");
 const { start, stop } = require("../../index");
+const Step = require("../../src/persistence/step");
 
 describe("Process tests", () => {
     const port = 3003;
     let server;
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+        sinon.restore();
+    });
 
     beforeAll(async () => {
         server = start(port);
@@ -88,51 +96,68 @@ describe("Process tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("[ADD] process already created : should not create a process with a 400 status code", async () => {
+                Process.get = jest.fn().mockResolvedValue({ something: 'something' });
+                Process.create = jest.fn().mockResolvedValue({ something: 'something' });
+
                 const response = await request(server).post("/process/add").send({
                     title: "Testtttthhhhhhyyyyyy",
                     description: "test"
                 });
-                const clone = await request(server).post("/process/add").send({
-                    title: "Testtttthhhhhhyyyyyy",
-                    description: "test"
-                });
 
-                const del = await request(server).get("/process/delete").query({
-                    title: "Testtttthhhhhhyyyyyy"
-                });
-
-                expect(response.statusCode).toBe(200);
+                expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
-                expect(clone.statusCode).toBe(400);
-                expect(clone.message).not.toBeNull();
-                expect(del.statusCode).toBe(200);
-                expect(del.message).not.toBeNull();
+            });
+            test('[ADD] should throw an error if an error occurs', async () => {
+                sinon.stub(Process, 'get').throws(new Error('db query failed'));
+
+                const response = await request(server).post("/process/add").send({
+                    title: 'qwe',
+                    description: "This is a test",
+                    source: null,
+                    delay: null
+                });
+                expect(response.statusCode).toBe(500);
+                expect(JSON.parse(response.text).message).toEqual('System error.');
+
             });
             test("[DELETE] title missing : should not delete a process with a 400 status code", async () => {
                 const response = await request(server).get("/process/delete").query({});
                 expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
+                expect(JSON.parse(response.text).message).toEqual('Missing parameters.');
             });
             test("[DELETE] title empty : should not delete a process with a 400 status code", async () => {
                 const response = await request(server).get("/process/delete").query({
                     title: ""
                 });
                 expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[DELETE] invalid title : should not delete a process with a 404 status code", async () => {
-                const response = await request(server).get("/process/delete").query({
-                    title: "123456"
-                });
-                expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(JSON.parse(response.text).message).toEqual('Missing parameters.');
             });
             test("[DELETE] process not found : should not delete a process with a 404 status code", async () => {
+                Process.get = jest.fn().mockReturnValue(null);
                 const response = await request(server).get("/process/delete").query({
                     title: " "
                 });
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(JSON.parse(response.text).message).toEqual('Process not found.');
+            });
+            test("[DELETE] step not found : should not delete a process with a 404 status code", async () => {
+                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                Step.deleteAll = jest.fn().mockReturnValue(null);
+                const response = await request(server).get("/process/delete").query({
+                    title: " "
+                });
+                expect(response.statusCode).toBe(404);
+                expect(JSON.parse(response.text).message).toEqual('Steps not found.');
+            });
+            test('DELETE] should throw an error if an error occurs', async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
+
+                const response = await request(server).get("/process/delete").query({
+                    title: 'qwe'
+                });
+
+                expect(response.statusCode).toBe(500);
             });
             test("[GET ALL] wrong type of request : should be a GET request", async () => {
                 const response_post = await request(server).post("/process/getAll").query({});

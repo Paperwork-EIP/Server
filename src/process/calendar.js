@@ -43,14 +43,17 @@ async function getMeeting(processes) {
     let res = [];
     for (let i in processes) {
         let process = await Process.getById(processes[i].process_id);
+        if (!process) {
+            return 'Process not found.';
+        }
         let userStep = await UserStep.getAllAppoinment(processes[i].id);
-        if (!userStep || !process) {
-            return response.status(404).json({ message: 'Process or user step not found.' });
+        if (!userStep) {
+            return 'User step not found.';
         }
         for (let j in userStep) {
             let step = await Step.getById(userStep[j].step_id);
             if (!step) {
-                return response.status(404).json({ message: 'Step not found.' });
+                return 'Step not found.';
             } else {
                 res.push({
                     "date": userStep[j].appoinment,
@@ -81,6 +84,9 @@ router.get("/getAll", async (request, response) => {
             return response.status(404).json({ message: 'Process not found.' });
         }
         let res = await getMeeting(processes);
+        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.') {
+            return response.status(404).json({ message: 'Process, step or user step not found.' });
+        }
         return response.status(200).json({ message: "User appoinments.", appoinment: res });
     } catch (error) {
         console.log(error);

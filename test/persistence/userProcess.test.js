@@ -1,4 +1,5 @@
 const rewire = require("rewire");
+const sql = require('sql-template-strings');
 const db = require('../../src/persistence/db');
 const Process = require("../../src/persistence/process");
 const userProcess = require("../../src/persistence/userProcess");
@@ -36,11 +37,32 @@ describe("User Process Persistence Tests", () => {
         await expect(userProcess.create()).rejects.toThrow();
     });
     it("[UPDATE] should be called", async () => {
+        Process.getById = jest.fn().mockReturnValue({ delay: "2022-10-10 10:10:10" });
+
         const spy = jest.spyOn(userProcess, "update");
         const update = await userProcess.update(user_process_id, process_id);
 
         expect(spy).toHaveBeenCalled();
-        expect(update).toBeNull();
+        expect(update).not.toBeNull();
+    });
+    it("[UPDATE] should define process delay", async () => {
+        Process.getById = jest.fn().mockReturnValue({ delay: "2022-10-10 10:10:10" });
+        jest.spyOn(db, 'query').mockReturnValue({
+            rows: [{ id: 1, user_id: user_id, process_id: process_id }]
+        });
+
+        const currentDate = new Date();
+
+        const expire_date = new Date();
+        expire_date.setFullYear(expire_date.getFullYear() + 1);
+        expire_date.setMonth(expire_date.getMonth() + 2);
+        expire_date.setDate(expire_date.getDate() + 3);
+        const response = await userProcess.update(user_id, process_id, process_title);
+
+        expect(Process.getById).toBeCalledWith(process_id);
+        expect(currentDate).toBeDefined();
+        expect(expire_date).toBeDefined();
+        expect(response).toEqual({ id: 1, user_id: user_id, process_id: process_id }); 
     });
     it('[UPDATE] should return null if no process found', async () => {
         jest.spyOn(Process, 'getById').mockResolvedValueOnce(null);
