@@ -1,5 +1,10 @@
 const Step = require('../../src/persistence/step');
 const db = require('../../src/persistence/db');
+const init_db = require('../../src/persistence/init-db');
+
+beforeAll(() => {
+    init_db.initAll();
+});
 
 describe("Step Persistence Tests", () => {
     it('[CREATE] should create a step', async () => {

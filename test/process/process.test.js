@@ -41,6 +41,9 @@ describe("Process tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID PROCESS TESTS]", () => {
             test("[ADD] should create and add a process in the database with a 200 status code", async () => {
+                Process.get = jest.fn().mockReturnValue(null);
+                Process.create = jest.fn().mockReturnValue({ something: 'not null' });
+
                 const response = await request(server).post("/process/add").send({
                     title: "hyyyydhshdjjdsdisiiiii",
                     description: "This is a test",
@@ -52,14 +55,22 @@ describe("Process tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] should delete a process with a 200 status code", async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.deleteAll = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.delete = jest.fn().mockReturnValue({ something: 'not null' });
+
                 const response = await request(server).get("/process/delete").query({
                     title: "hyyyydhshdjjdsdisiiiii"
                 });
+
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('Process and steps deleted!');
             });
             test("[GET ALL] should get all process with a 200 status code", async () => {
+                Process.getAll = jest.fn().mockReturnValue({ id: 1 });
+            
                 const response = await request(server).get("/process/getAll").send({});
+                
                 expect(response.statusCode).toBe(200);
                 expect(response.response).not.toBeNull();
             });
@@ -109,7 +120,7 @@ describe("Process tests", () => {
             });
             test('[ADD] should throw an error if an error occurs', async () => {
                 let response;
-            
+
                 try {
                     sinon.stub(Process, 'get').throws(new Error('db query failed'));
 
@@ -156,7 +167,7 @@ describe("Process tests", () => {
             });
             test('DELETE] should throw an error if an error occurs', async () => {
                 let response;
-            
+
                 try {
                     Process.get = jest.fn().mockReturnValue({ id: 1 });
                     sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));

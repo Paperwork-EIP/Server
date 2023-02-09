@@ -1,7 +1,11 @@
 const db = require('../../src/persistence/db');
 const Calendar = require('../../src/persistence/calendar');
+const init_db = require('../../src/persistence/init-db');
 
 describe('Calendar Peristence Tests', () => {
+    beforeAll(() => {
+        init_db.initAll();
+    });
     afterEach(() => {
         jest.restoreAllMocks();
     });

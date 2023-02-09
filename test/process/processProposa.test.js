@@ -56,12 +56,12 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] should get all the process proposal with a 200 status code", async () => {
-                ProcessProposal.create = jest.fn().mockReturnValue({ something: 'not null' });
+                ProcessProposal.getAll = jest.fn().mockReturnValue({ something: 'not null' });
 
-                const response = await request(server).get("/processProposal/getAll").query({});
+                const response = await request(server).get("/processProposal/getAll").send({});
+
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-                expect(response.response).not.toBeNull();
+                expect(response._body.message).toEqual('Proposals found.');
             });
             test("[DELETE] should delete a process proposal with a 200 status code", async () => {
                 ProcessProposal.get = jest.fn().mockReturnValue({ id: 1 });

@@ -6,6 +6,7 @@ const UserProcess = require("../../src/persistence/userProcess");
 const Process = require("../../src/persistence/process");
 const Step = require("../../src/persistence/step");
 const Users = require("../../src/persistence/users");
+const Calendar = require("../../src/persistence/calendar");
 const UserStep = require("../../src/persistence/userStep");
 const { start, stop } = require("../../index");
 
@@ -47,6 +48,7 @@ describe("Calendar tests", () => {
             test("[SET] should add a meeting in calendar table with a 200 status code", async () => {
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ id: 1 });
+                Calendar.set = jest.fn().mockReturnValue({ something: 'not null' });
 
                 const response = await request(server).post("/calendar/set").send({
                     date: date,
