@@ -16,6 +16,8 @@ router.post('/add', async (request, response) => {
         const result = await ProcessProposal.create(title, description, content, user.id);
         if (result) {
             return response.status(200).json({ message: 'Proposal added.', response: result });
+        } else {
+            return response.status(409).json({ message: 'Could not create a process.'});
         }
     } catch (error) {
         console.error(error);
