@@ -115,6 +115,7 @@ module.exports = {
         return rows[0];
       }
     } catch (error) {
+      console.error(error);
       throw error;
     }
   }
