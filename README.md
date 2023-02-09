@@ -1,4 +1,28 @@
-<div id="top"></div>
+=======
+81
+ 
+FNDA:31,(anonymous_0)
+82
+ 
+FNDA:23,(anonymous_1)
+83
+ 
+FNDA:19,(anonymous_2)
+84
+ 
+FNDA:7,(anonymous_3)
+85
+ 
+FNDA:6,(anonymous_4)
+86
+ 
+FNDA:4,(anonymous_5)
+87
+ 
+FNDA:26,(anonymous_6)
+88
+ 
+>>>>>>> prod<div id="top"></div>
 <br />
 <div align="center">
   <h3 align="center">Paperwork</h3>
@@ -37,8 +61,7 @@ You can clone the repo by entering:
 ## Usage
 
 ```sh
-  docker-compose --build
-  docker-compose up
+  docker-compose up --build serverLocal
+  docker-compose up --build test
 ```
-
 <p align="right">(<a href="#top">back to top</a>)</p>
