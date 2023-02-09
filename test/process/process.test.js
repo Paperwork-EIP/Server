@@ -169,6 +169,13 @@ describe("Process tests", () => {
                 }
 
             });
+            test("[DELETE] process not found : should not delete a process with a 404 status code", async () => {
+                const response = await request(server).get("/process/delete").query({
+                    title: " "
+                });
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
             test("[GET ALL] wrong type of request : should be a GET request", async () => {
                 const response_post = await request(server).post("/process/getAll").query({});
                 const response_put = await request(server).put("/process/getAll").query({});

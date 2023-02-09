@@ -66,6 +66,9 @@ describe("Questions tests", () => {
                     title: "TestQuestions"
                 });
 
+                expect(step.statusCode).toBe(200);
+                expect(step.message).not.toBeNull();
+
                 expect(response.statusCode).toBe(200);
                 expect(response._body.questions).not.toBeNull();
             });
@@ -101,6 +104,32 @@ describe("Questions tests", () => {
 
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('Steps not found.');
+            });
+            test("[GET] steps not found : should not get questions with a 404 status code", async () => {
+                const create = await request(server).post("/process/add").send({
+                    title: "gggdhddhdjjdjdjk",
+                    description: "This is a test",
+                    source: "https://google.com",
+                    delay: null
+                });
+
+                const response = await request(server).get("/processQuestions/get").query({
+                    title: "gggdhddhdjjdjdjk"
+                });
+
+                const del = await request(server).get("/process/delete").query({
+                    title: "gggdhddhdjjdjdjk"
+                });
+
+                expect(create.statusCode).toBe(200);
+                expect(create.message).not.toBeNull();
+                expect(create.response).not.toBeNull();
+
+                expect(response.statusCode).toBe(404);
+                expect(response.questions).not.toBeNull();
+
+                expect(del.statusCode).toBe(200);
+                expect(del.questions).not.toBeNull();
             });
         });
     });

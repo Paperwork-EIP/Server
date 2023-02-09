@@ -492,5 +492,164 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
+        describe("[VALID GET SETTINGS TESTS]", () => {
+            test("should get settings with a 200 status code", async () => {
+                const user = await request(server).post("/user/register").send({
+                    email: "hyxjnscjksdcnhsdvcnsd",
+                    username: "hyxjnscjksdcnhsdvcnsd",
+                    password: "pass"
+                });
+                const response = await request(server).get("/user/getSettings?email=hyxjnscjksdcnhsdvcnsd").send({});
+                const deleteUser = await request(server).get("/user/delete?email=hyxjnscjksdcnhsdvcnsd").send({});
+
+                expect(user.statusCode).toBe(200);
+                expect(user.message).not.toBeNull();
+                
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID GET SETTINGS TESTS]", () => {
+            test("should get settings with a 400 status code", async () => {
+                const response = await request(server).get("/user/getSettings?email=").send({});
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get settings with a 400 status code", async () => {
+                const response = await request(server).get("/user/getSettings").send({});
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get settings with a 404 status code", async () => {
+                const response = await request(server).get("/user/getSettings?email=lalalalallllll").send({});
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[VALID MODIFY DATAS TESTS]", () => {
+            test("should modify datas with a 200 status code", async () => {
+                const user = await request(server).post("/user/register").send({
+                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
+                    username: "usernamecbdbcjnsnicwsnwsjcbdycbdd",
+                    password: "pass"
+                });
+                const response = await request(server).get("/user/modifyDatas").query({
+                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
+                    username: "usernamenvhksdjksdasdbjhasg",
+                    new_email: "emailnvhksdjksdasdbjhasg",
+                    password: "pass2"
+                });
+                const getByUsername = await request(server).get("/user/getbyusername?username=usernamenvhksdjksdasdbjhasg").send({});
+                const login = await request(server).post("/user/login").send({
+                    email: "emailnvhksdjksdasdbjhasg",
+                    password: "pass2"
+                });
+                const getByOldEmail = await request(server).get("/user/getbyemail?email=emailcbdbcjnsnicwsnwsjcbdycbdd").send({});
+                const getByNewEmail = await request(server).get("/user/getbyemail?email=emailnvhksdjksdasdbjhasg").send({});
+                const getByOldUsername = await request(server).get("/user/getbyusername?username=usernamecbdbcjnsnicwsnwsjcbdycbdd").send({});
+                const deleteUser = await request(server).get("/user/delete?email=emailnvhksdjksdasdbjhasg").send({});
+
+                expect(user.statusCode).toBe(200);
+                expect(user.message).not.toBeNull();
+                
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+
+                expect(getByUsername.statusCode).toBe(200);
+                expect(getByUsername.message).not.toBeNull();
+
+                expect(login.statusCode).toBe(200);
+                expect(login.message).not.toBeNull();
+
+                expect(getByOldEmail.statusCode).toBe(404);
+                expect(getByOldEmail.message).not.toBeNull();
+
+                expect(getByNewEmail.statusCode).toBe(200);
+                expect(getByNewEmail.message).not.toBeNull();
+
+                expect(getByOldUsername.statusCode).toBe(404);
+                expect(getByOldUsername.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID MODIFY DATAS TESTS]", () => {
+            test("should modify datas with a 400 status code", async () => {
+                const response = await request(server).get("/user/modifyDatas").query({
+                    email: "",
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify datas with a 400 status code", async () => {
+                const response = await request(server).get("/user/modifyDatas").query({});
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify datas with a 404 status code", async () => {
+                const response = await request(server).get("/user/modifyDatas").query({
+                    email: " "
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[VALID MODIFY SETTINGS TESTS]", () => {
+            test("should modify settings with a 200 status code", async () => {
+                const user = await request(server).post("/user/register").send({
+                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
+                    username: "usernamebcidsncjdnscseeeee",
+                    password: "pass"
+                });
+                const response = await request(server).get("/user/modifySettings").query({
+                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
+                    night_mode: true,
+                });
+                const deleteUser = await request(server).get("/user/delete?email=emaiiiiiljbcsjcjsdncdsncksdnv").send({});
+
+                expect(user.statusCode).toBe(200);
+                expect(user.message).not.toBeNull();
+
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+
+                expect(deleteUser.statusCode).toBe(200);
+                expect(deleteUser.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID MODIFY SETTINGS TESTS]", () => {
+            test("should modify settings with a 400 status code", async () => {
+                const response = await request(server).get("/user/modifySettings").query({
+                    email: "",
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify settings with a 400 status code", async () => {
+                const response = await request(server).get("/user/modifySettings").query({});
+
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify settings with a 404 status code", async () => {
+                const response = await request(server).get("/user/modifySettings").query({
+                    email: " "
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+        });
     });
 });

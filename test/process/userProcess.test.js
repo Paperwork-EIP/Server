@@ -540,6 +540,15 @@ describe("User process", () => {
                     expect(response._body.message).toEqual('System error.');
                 }
             });
+            test("[DELETE] user not found : should not delete a user process with a 404 status code", async () => {
+                const response = await request(server).post("/userProcess/delete").send({
+                    user_email: " ",
+                    process_title: "Test"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response.response).not.toBeNull();
+            });
             test("[GET USER STEPS] email empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_email: "",
@@ -603,7 +612,6 @@ describe("User process", () => {
                     user_email: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
-
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('User process not found.');
             });

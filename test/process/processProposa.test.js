@@ -59,7 +59,6 @@ describe("Process proposal tests", () => {
                 ProcessProposal.create = jest.fn().mockReturnValue({ something: 'not null' });
 
                 const response = await request(server).get("/processProposal/getAll").query({});
-
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
