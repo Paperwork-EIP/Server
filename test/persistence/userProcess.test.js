@@ -2,7 +2,11 @@ const rewire = require("rewire");
 const db = require('../../src/persistence/db');
 const Process = require("../../src/persistence/process");
 const userProcess = require("../../src/persistence/userProcess");
+const init_db = require('../../src/persistence/init-db');
 
+beforeAll(() => {
+    init_db.initAll();
+});
 afterEach(() => {
     jest.restoreAllMocks();
 });

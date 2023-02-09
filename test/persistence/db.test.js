@@ -1,4 +1,9 @@
 const Pool = require('../../src/persistence/db');
+const init_db = require('../../src/persistence/init-db');
+
+beforeAll(() => {
+    init_db.initAll();
+});
 
 describe('Db Tests', () => {
     it('should have a max of 10', () => {

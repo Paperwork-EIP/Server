@@ -151,7 +151,7 @@ router.post('/register', async (request, response) => {
       }
       const find = await User.find(email)
       if (find) {
-        data =
+        const data =
         {"language":language, "password": password,
           "username":username, "firstname":firstname, "name":name, "age":age,
           "adress":adress, "profile_picture":profile_picture, "number_phone":number_phone,
@@ -164,7 +164,7 @@ router.post('/register', async (request, response) => {
           return response.status(409).json({ message: 'Usename already used' });
         }
         for (let key in data) {
-          await User.modifyDatas(email, key, data[key])
+          await User.modifyDatas(email, key, data[key]);
         }
         return response.status(200).json({ message: 'User updated' });
       } else {
@@ -177,16 +177,16 @@ router.post('/register', async (request, response) => {
 
   router.get('/modifySettings', async (request, response) => {
     try{
-      const { email, night_mode } = request.query
+      const { email, night_mode } = request.query;
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }
-      const find = await User.find(email)
+      const find = await User.find(email);
       if (find) {
-        id = find.id
-        data = {"night_mode":night_mode,}
+        const id = find.id;
+        const data = {"night_mode":night_mode,};
         for (const key in data) {
-          const value = await Settings.modifySettings(id, key, data[key])
+          await Settings.modifySettings(id, key, data[key]);
         }
         return response.status(200).json({ message: 'User setting updated' });
       } else {
