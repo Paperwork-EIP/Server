@@ -1,5 +1,4 @@
 const rewire = require("rewire");
-const sql = require('sql-template-strings');
 const db = require('../../src/persistence/db');
 const Process = require("../../src/persistence/process");
 const userProcess = require("../../src/persistence/userProcess");
@@ -19,6 +18,12 @@ describe("User Process Persistence Tests", () => {
         expect(userProcess).not.toBeNull();
     });
     it("[CREATE] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         const spy = jest.spyOn(userProcess, "create");
         const create = await userProcess.create(user_id, process_id, process_title);
 
@@ -26,6 +31,12 @@ describe("User Process Persistence Tests", () => {
         expect(create).not.toBeNull();
     });
     it("[CREATE] should define current date", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         const date = moduleUserProcess.__set__("currentDate", Date());
         const checkDate = moduleUserProcess.__get__("currentDate");
 
@@ -37,6 +48,12 @@ describe("User Process Persistence Tests", () => {
         await expect(userProcess.create()).rejects.toThrow();
     });
     it("[UPDATE] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         Process.getById = jest.fn().mockReturnValue({ delay: "2022-10-10 10:10:10" });
 
         const spy = jest.spyOn(userProcess, "update");
@@ -46,6 +63,12 @@ describe("User Process Persistence Tests", () => {
         expect(update).not.toBeNull();
     });
     it("[UPDATE] should define process delay", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         Process.getById = jest.fn().mockReturnValue({ delay: "2022-10-10 10:10:10" });
         jest.spyOn(db, 'query').mockReturnValue({
             rows: [{ id: 1, user_id: user_id, process_id: process_id }]
@@ -65,6 +88,9 @@ describe("User Process Persistence Tests", () => {
         expect(response).toEqual({ id: 1, user_id: user_id, process_id: process_id }); 
     });
     it('[UPDATE] should return null if no process found', async () => {
+        const result = null;
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         jest.spyOn(Process, 'getById').mockResolvedValueOnce(null);
 
         const response = await userProcess.update(1, 1);
@@ -72,11 +98,14 @@ describe("User Process Persistence Tests", () => {
         expect(response).toBeNull();
     });
     it('[UPDATE] should return null if invalid process delay', async () => {
+        const result = null;
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         jest.spyOn(Process, 'getById').mockReturnValue({ delay: null });
 
         const response = await userProcess.update(1, 1);
 
-        expect(response).not.toBeDefined();
+        expect(response).toBeNull();
     });
     it('[UPDATE] should throw an error if an error occurs', async () => {
         jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
@@ -84,6 +113,13 @@ describe("User Process Persistence Tests", () => {
     });
     it("[DELETE] should be called", async () => {
         const spy = jest.spyOn(userProcess, "delete");
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
+
         const deleteFn = await userProcess.delete(user_id, process_id);
 
         expect(spy).toHaveBeenCalled();
@@ -94,6 +130,12 @@ describe("User Process Persistence Tests", () => {
         await expect(userProcess.delete()).rejects.toThrow();
     });
     it("[GET] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         const spy = jest.spyOn(userProcess, "get");
         const get = await userProcess.get(user_id, process_id);
 
@@ -101,6 +143,12 @@ describe("User Process Persistence Tests", () => {
         expect(get).not.toBeNull();
     });
     it("[GET BY ID] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         const spy = jest.spyOn(userProcess, "getById");
         const getById = await userProcess.getById(user_process_id);
 
@@ -108,6 +156,12 @@ describe("User Process Persistence Tests", () => {
         expect(getById).not.toBeNull();
     });
     it("[GET ALL] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
         const spy = jest.spyOn(userProcess, "getAll");
         const getAll = await userProcess.getAll(user_id);
 
