@@ -2,7 +2,11 @@ const db = require('../../src/persistence/db');
 const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
 const User = require('../../src/persistence/users');
+const init_db = require('../../src/persistence/init-db');
 
+beforeAll(() => {
+    init_db.initAll();
+});
 afterEach(() => {
     jest.restoreAllMocks();
 });

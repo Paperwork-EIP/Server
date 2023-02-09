@@ -42,18 +42,6 @@ describe("User process", () => {
         test("[process.js] should have instanced the router component", async () => {
             expect(routerUserProcess).toBeDefined();
         });
-        // test("[GetPercentage()] should return the correct percentage of steps completed", async () => {
-        //     const user_process_id = 1;
-        //     const res = [{ id: 1 }, { id: 2 }, { id: 3 }];
-        //     const notDone = [{ id: 1 }];
-
-        //     UserStep.getAll = jest.fn().mockResolvedValue(res);
-        //     UserStep.getNotDone = jest.fn().mockResolvedValue(notDone);
-
-        //     const result = await getPercentage(user_process_id);
-
-        //     expect(result).toBe(66);
-        // });
     });
 
     describe("[INTEGRATION TESTS", () => {
@@ -61,7 +49,7 @@ describe("User process", () => {
             test("[ADD] should add a user process with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
-                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.get = jest.fn().mockReturnValue(null);
                 UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
@@ -79,7 +67,7 @@ describe("User process", () => {
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-                expect(response.response).not.toBeNull();
+                expect(response._body.message).toEqual('User process created!');
             });
             test("[UPDATE] should update user process with receive data with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
@@ -87,6 +75,8 @@ describe("User process", () => {
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue(0);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: user_email,
@@ -96,13 +86,14 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-                expect(response.response).not.toBeNull();
+                expect(response._body.message).toEqual('User process updated!');
+                expect(response._body.response).toEqual({ something: 'something' });
             });
             test("[DELETE] should delete user process with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                UserStep.deleteAll = jest.fn().mockReturnValue({ something: 'something' });
                 UserProcess.delete = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
@@ -113,7 +104,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User process deleted!');
             });
             test("[GET USER STEPS] should return user steps with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
@@ -131,9 +122,21 @@ describe("User process", () => {
                 expect(response._body.pourcentage).toEqual(67);
                 expect(response._body.message).toEqual('User process steps');
             });
+            test("[GET USER STEPS BY ID] should return user steps with a 200 status code", async () => {
+                UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
+                UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
+                UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
+
+                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                    user_process_id: 1,
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.pourcentage).toEqual(67);
+                expect(response._body.message).toEqual('User process steps');
+            });
             test("[GET USER PROCESSES] should return user steps with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
-                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
