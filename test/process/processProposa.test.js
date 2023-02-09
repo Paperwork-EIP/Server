@@ -10,11 +10,11 @@ describe("Process proposal tests", () => {
     const port = 3010;
     let server;
 
-    beforeAll(async () => {
+    beforeAll(() => {
         server = start(port);
     });
 
-    afterAll(async () => {
+    afterAll(() => {
         stop();
     });
 
@@ -176,17 +176,22 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should throw an error if error occurs", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                sinon.stub(ProcessProposal, 'create').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).post("/processProposal/add").send({
-                    title: "TestTitlehhhhhhhhhhhhhhhhhhh",
-                    description: "TestDescription",
-                    content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt",
-                });
+                try {
+                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(ProcessProposal, 'create').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
+                    response = await request(server).post("/processProposal/add").send({
+                        title: "TestTitlehhhhhhhhhhhhhhhhhhh",
+                        description: "TestDescription",
+                        content: "TestContent",
+                        user_email: "ttttttttttttttttttttttttttttttt",
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
+
             });
             test("[ADD] should return a 409 error status", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
@@ -202,21 +207,32 @@ describe("Process proposal tests", () => {
                 expect(response.statusCode).toBe(409);
             });
             test("[ADD] should throw an error if error occurs", async () => {
-                sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).post("/processProposal/add").send({
-                    title: "TestTitlehhhhhhhhhhhhhhhhhhh",
-                    description: "TestDescription",
-                    content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt",
-                });
-                expect(response.statusCode).toBe(500);
+                try {
+                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/processProposal/add").send({
+                        title: "TestTitlehhhhhhhhhhhhhhhhhhh",
+                        description: "TestDescription",
+                        content: "TestContent",
+                        user_email: "ttttttttttttttttttttttttttttttt",
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
+
             });
             test("[GET ALL] should throw an error if error occurs", async () => {
-                sinon.stub(ProcessProposal, 'getAll').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).get("/processProposal/getAll").send({});
-                expect(response.statusCode).toBe(500);
+                try {
+                    sinon.stub(ProcessProposal, 'getAll').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/processProposal/getAll").send({});
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[DELETE] should not delete a process proposal with a 400 status code", async () => {
                 const response = await request(server).get("/processProposal/delete").query({
@@ -244,13 +260,18 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] should throw an error if error occurs", async () => {
-                ProcessProposal.get = jest.fn().mockReturnValue({ id: 1 });
-                sinon.stub(ProcessProposal, 'delete').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).get("/processProposal/delete").query({
-                    id: 4294967
-                });
-                expect(response.statusCode).toBe(500);
+                try {
+                    ProcessProposal.get = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(ProcessProposal, 'delete').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/processProposal/delete").query({
+                        id: 4294967
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
         });
     });

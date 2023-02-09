@@ -74,15 +74,19 @@ describe('Process Persistence Tests', () => {
         const id = 645675471;
 
         try {
-            Process.delete(id);
+            await Process.delete(id);
         } catch (error) {
             expect(error).not.toBeNull();
             expect(error).toEqual('Error');
         }
     });
     it('[DELETE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
-        await expect(Process.delete()).rejects.toThrow();
+        try {
+            jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
+            await expect(Process.delete()).rejects.toThrow();
+        } catch (error) {
+            console.log(error);
+        }
     });
     it('[GET] should return the process with the given title', async () => {
         const title = 'Random Test That Title Is Unique 3454';

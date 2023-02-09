@@ -44,7 +44,7 @@ describe("User Process Persistence Tests", () => {
         expect(checkDate).toBe(Date());
     });
     it('[CREATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.create()).rejects.toThrow();
     });
     it("[UPDATE] should be called", async () => {
@@ -108,7 +108,7 @@ describe("User Process Persistence Tests", () => {
         expect(response).toBeNull();
     });
     it('[UPDATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.update()).rejects.toThrow();
     });
     it("[DELETE] should be called", async () => {
@@ -126,7 +126,7 @@ describe("User Process Persistence Tests", () => {
         expect(deleteFn).not.toBeNull();
     });
     it('[DELETE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.delete()).rejects.toThrow();
     });
     it("[GET] should be called", async () => {

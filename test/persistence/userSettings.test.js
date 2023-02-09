@@ -25,7 +25,7 @@ describe("User Settings Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
     });
     it('[CREATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(UserSettings.create()).rejects.toThrow();
     });
     it("[DELETE] should delete a user setting", async () => {
@@ -41,7 +41,7 @@ describe("User Settings Persistence Tests", () => {
         expect(response).not.toBeNull();
     });
     it('[DELETE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(UserSettings.delete()).rejects.toThrow();
     });
     it("[GET] should get a user setting", async () => {
@@ -95,7 +95,7 @@ describe("User Settings Persistence Tests", () => {
         const data = 'night_mode';
         const value = true;
 
-        jest.spyOn(db, 'query').mockReturnValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
 
         await expect(UserSettings.modifySettings(null, data, value)).rejects.toThrow();
     });

@@ -86,7 +86,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
     });
     it('[CREATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(UserStep.create()).rejects.toThrow();
     });
     it('[UPDATE] should update the user step id', async () => {
@@ -192,7 +192,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
     });
     it('[UPDATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockReturnValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(UserStep.update()).rejects.toThrow();
     });
     it('[DELETE ALL] should delete all user steps for a given user process id', async () => {

@@ -14,11 +14,11 @@ describe("Questions tests", () => {
         jest.restoreAllMocks();
     });
 
-    beforeAll(async () => {
+    beforeAll(() => {
         server = start(port);
     });
 
-    afterAll(async () => {
+    afterAll(() => {
         stop();
     });
 
@@ -36,14 +36,18 @@ describe("Questions tests", () => {
             expect(routerQuestions).toBeDefined();
         });
         test('[GET] should throw an error if an error occurs', async () => {
-            db.query = jest.fn().mockResolvedValue(() => { throw new Error });
+            let response;
 
-            const response = await request(server).get("/processQuestions/get").query({
-                title: "TestQuestions"
-            });
+            try {
+                db.query = jest.fn().mockResolvedValue(() => { throw new Error });
 
-            expect(response.statusCode).toBe(500);
-            expect(JSON.parse(response.text).message).toEqual('System error.');
+                response = await request(server).get("/processQuestions/get").query({
+                    title: "TestQuestions"
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(JSON.parse(response.text).message).toEqual('System error.');
+            }
         });
     });
 

@@ -26,6 +26,7 @@ describe("Index tests", () => {
             });
             it("port existing : should start the server", async () => {
                 let server = start(port);
+                stop();
 
                 expect(server).toBeDefined();
             });

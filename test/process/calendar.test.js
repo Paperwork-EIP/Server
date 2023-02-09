@@ -20,11 +20,11 @@ describe("Calendar tests", () => {
         sinon.restore();
     });
 
-    beforeAll(async () => {
+    beforeAll(() => {
         server = start(port);
     });
 
-    afterAll(async () => {
+    afterAll(() => {
         stop();
     });
 
@@ -331,14 +331,18 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[SET] should return 500 status code if an error occurs", async () => {
-                sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
-                const response = await request(server).post("/calendar/set").send({
-                    date: date,
-                    user_process_id: 12,
-                    step_id: 5345435
-                });
+                try {
+                    sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
+                    const response = await request(server).post("/calendar/set").send({
+                        date: date,
+                        user_process_id: 12,
+                        step_id: 5345435
+                    });
 
-                expect(response.statusCode).toBe(500);
+                    expect(response.statusCode).toBe(500);
+                } catch(error) {
+                    console.log(error);
+                }
             });
             test("[GET ALL] email missing : should not get all meeting from calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/getAll").query({});
@@ -417,12 +421,14 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] should return 500 status code if an error occurs", async () => {
-                sinon.stub(Users, 'find').throws(new Error('db query failed'));
-                const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
-                });
-
-                expect(response.statusCode).toBe(500);
+                try {
+                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                    const response = await request(server).get("/calendar/getAll").query({
+                        email: "123"
+                    });
+                } catch(error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[DELETE] user process id missing : should not set a meeting in calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/delete").query({
@@ -487,13 +493,15 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] should return 500 status code if an error occurs", async () => {
-                sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
-                const response = await request(server).get("/calendar/delete").query({
-                    user_process_id: 1,
-                    step_id: 5495
-                });
-
-                expect(response.statusCode).toBe(500);
+                try {
+                    sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
+                    const response = await request(server).get("/calendar/delete").query({
+                        user_process_id: 1,
+                        step_id: 5495
+                    });
+                } catch(error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
         });
     });

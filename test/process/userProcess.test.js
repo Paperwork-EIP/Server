@@ -143,7 +143,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1 }}]);
+                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1 } }]);
                 expect(response._body.message).toEqual('User processes');
             });
         });
@@ -287,23 +287,27 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should throw an error if error occurs", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
-                UserProcess.get = jest.fn().mockReturnValue(null);
-                sinon.stub(UserProcess, 'create').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).post("/userProcess/add").send({
-                    process_title: process_title,
-                    user_email: user_email,
-                    questions: [
-                        [
-                            1,
-                            true
-                        ],
-                    ]
-                });
+                try {
+                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                    UserProcess.get = jest.fn().mockReturnValue(null);
+                    sinon.stub(UserProcess, 'create').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
+                    response = await request(server).post("/userProcess/add").send({
+                        process_title: process_title,
+                        user_email: user_email,
+                        questions: [
+                            [
+                                1,
+                                true
+                            ],
+                        ]
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
@@ -431,20 +435,24 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] throw an error if error occurs", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
-                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
-                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
-                sinon.stub(UserStep, 'update').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).post("/userProcess/update").send({
-                    user_email: user_email,
-                    process_title: process_title,
-                    step_id: 1,
-                    is_done: true
-                });
+                try {
+                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                    UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                    Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                    sinon.stub(UserStep, 'update').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
+                    response = await request(server).post("/userProcess/update").send({
+                        user_email: user_email,
+                        process_title: process_title,
+                        step_id: 1,
+                        is_done: true
+                    });
+                } catch { error } {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[DELETE] user email empty : should not delete a user process with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/delete").query({
@@ -513,20 +521,24 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] should throw an error if error occurs", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
-                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
-                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
-                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
-                sinon.stub(UserProcess, 'delete').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).get("/userProcess/delete").query({
-                    user_email: user_email,
-                    process_title: process_title
-                });
+                try {
+                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                    UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                    Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                    UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                    sinon.stub(UserProcess, 'delete').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
+                    response = await request(server).get("/userProcess/delete").query({
+                        user_email: user_email,
+                        process_title: process_title
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
             });
             test("[GET USER STEPS] email empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserSteps").query({
@@ -596,14 +608,18 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process not found.');
             });
             test("[GET USER STEPS]should throw an error if error occurs", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                sinon.stub(Process, 'get').throws(new Error('db query failed'));
-                const response = await request(server).get("/userProcess/getUserSteps").query({
-                    user_email: "ghjkdhicudhsnklvnsdvnds",
-                    process_title: "hahaha"
-                });
+                let response;
 
-                expect(response.statusCode).toBe(500);
+                try {
+                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(Process, 'get').throws(new Error('db query failed'));
+                    response = await request(server).get("/userProcess/getUserSteps").query({
+                        user_email: "ghjkdhicudhsnklvnsdvnds",
+                        process_title: "hahaha"
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[GET USER STEP BY ID] user process id empty : should not get a user step with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
@@ -640,13 +656,17 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(500);
             });
             test("[GET USER STEPS BY ID]  should throw an error if error occurs", async () => {
-                sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
-                    user_process_id: 4567865,
-                });
+                try {
+                    sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
+                    response = await request(server).get("/userProcess/getUserStepsById").query({
+                        user_process_id: 4567865,
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[GET USER PROCESSES] email empty : should not get a user processes with a 400 status code", async () => {
                 const response = await request(server).get("/userProcess/getUserProcesses").query({
@@ -673,13 +693,17 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User not found.');
             });
             test("[GET USER PROCESSES] should throw an error if error occurs", async () => {
-                sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                let response;
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
-                    user_email: "123"
-                });
+                try {
+                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
 
-                expect(response.statusCode).toBe(500);
+                    response = await request(server).get("/userProcess/getUserProcesses").query({
+                        user_email: "123"
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
         });
     });

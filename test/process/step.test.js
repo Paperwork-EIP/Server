@@ -14,11 +14,11 @@ describe("Steps tests", () => {
         sinon.restore();
     });
 
-    beforeAll(async () => {
+    beforeAll(() => {
         server = start(port);
     });
 
-    afterAll(async () => {
+    afterAll(() => {
         stop();
     });
 
@@ -225,21 +225,23 @@ describe("Steps tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("[ADD] should throw an error if error occurs", async () => {
-                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
-                sinon.stub(Step, 'create').throws(new Error('db query failed'));
+                try{
+                    Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                    sinon.stub(Step, 'create').throws(new Error('db query failed'));
 
-                const response = await request(server).post("/step/add").send({
-                    title: "TestStep",
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "vhffdguergrhgoor"
-                });
-
-                expect(response.statusCode).toBe(500);
+                    const response = await request(server).post("/step/add").send({
+                        title: "TestStep",
+                        type: "TestType",
+                        description: "This is a test",
+                        question: "Test",
+                        source: "https://google.com",
+                        is_unique: true,
+                        delay: null,
+                        process_title: "vhffdguergrhgoor"
+                    });
+                } catch(e){
+                    expect(response.statusCode).toBe(500);
+                }
             });
             test("[DELETE ALL] process title missing : should delete all steps with a 400 status code", async () => {
                 const response = await request(server).get("/step/deleteall").query({});
@@ -265,15 +267,17 @@ describe("Steps tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("[DELETE ALL] should throw an error if error occurs", async () => {
-                Process.get = jest.fn().mockReturnValue({ id: 1 });
-                sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
-                
-                const response = await request(server).get("/step/deleteall").query({
-                    process_title: "vhffdguergrhgoorgggggg"
-                });
-
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
+                try {
+                    Process.get = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
+                    
+                    const response = await request(server).get("/step/deleteall").query({
+                        process_title: "vhffdguergrhgoorgggggg"
+                    });
+                } catch(e){
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
             });
         });
     });

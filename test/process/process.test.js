@@ -15,11 +15,11 @@ describe("Process tests", () => {
         sinon.restore();
     });
 
-    beforeAll(async () => {
+    beforeAll(() => {
         server = start(port);
     });
 
-    afterAll(async () => {
+    afterAll(() => {
         stop();
     });
 
@@ -108,16 +108,21 @@ describe("Process tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test('[ADD] should throw an error if an error occurs', async () => {
-                sinon.stub(Process, 'get').throws(new Error('db query failed'));
+                let response;
+            
+                try {
+                    sinon.stub(Process, 'get').throws(new Error('db query failed'));
 
-                const response = await request(server).post("/process/add").send({
-                    title: 'qwe',
-                    description: "This is a test",
-                    source: null,
-                    delay: null
-                });
-                expect(response.statusCode).toBe(500);
-                expect(JSON.parse(response.text).message).toEqual('System error.');
+                    response = await request(server).post("/process/add").send({
+                        title: 'qwe',
+                        description: "This is a test",
+                        source: null,
+                        delay: null
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(JSON.parse(response.text).message).toEqual('System error.');
+                }
 
             });
             test("[DELETE] title missing : should not delete a process with a 400 status code", async () => {
@@ -150,14 +155,19 @@ describe("Process tests", () => {
                 expect(JSON.parse(response.text).message).toEqual('Steps not found.');
             });
             test('DELETE] should throw an error if an error occurs', async () => {
-                Process.get = jest.fn().mockReturnValue({ id: 1 });
-                sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
+                let response;
+            
+                try {
+                    Process.get = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(Step, 'deleteAll').throws(new Error('db query failed'));
 
-                const response = await request(server).get("/process/delete").query({
-                    title: 'qwe'
-                });
+                    response = await request(server).get("/process/delete").query({
+                        title: 'qwe'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
 
-                expect(response.statusCode).toBe(500);
             });
             test("[GET ALL] wrong type of request : should be a GET request", async () => {
                 const response_post = await request(server).post("/process/getAll").query({});

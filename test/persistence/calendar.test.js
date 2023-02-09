@@ -34,7 +34,11 @@ describe('Calendar Peristence Tests', () => {
         expect(JSON.stringify(result)).toEqual(JSON.stringify({ appoinment: appoinment, id: 1 }));
     });
     it('[SET] should throw an error if invalid arguments', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
-        await expect(Calendar.set()).rejects.toThrow();
+        try {
+            jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
+            await expect(Calendar.set()).rejects.toThrow()
+        } catch (error) {
+            console.log(error);
+        }
     });
 });

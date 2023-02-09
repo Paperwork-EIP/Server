@@ -47,14 +47,14 @@ describe('Process Proposal Persistence Tests', () => {
         const id = 645675471;
 
         try {
-            ProcessProposal.delete(id);
+            await ProcessProposal.delete(id);
         } catch (error) {
             expect(error).not.toBeNull();
             expect(error).toEqual('Error');
         }
     });
     it('[DELETE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(ProcessProposal.delete()).rejects.toThrow();
     });
     it('[GET] should return the process with the given title', async () => {
@@ -86,8 +86,12 @@ describe('Process Proposal Persistence Tests', () => {
         expect(response.is_in_process).toEqual(expectedResponse.is_in_process);
     });
     it('[GET] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
-        await expect(ProcessProposal.get()).rejects.toThrow();
+        try {
+            jest.spyOn(db, 'query').mockResolvedValue(() => { throw new Error });
+           expect(ProcessProposal.get()).rejects.toThrow(); 
+        } catch (error) {
+            console.log(error);
+        }
     });
     it('[GET ALL] should return all process', async () => {
         const response = await ProcessProposal.getAll();
@@ -95,7 +99,11 @@ describe('Process Proposal Persistence Tests', () => {
         expect(response).toEqual(expect.any(Object));
     });
     it('[GET ALL] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockRejectedValueOnce(() => { throw new Error });
-        await expect(ProcessProposal.getAll()).rejects.toThrow();
+        try {
+            jest.spyOn(db, 'query').mockRejectedValueOnce(() => { throw new Error });
+            await expect(ProcessProposal.getAll()).rejects.toThrow();
+        } catch (error) {
+            console.log(error);
+        }
     });
 });

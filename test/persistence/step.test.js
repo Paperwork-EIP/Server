@@ -60,7 +60,7 @@ describe("Step Persistence Tests", () => {
         const id = 645675471;
 
         try {
-            Step.deleteAll(id);
+            await Step.deleteAll(id);
         } catch (error) {
             expect(error).not.toBeNull();
             expect(error).toEqual('Error');
@@ -80,6 +80,6 @@ describe("Step Persistence Tests", () => {
         const id = 7;
         const response = await Step.getById(id);
 
-        expect(response).not.toBeDefined();
+        expect(response).not.toBeNull();
     });
 });
