@@ -1,12 +1,17 @@
 const request = require("supertest");
+const sinon = require("sinon");
 const router = require("../../src/api/db/user");
 const { start, stop } = require('../../index');
 const User = require('../../src/persistence/users');
-const UserSettings = require('../../src/persistence/userSettings');
 
 describe("User connection tests", () => {
     const port = 3002;
     let server;
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+        sinon.restore();
+    });
 
     beforeAll(() => {
         server = start(port);
@@ -108,17 +113,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(400);
             });
-            test("Error 500 : should not register an user with a 500 status code", async () => {
-                const spy = jest.spyOn(User, 'create').mockResolvedValue(() => { throw new Error });
-                const response = await request(server).post("/user/register").send({
-                    username: "username",
-                    email: "email",
-                    password: "pass"
-                });
-
-                spy.mockRestore();
-                expect(response.statusCode).toBe(500);
-            });
         });
         describe("[VALID LOGIN TESTS]", () => {
             test("should login an user with a 200 status code", async () => {
@@ -181,16 +175,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            // test("Error 500 : should not login an user with a 500 status code", async () => {
-            //     const spy = jest.spyOn(User, 'connect').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/login").send({
-            //         password: "pass",
-            //         email: "email"
-            //     });
-
-            //     spy.mockRestore();
-            //     expect(response.statusCode).toBe(500);
-            // });
         });
         describe("[VALID GETBYEMAIL TESTS]", () => {
             test("should get an user data with a 200 status code", async () => {
@@ -215,15 +199,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            // test("Error 500 : should not get an user with a 500 status code", async () => {
-            //     const spy = jest.spyOn(User, 'find').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/getbyemail").send({
-            //         email: "email"
-            //     });
-
-            //     spy.mockRestore();
-            //     expect(response.statusCode).toBe(500);
-            // });
         });
         describe("[VALID GETBYUSERNAME TESTS]", () => {
             test("should get an user data with a 200 status code", async () => {
@@ -248,15 +223,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            // test("Error 500 : should not get an user with a 500 status code", async () => {
-            //     const spy = jest.spyOn(User, 'findUsername').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/getbyusername").send({
-            //         username: "username"
-            //     });
-
-            //     spy.mockRestore();
-            //     expect(response.statusCode).toBe(500);
-            // });
         });
         describe("[VALID DELETE TESTS]", () => {
             test("should delete an user with a 200 status code", async () => {
@@ -281,15 +247,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            // test("Error 500 : should not delete an user with a 500 status code", async () => {
-            //     const spy = jest.spyOn(User, 'delete').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/delete").send({
-            //         email: "email"
-            //     });
-
-            //     spy.mockRestore();
-            //     expect(response.statusCode).toBe(500);
-            // });
         });
         describe("[VALID GET SETTINGS TESTS]", () => {
             test("should get settings with a 200 status code", async () => {
@@ -330,27 +287,6 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
-            // test("Error 500 : should not get user settings with a 500 status code", async () => {
-            //     const user = await request(server).post("/user/register").send({
-            //         email: "bjcdicacmsdcmdiovjsdvmfdkk",
-            //         username: "bjcdicacmsdcmdiovjsdvmfdkk",
-            //         password: "pass"
-            //     });
-            //     const spy = jest.spyOn(UserSettings, 'get').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/getSettings").send({
-            //         email: "bjcdicacmsdcmdiovjsdvmfdkk"
-            //     });
-            //     const deleteUser = await request(server).get("/user/delete?email=bjcdicacmsdcmdiovjsdvmfdkk").send({});                
-
-            //     spy.mockRestore();
-            //     expect(user.response).toBe(200);
-            //     expect(user.message).not.toBeNull();
-
-            //     expect(response.statusCode).toBe(500);
-
-            //     expect(deleteUser.response).toBe(200);
-            //     expect(deleteUser.message).not.toBeNull();
-            // });
         });
         describe("[VALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 200 status code", async () => {
@@ -423,27 +359,6 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
-            // test("Error 500 : should not modify user datas with a 500 status code", async () => {
-            //     const user = await request(server).post("/user/modifyDatas").send({
-            //         email: "vctyujimnbhfgvcdxrtgyuhjiokhbgft",
-            //         username: "vctyujimnbhfgvcdxrtgyuhjiokhbgft",
-            //         password: "pass"
-            //     });
-            //     const spy = jest.spyOn(User, 'modifyDatas').mockResolvedValue(() => { throw new Error });
-            //     const response = await request(server).post("/user/modifyDatas").send({
-            //         email: "vctyujimnbhfgvcdxrtgyuhjiokhbgft"
-            //     });
-            //     const deleteUser = await request(server).get("/user/delete?email=vctyujimnbhfgvcdxrtgyuhjiokhbgft").send({});                
-
-            //     spy.mockRestore();
-            //     expect(user.response).toBe(200);
-            //     expect(user.message).not.toBeNull();
-
-            //     expect(response.statusCode).toBe(500);
-
-            //     expect(deleteUser.response).toBe(200);
-            //     expect(deleteUser.message).not.toBeNull();
-            // });
         });
         describe("[VALID MODIFY SETTINGS TESTS]", () => {
             test("should modify settings with a 200 status code", async () => {
@@ -650,6 +565,121 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
+        });
+        test('[REGISTER 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).post("/user/register").send({
+                    email: 'email',
+                    password: 'password',
+                    username: 'gfhg'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[LOGIN 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'connect').throws(new Error('db query failed'));
+
+                response = await request(server).post("/user/login").send({
+                    email: 'email',
+                    password: 'password'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[GET BY EMAIL 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/getbyemail").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[GET BY USERNAME 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'findUsername').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/getbyusername").query({
+                    username: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[GET SETTINGS 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/getSettings").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[DELETE 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/delete").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[MODIFY DATAS 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/modifyDatas").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[MODIFY SETTINGS 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/modifySettings").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
         });
     });
 });
