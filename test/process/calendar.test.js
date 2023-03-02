@@ -64,7 +64,9 @@ describe("Calendar tests", () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                Step.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+
 
                 const response = await request(server).get("/calendar/getAll").query({
                     email: "hbjhbj"

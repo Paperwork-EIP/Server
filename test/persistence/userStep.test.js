@@ -90,7 +90,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
     });
     it('[CREATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
+        jest.spyOn(Step, 'getById').mockResolvedValue(() => { new Error });
         await expect(UserStep.create()).rejects.toThrow();
     });
     it('[UPDATE] should update the user step id', async () => {
