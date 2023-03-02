@@ -112,7 +112,7 @@ describe("User Process Persistence Tests", () => {
         expect(response).toBeNull();
     });
     it('[UPDATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
+        jest.spyOn(Process, 'getById').mockResolvedValue(() => { new Error });
         await expect(userProcess.update()).rejects.toThrow();
     });
     it("[DELETE] should be called", async () => {
