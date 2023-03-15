@@ -195,59 +195,59 @@ paths:
       tags:
           - user
   /user/modifyDatas:
-    get:
+    post:
       parameters:
-        - in: query
+        - in: body
           name: email
           schema:
             type: string
           description: Current user email.
-        - in: query
+        - in: body
           name: new_email
           schema:
             type: string
           description: New email value.
-        - in: query
+        - in: body
           name: password
           schema:
             type: string
           description: New password value.
-        - in: query
+        - in: body
           name: language
           schema:
             type: string
           description: New language value.
-        - in: query
+        - in: body
           name: username
           schema:
             type: string
           description: New username value.
-        - in: query
+        - in: body
           name: firstname
           schema:
             type: string
           description: New firstname value.
-        - in: query
+        - in: body
           name: name
           schema:
             type: string
           description: New name value.
-        - in: query
+        - in: body
           name: age
           schema:
             type: integer
           description: New age value.
-        - in: query
+        - in: body
           name: adress
           schema:
             type: string
           description: New adress value.
-        - in: query
+        - in: body
           name: profile_picture
           schema:
             type: string
           description: New profile picture link value.
-        - in: query
+        - in: body
           name: number_phone
           schema:
             type: integer
@@ -506,18 +506,18 @@ paths:
             example:
               {
                 "questions": [
-                  [
-                      1,
-                      "stepQuestion1"
-                  ],
-                  [
-                      2,
-                      "stepQuestion2"
-                  ],
-                  [
-                      3,
-                      "stepQuestion3"
-                  ]
+                  {
+                      step_id: 1,
+                      question: "stepQuestion1"
+                  },
+                  {
+                      step_id: 2,
+                      question: "stepQuestion2"
+                  },
+                  {
+                      step_id: 3,
+                      question: "stepQuestion3"
+                  }
                 ]
               }
         '400':
@@ -545,10 +545,13 @@ paths:
         - in: body
           name: questions
           schema:
-            type: array
+            type: object
             example:
               [
-                [id, true/false],
+                {
+                  step_id: id,
+                  response: true/false
+                },
                 ...
               ]
             description: User responses to the intelligent quizz.
@@ -562,6 +565,44 @@ paths:
         '500':
           description: System error.
       summary: Add a user process.
+      tags:
+        - userProcess
+  /userProcess/update:
+    post:
+      parameters:
+        - in: body
+          name: process_title
+          schema:
+            type: string
+            description: Title  of the process the user want to start.
+        - in: body
+          name: user_email
+          schema:
+            type: string
+            description: Email of the user.
+        - in: body
+          name: step
+          schema:
+            type: object
+            example:
+              [
+                {
+                  step_id: id,
+                  is_done: true/false
+                },
+                ...
+              ]
+            description: User modifications.
+      responses:
+        '200':
+          description: User process and user steps updated.
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found, process not found, step not found or user process not found.
+        '500':
+          description: System error.
+      summary: Update an user process.
       tags:
         - userProcess
   /userProcess/delete:
