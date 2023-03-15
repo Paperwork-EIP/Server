@@ -27,12 +27,18 @@ router.post('/add', async (request, response) => {
             await UserStep.deleteAll(user_process.id);
         }
         for (let i in questions) {
-            let step_id = questions[i][0];
-            let answer = questions[i][1];
+            let step_id = questions[i].step_id;
+            let answer = questions[i].response;
             if (!await Step.getById(step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
             await UserStep.create(user_process.id, step_id, answer);
+        }
+        const notDone = await UserStep.getNotDone(user_process.id);
+        if (notDone.length === 0) {
+            await UserProcess.update(user_process.id, process.id, true);
+        } else {
+            await UserProcess.update(user_process.id, process.id, false);
         }
         return response.status(200).json({
             message: 'User process created!',
@@ -43,10 +49,11 @@ router.post('/add', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+
 router.post('/update', async (request, response) => {
     try {
-        const { user_email, process_title, step_id, is_done } = request.body;
-        if (!user_email || !process_title || !step_id) {
+        const { user_email, process_title, step } = request.body;
+        if (!user_email || !process_title || !step) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
         const user = await User.find(user_email);
@@ -61,14 +68,19 @@ router.post('/update', async (request, response) => {
         if (!user_process) {
             return response.status(404).json({ message: 'User process not found.' });
         }
-        if (!await Step.getById(step_id)) {
-            return response.status(404).json({ message: 'Step not found.' });
+        let res = [];
+        for (i in step) {
+            if (!await Step.getById(step[i].step_id)) {
+                return response.status(404).json({ message: 'Step not found.' });
+            }
+            res.push(await UserStep.update(user_process.id, step[i].step_id, step[i].is_done));
         }
-        const res = await UserStep.update(user_process.id, step_id, is_done);
         const notDone = await UserStep.getNotDone(user_process.id);
+        let done = false;
         if (notDone.length === 0) {
-            await UserProcess.update(user_process.id, process.id);
+            done = true;
         }
+        await UserProcess.update(user_process.id, process.id, done);
         return response.status(200).json({
             message: 'User process updated!',
             response: res
@@ -78,6 +90,7 @@ router.post('/update', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+
 router.get('/delete', async (request, response) => {
     try {
         const { user_email, process_title } = request.query;

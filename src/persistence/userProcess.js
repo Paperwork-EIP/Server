@@ -18,7 +18,7 @@ module.exports = {
             throw error;
         }
     },
-    async update(user_process_id, process_id) {
+    async update(user_process_id, process_id, is_done) {
         try {
             const process = await Process.getById(process_id);
             if (process) {
@@ -34,12 +34,17 @@ module.exports = {
                     expire_date.setMonth(expire_date.getMonth() + month);
                     expire_date.setDate(expire_date.getDate() + day);
                 }
-                const is_done = true;
-                const { rows } = await db.query(sql`
+                let res;
+                if (is_done) {
+                res = await db.query(sql`
             UPDATE user_process SET is_done=${is_done}, expire_date=${expire_date}, end_process_date=${currentDate}
                 WHERE id=${user_process_id} RETURNING id, user_id, process_id;
-            `);
-                const [user_process] = rows;
+            `);} else {
+                res = await db.query(sql`
+            UPDATE user_process SET is_done=${is_done}, expire_date=NULL, end_process_date=NULL
+                WHERE id=${user_process_id} RETURNING id, user_id, process_id;
+            `);}
+                const [user_process] = res.rows;
                 return user_process;
             }
             return null;
@@ -52,6 +57,16 @@ module.exports = {
         try {
             const { rows } = await db.query(sql`
             DELETE FROM user_process where user_id=${user_id} and process_id=${process_id};`);
+            return rows[0];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+    async deleteAll(process_id) {
+        try {
+            const { rows } = await db.query(sql`
+            DELETE FROM user_process where process_id=${process_id};`);
             return rows[0];
         } catch (error) {
             console.error(error);

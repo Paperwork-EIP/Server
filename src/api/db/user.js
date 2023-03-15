@@ -140,12 +140,12 @@ router.post('/register', async (request, response) => {
     }
   });
 
-  router.get('/modifyDatas', async (request, response) => {
+  router.post('/modifyDatas', async (request, response) => {
     try{
       const { email, new_email, language,
               username, firstname, name, age,
               adress, number_phone, profile_picture, password
-            } = request.query
+            } = request.body
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }

@@ -295,7 +295,7 @@ describe("User connection tests", () => {
                     username: "usernamecbdbcjnsnicwsnwsjcbdycbdd",
                     password: "pass"
                 });
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
@@ -338,7 +338,7 @@ describe("User connection tests", () => {
         });
         describe("[INVALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: "",
                 });
 
@@ -346,13 +346,13 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({});
+                const response = await request(server).post("/user/modifyDatas").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: " "
                 });
 
@@ -454,7 +454,7 @@ describe("User connection tests", () => {
                     username: "usernamecbdbcjnsnicwsnwsjcbdycbdd",
                     password: "pass"
                 });
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
@@ -497,7 +497,7 @@ describe("User connection tests", () => {
         });
         describe("[INVALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: "",
                 });
 
@@ -505,13 +505,13 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({});
+                const response = await request(server).post("/user/modifyDatas").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
+                const response = await request(server).post("/user/modifyDatas").send({
                     email: " "
                 });
 

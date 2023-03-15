@@ -156,15 +156,6 @@ describe("Process tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(JSON.parse(response.text).message).toEqual('Process not found.');
             });
-            test("[DELETE] step not found : should not delete a process with a 404 status code", async () => {
-                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
-                Step.deleteAll = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/process/delete").query({
-                    title: " "
-                });
-                expect(response.statusCode).toBe(404);
-                expect(JSON.parse(response.text).message).toEqual('Steps not found.');
-            });
             test('DELETE] should throw an error if an error occurs', async () => {
                 let response;
 

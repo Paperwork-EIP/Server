@@ -53,15 +53,17 @@ describe("User process", () => {
                 UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue(1);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
                 const response = await request(server).post("/userProcess/add").send({
                     process_title: process_title,
                     user_email: user_email,
                     questions: [
-                        [
-                            1,
-                            true
-                        ],
+                        {
+                            step_id: 1,
+                            response: true
+                        },
                     ]
                 });
 
@@ -75,19 +77,22 @@ describe("User process", () => {
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
-                UserStep.getNotDone = jest.fn().mockReturnValue(0);
+                UserStep.getNotDone = jest.fn().mockReturnValue(1);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: user_email,
                     process_title: process_title,
-                    step_id: 1,
-                    is_done: true
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(200);
                 expect(response._body.message).toEqual('User process updated!');
-                expect(response._body.response).toEqual({ something: 'something' });
+                expect(response._body.response).toEqual([{ something: 'something' }]);
             });
             test("[DELETE] should delete user process with a 200 status code", async () => {
                 Users.find = jest.fn().mockReturnValue({ id: 1 });
@@ -215,10 +220,10 @@ describe("User process", () => {
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "l",
                     questions: [
-                        [
-                            1,
-                            true
-                        ],
+                        {
+                            step_id: 1,
+                            response: true
+                        },
                     ]
                 });
 
@@ -234,38 +239,15 @@ describe("User process", () => {
                     process_title: "t",
                     user_email: "swedfgtyhujikujyhnbgfvdce",
                     questions: [
-                        [
-                            1,
-                            true
-                        ],
+                        {
+                            step_id: 1,
+                            response: true
+                        },
                     ]
                 });
 
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('Process not found.');
-                expect(response.response).not.toBeNull();
-            });
-            test("[ADD] user process not found : should not add a user process with a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
-                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
-                UserProcess.get = jest.fn().mockReturnValue(null);
-                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
-                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
-                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
-
-                const response = await request(server).post("/userProcess/add").send({
-                    process_title: "t",
-                    user_email: "swedfgtyhujikujyhnbgfvdce",
-                    questions: [
-                        [
-                            1,
-                            true
-                        ],
-                    ]
-                });
-
-                expect(response.statusCode).toBe(200);
-                expect(response._body.message).toEqual('User process created!');
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] step not found : should not add a user process with a 404 status code", async () => {
@@ -278,10 +260,10 @@ describe("User process", () => {
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "cefevced   fefefe",
                     questions: [
-                        [
-                            1829394938,
-                            true
-                        ],
+                        {
+                            step_id: 1829394938,
+                            response: true
+                        },
                     ]
                 });
 
@@ -302,10 +284,10 @@ describe("User process", () => {
                         process_title: process_title,
                         user_email: user_email,
                         questions: [
-                            [
-                                1,
-                                true
-                            ],
+                            {
+                                step_id: 1829394938,
+                                response: true
+                            },
                         ]
                     });
                 } catch (error) {
@@ -315,8 +297,11 @@ describe("User process", () => {
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "Test",
-                    step_id: 1,
-                    is_done: true
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -326,8 +311,11 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: "",
                     process_title: "Test",
-                    step_id: 1,
-                    is_done: true
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -336,8 +324,11 @@ describe("User process", () => {
             test("[UPDATE] process title missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: "test@test.com",
-                    step_id: 1,
-                    is_done: true
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -347,29 +338,30 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: "test@test.com",
                     process_title: "",
-                    step_id: 1,
-                    is_done: true
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
-            test("[UPDATE] step id missing : should not update a user process with a 400 status code", async () => {
+            test("[UPDATE] step empty : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: "test@test.com",
                     process_title: "Test",
-                    is_done: true
+                    step: null
                 });
 
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
             });
-            test("[UPDATE] step id empty : should not update a user process with a 400 status code", async () => {
+            test("[UPDATE] step missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_email: "test@test.com",
-                    process_title: "Test",
-                    step_id: null,
-                    is_done: true
+                    process_title: "Test"
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -381,8 +373,11 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "h",
-                    is_done: true,
-                    step_id: 1
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -396,8 +391,11 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "t",
                     user_email: "qqqqqqqq",
-                    is_done: true,
-                    step_id: 1
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -412,8 +410,11 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_email: "wwwwwwww",
-                    is_done: true,
-                    step_id: 1
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -429,8 +430,11 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: 1,
                     user_email: "emaimvaafg",
-                    is_done: true,
-                    step_id: 8734
+                    step:
+                        [{
+                            step_id: 8734,
+                            is_done: true
+                        }]
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -450,8 +454,11 @@ describe("User process", () => {
                     response = await request(server).post("/userProcess/update").send({
                         user_email: user_email,
                         process_title: process_title,
-                        step_id: 1,
-                        is_done: true
+                        step:
+                            [{
+                                step_id: 1,
+                                is_done: true
+                            }]
                     });
                 } catch { error } {
                     expect(response.statusCode).toBe(500);
