@@ -8,11 +8,11 @@ const router = new Router();
 
 router.post('/add', async (request, response) => {
     try {
-        const { user_email, process_title, questions } = request.body;
-        if (!user_email || !process_title || !questions) {
+        const { user_token, process_title, questions } = request.body;
+        if (!user_token || !process_title || !questions) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -52,11 +52,11 @@ router.post('/add', async (request, response) => {
 
 router.post('/update', async (request, response) => {
     try {
-        const { user_email, process_title, step } = request.body;
-        if (!user_email || !process_title || !step) {
+        const { user_token, process_title, step } = request.body;
+        if (!user_token || !process_title || !step) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -93,11 +93,11 @@ router.post('/update', async (request, response) => {
 
 router.get('/delete', async (request, response) => {
     try {
-        const { user_email, process_title } = request.query;
-        if (!user_email || !process_title) {
+        const { user_token, process_title } = request.query;
+        if (!user_token || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -128,11 +128,11 @@ async function getPercentage(user_process_id) {
 
 router.get('/getUserSteps', async (request, response) => {
     try {
-        const { user_email, process_title } = request.query;
-        if (!user_email || !process_title) {
+        const { user_token, process_title } = request.query;
+        if (!user_token || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -180,11 +180,11 @@ router.get('/getUserStepsById', async (request, response) => {
 });
 router.get('/getUserProcesses', async (request, response) => {
     try {
-        const { user_email } = request.query;
-        if (!user_email) {
+        const { user_token } = request.query;
+        if (!user_token) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }

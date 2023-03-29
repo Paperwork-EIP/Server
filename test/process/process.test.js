@@ -156,7 +156,7 @@ describe("Process tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(JSON.parse(response.text).message).toEqual('Process not found.');
             });
-            test('DELETE] should throw an error if an error occurs', async () => {
+            test('[DELETE] should throw an error if an error occurs', async () => {
                 let response;
 
                 try {
@@ -189,6 +189,18 @@ describe("Process tests", () => {
                 expect(response_put.message).not.toBeNull();
                 expect(response_delete.statusCode).toBe(404);
                 expect(response_delete.message).not.toBeNull();
+            });
+            test('[GETALL]] should throw an error if an error occurs', async () => {
+                let response;
+
+                try {
+                    sinon.stub(Process, 'getAll').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/process/getAll").query({});
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
+
             });
         });
     });

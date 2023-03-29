@@ -528,7 +528,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/modifyDatas").query({
+                response = await request(server).post("/user/modifyDatas").send({
                     token: 'email'
                 });
             } catch (error) {

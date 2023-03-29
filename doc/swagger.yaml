@@ -113,19 +113,8 @@ paths:
             type: object
             example:
               {
-                "id": 1,
                 "username": "test",
-                "email": "test@test.test",
-                "password": "...",
-                "language": null,
-                "name": null,
-                "firstname": null,
-                "adress": null,
-                "profile_picture": null,
-                "age": null,
-                "number_phone": null,
-                "google_token": null,
-                "facebook_token": null
+                "email": "test@test.test"
               }
         '400':
           description: Missing parameter email.
@@ -151,19 +140,8 @@ paths:
             type: object
             example:
               {
-                "id": 1,
                 "username": "test",
-                "email": "test@test.test",
-                "password": "...",
-                "language": null,
-                "name": null,
-                "firstname": null,
-                "adress": null,
-                "profile_picture": null,
-                "age": null,
-                "number_phone": null,
-                "google_token": null,
-                "facebook_token": null
+                "email": "test@test.test"
               }
         '400':
           description: Missing parameter username.
@@ -174,19 +152,58 @@ paths:
       summary: Get user information by username.
       tags:
           - user
+  /user/getbytoken:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          description: User token.
+      responses:
+        '200':
+          description: User data.
+          schema:
+            type: object
+            example:
+              {
+                "id": 238,
+                "username": "test",
+                "email": "test@test.test",
+                "password": "$2a$10$SE.uo7JNlc8k6aLFuEO6LupENW3MKZ7L4E5kPJLCV5aK4B/b7RQU6",
+                "language": null,
+                "name": null,
+                "firstname": null,
+                "adress": null,
+                "profile_picture": null,
+                "age": null,
+                "number_phone": null,
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyMzgsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QifSwiaWF0IjoxNjgwMDczMTkwfQ.h-gh-2xjS4KAb_TBVXpQEJZ10K6WF3Jyq5olROTyIJs",
+                "google_token": null,
+                "facebook_token": null
+              }
+        '400':
+          description: Missing parameter token.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all user information by token.
+      tags:
+          - user
   /user/delete:
     get:
       parameters:
         - in: query
-          name: email
+          name: token
           schema:
             type: string
-          description: User email.
+          description: User token.
       responses:
         '200':
           description: User delete.
         '400':
-          description: Missing parameter email.
+          description: Missing parameter token.
         '404':
           description: User not found.
         '500':
@@ -198,10 +215,10 @@ paths:
     post:
       parameters:
         - in: body
-          name: email
+          name: token
           schema:
             type: string
-          description: Current user email.
+          description: User token.
         - in: body
           name: new_email
           schema:
@@ -256,7 +273,7 @@ paths:
         '200':
           description: User updated.
         '400':
-          description: Missing parameter email.
+          description: Missing parameter token.
         '404':
           description: User not found.
         '409':
@@ -270,10 +287,10 @@ paths:
     get:
       parameters:
         - in: query
-          name: email
+          name: token
           schema:
             type: string
-          description: User email.
+          description: User token.
         - in: query
           name: night_mode
           schema:
@@ -283,7 +300,7 @@ paths:
         '200':
           description: User settings updated.
         '400':
-          description: Missing parameter email.
+          description: Missing parameter token.
         '404':
           description: User not found.
         '500':
@@ -538,10 +555,10 @@ paths:
             type: string
             description: Title  of the process the user want to start.
         - in: body
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: Email of the user.
+            description: Token of the user.
         - in: body
           name: questions
           schema:
@@ -576,10 +593,10 @@ paths:
             type: string
             description: Title  of the process the user want to start.
         - in: body
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: Email of the user.
+            description: Token of the user.
         - in: body
           name: step
           schema:
@@ -614,10 +631,10 @@ paths:
             type: string
             description: Title of the user process we want to delete.
         - in: query
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: User email of the user process we want to delete.
+            description: User token of the user process we want to delete.
       responses:
         '200':
           description: User process and user steps deleted.
@@ -639,10 +656,10 @@ paths:
             type: string
             description: Process title of the user process.
         - in: query
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: User email of the user process.
+            description: User token of the user process.
       responses:
         '200':
           description: User steps data.
@@ -684,10 +701,10 @@ paths:
     get:
       parameters:
         - in: query
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: User email of the user processes.
+            description: User token of the user processes.
       responses:
         '200':
           description: User processes.
@@ -764,10 +781,10 @@ paths:
     get:
       parameters:
         - in: query
-          name: email
+          name: token
           schema:
             type: string
-            description: Email of the user.
+            description: Token of the user.
       responses:
         '200':
             description: All the user appointments.
@@ -850,10 +867,10 @@ paths:
             type: string
             description: Content of the proposed process.
         - in: body
-          name: user_email
+          name: user_token
           schema:
             type: string
-            description: User email.
+            description: User token.
       responses:
         '200':
           description: process proposal created.
