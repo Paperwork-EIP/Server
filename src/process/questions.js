@@ -19,7 +19,11 @@ const router = new Router();
         }
         let questions = [];
         for (let i in steps) {
-            questions.push([steps[i].id, steps[i].question]);
+            questions.push(
+                {
+                    step_id: steps[i].id,
+                    question: steps[i].question
+                });
         }
         return response.status(200).json({ questions: questions })
     } catch (error) {
