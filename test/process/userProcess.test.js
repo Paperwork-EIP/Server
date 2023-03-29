@@ -71,6 +71,57 @@ describe("User process", () => {
                 expect(response.message).not.toBeNull();
                 expect(response._body.message).toEqual('User process created!');
             });
+            test("[ADD] should add a user process with a 200 status code (user process already exist)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue( { id: 1 } );
+                UserStep.deleteAll = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue(1);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
+
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_token: user_token,
+                    questions: [
+                        {
+                            step_id: 1,
+                            response: true
+                        },
+                    ]
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User process created!');
+            });
+            test("[ADD] should add a user process with a 200 status code (notDone is empty)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue(null);
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue([]);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
+
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_token: user_token,
+                    questions: [
+                        {
+                            step_id: 1,
+                            response: true
+                        },
+                    ]
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User process created!');
+            });
             test("[UPDATE] should update user process with receive data with a 200 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
@@ -78,6 +129,29 @@ describe("User process", () => {
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
                 UserStep.getNotDone = jest.fn().mockReturnValue(1);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
+
+                const response = await request(server).post("/userProcess/update").send({
+                    user_token: user_token,
+                    process_title: process_title,
+                    step:
+                        [{
+                            step_id: 1,
+                            is_done: true
+                        }]
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual('User process updated!');
+                expect(response._body.response).toEqual([{ something: 'something' }]);
+            });
+            test("[UPDATE] should update user process with receive data with a 200 status code (notDone is empty)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue([]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
                 const response = await request(server).post("/userProcess/update").send({
@@ -252,23 +326,23 @@ describe("User process", () => {
             });
             test("[ADD] step not found : should not add a user process with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ something: 'not null' });
-                Process.getById = jest.fn().mockReturnValue({ something: 'not null' });
-                UserProcess.get = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                UserProcess.get = jest.fn().mockReturnValue(null);
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).post("/userProcess/add").send({
-                    process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
-                    user_token: "cefevced   fefefe",
-                    questions: [
-                        {
-                            step_id: 1829394938,
+                    process_title: "test",
+                    user_token: "emaimvaafg",
+                    questions:
+                        [{
+                            step_id: 8734,
                             response: true
-                        },
-                    ]
+                        }]
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('Step not found.');
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should throw an error if error occurs", async () => {
@@ -714,7 +788,7 @@ describe("User process", () => {
                 let response;
 
                 try {
-                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                    sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
 
                     response = await request(server).get("/userProcess/getUserProcesses").query({
                         user_token: "123"

@@ -91,6 +91,13 @@ describe("User Persistence Tests", () => {
         jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(User.delete()).rejects.toThrow();
     });
+    it('[MODIFY DATA] should do nothing.', async () => {
+        const email = 'test@blablabla.com';
+        const data = 'email';
+        const result = await User.modifyDatas(email, data);
+
+        expect(result).undefined;
+    });
     it('[MODIFY DATA] should update user data when data is email', async () => {
         const email = 'test@blablabla.com';
         const value = 'newemail@cool.conm';
@@ -183,7 +190,7 @@ describe("User Persistence Tests", () => {
     });
     it('[MODIFY DATA] should update user data when data is password', async () => {
         const email = 'test@blablabla.com';
-        const value = 'fsfghseruogsregfhsbreuf';
+        const value = 'password';
         const data = 'password';
 
         db.query = jest.fn().mockReturnValue({ rows: [{ password: value }] });
@@ -201,5 +208,22 @@ describe("User Persistence Tests", () => {
 
         jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(User.modifyDatas(email, data, value)).rejects.toThrow();
+    });
+    it('[SET TOKEN] should throw an error if the query fails', async () => {
+        const errorMessage = 'Error setting token';
+
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.setToken();
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
+    it('[FIND TOKEN] should return the user datas or an empty result', async () => {    
+        db.query = jest.fn().mockReturnValue({ rows: [{ token: "lalalalal" }] });
+    
+        const response = await User.findToken("lalalalal");
+        expect(response).toEqual({ token: "lalalalal" });
     });
 });

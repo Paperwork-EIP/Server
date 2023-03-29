@@ -26,13 +26,11 @@ router.post('/add', async (request, response) => {
         } else {
             await UserStep.deleteAll(user_process.id);
         }
-        for (let i in questions) {
-            let step_id = questions[i].step_id;
-            let answer = questions[i].response;
-            if (!await Step.getById(step_id)) {
+        for (i in questions) {
+            if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
-            await UserStep.create(user_process.id, step_id, answer);
+            await UserStep.create(user_process.id, questions[i].step_id, questions[i].response);
         }
         const notDone = await UserStep.getNotDone(user_process.id);
         if (notDone.length === 0) {
@@ -202,7 +200,6 @@ router.get('/getUserProcesses', async (request, response) => {
             response: res
         });
     } catch (error) {
-        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });

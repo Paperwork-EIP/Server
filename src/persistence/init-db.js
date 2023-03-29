@@ -105,7 +105,7 @@ module.exports = {
                 night_mode boolean
               );`)
         } catch(error) {
-            console.log(error);
+            return error;
         }
     }
 }
