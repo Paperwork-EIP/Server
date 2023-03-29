@@ -587,8 +587,8 @@ paths:
             example:
               [
                 {
-                  step_id: id,
-                  is_done: true/false
+                  step_id: 1,
+                  is_done: false
                 },
                 ...
               ]

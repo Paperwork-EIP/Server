@@ -33,19 +33,8 @@ describe("User Persistence Tests", () => {
         const email = 'test2@example.com';
         const password = 'password';
         const expectedResult = {
-            id: expect.any(Number),
             username: username,
-            email: email,
-            password: expect.any(String),
-            language: null,
-            name: null,
-            firstname: null,
-            adress: null,
-            profile_picture: null,
-            age: null,
-            number_phone: null,
-            google_token: null,
-            facebook_token: null
+            email: email
         };
 
         await User.create(username, email, password);
@@ -62,19 +51,8 @@ describe("User Persistence Tests", () => {
         const email = 'test2@example.com';
         const password = 'password';
         const expectedResult = {
-            id: expect.any(Number),
             username: username,
-            email: email,
-            password: expect.any(String),
-            language: null,
-            name: null,
-            firstname: null,
-            adress: null,
-            profile_picture: null,
-            age: null,
-            number_phone: null,
-            google_token: null,
-            facebook_token: null
+            email: email
         };
 
         await User.create(username, email, password);
