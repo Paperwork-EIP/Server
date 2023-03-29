@@ -8,11 +8,11 @@ const router = new Router();
 
 router.post('/add', async (request, response) => {
     try {
-        const { user_email, process_title, questions } = request.body;
-        if (!user_email || !process_title || !questions) {
+        const { user_token, process_title, questions } = request.body;
+        if (!user_token || !process_title || !questions) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -26,13 +26,17 @@ router.post('/add', async (request, response) => {
         } else {
             await UserStep.deleteAll(user_process.id);
         }
-        for (let i in questions) {
-            let step_id = questions[i][0];
-            let answer = questions[i][1];
-            if (!await Step.getById(step_id)) {
+        for (i in questions) {
+            if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
-            await UserStep.create(user_process.id, step_id, answer);
+            await UserStep.create(user_process.id, questions[i].step_id, questions[i].response);
+        }
+        const notDone = await UserStep.getNotDone(user_process.id);
+        if (notDone.length === 0) {
+            await UserProcess.update(user_process.id, process.id, true);
+        } else {
+            await UserProcess.update(user_process.id, process.id, false);
         }
         return response.status(200).json({
             message: 'User process created!',
@@ -43,13 +47,14 @@ router.post('/add', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+
 router.post('/update', async (request, response) => {
     try {
-        const { user_email, process_title, step_id, is_done } = request.body;
-        if (!user_email || !process_title || !step_id) {
+        const { user_token, process_title, step } = request.body;
+        if (!user_token || !process_title || !step) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -61,14 +66,19 @@ router.post('/update', async (request, response) => {
         if (!user_process) {
             return response.status(404).json({ message: 'User process not found.' });
         }
-        if (!await Step.getById(step_id)) {
-            return response.status(404).json({ message: 'Step not found.' });
+        let res = [];
+        for (i in step) {
+            if (!await Step.getById(step[i].step_id)) {
+                return response.status(404).json({ message: 'Step not found.' });
+            }
+            res.push(await UserStep.update(user_process.id, step[i].step_id, step[i].is_done));
         }
-        const res = await UserStep.update(user_process.id, step_id, is_done);
         const notDone = await UserStep.getNotDone(user_process.id);
+        let done = false;
         if (notDone.length === 0) {
-            await UserProcess.update(user_process.id, process.id);
+            done = true;
         }
+        await UserProcess.update(user_process.id, process.id, done);
         return response.status(200).json({
             message: 'User process updated!',
             response: res
@@ -78,13 +88,14 @@ router.post('/update', async (request, response) => {
         return response.status(500).json({ message: 'System error.' });
     }
 });
+
 router.get('/delete', async (request, response) => {
     try {
-        const { user_email, process_title } = request.query;
-        if (!user_email || !process_title) {
+        const { user_token, process_title } = request.query;
+        if (!user_token || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -115,11 +126,11 @@ async function getPercentage(user_process_id) {
 
 router.get('/getUserSteps', async (request, response) => {
     try {
-        const { user_email, process_title } = request.query;
-        if (!user_email || !process_title) {
+        const { user_token, process_title } = request.query;
+        if (!user_token || !process_title) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -167,11 +178,11 @@ router.get('/getUserStepsById', async (request, response) => {
 });
 router.get('/getUserProcesses', async (request, response) => {
     try {
-        const { user_email } = request.query;
-        if (!user_email) {
+        const { user_token } = request.query;
+        if (!user_token) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
@@ -189,7 +200,6 @@ router.get('/getUserProcesses', async (request, response) => {
             response: res
         });
     } catch (error) {
-        console.error(error);
         return response.status(500).json({ message: 'System error.' });
     }
 });

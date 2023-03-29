@@ -33,19 +33,8 @@ describe("User Persistence Tests", () => {
         const email = 'test2@example.com';
         const password = 'password';
         const expectedResult = {
-            id: expect.any(Number),
             username: username,
-            email: email,
-            password: expect.any(String),
-            language: null,
-            name: null,
-            firstname: null,
-            adress: null,
-            profile_picture: null,
-            age: null,
-            number_phone: null,
-            google_token: null,
-            facebook_token: null
+            email: email
         };
 
         await User.create(username, email, password);
@@ -62,19 +51,8 @@ describe("User Persistence Tests", () => {
         const email = 'test2@example.com';
         const password = 'password';
         const expectedResult = {
-            id: expect.any(Number),
             username: username,
-            email: email,
-            password: expect.any(String),
-            language: null,
-            name: null,
-            firstname: null,
-            adress: null,
-            profile_picture: null,
-            age: null,
-            number_phone: null,
-            google_token: null,
-            facebook_token: null
+            email: email
         };
 
         await User.create(username, email, password);
@@ -112,6 +90,13 @@ describe("User Persistence Tests", () => {
     it('[DELETE] should throw an error if an error occurs', async () => {
         jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(User.delete()).rejects.toThrow();
+    });
+    it('[MODIFY DATA] should do nothing.', async () => {
+        const email = 'test@blablabla.com';
+        const data = 'email';
+        const result = await User.modifyDatas(email, data);
+
+        expect(result).undefined;
     });
     it('[MODIFY DATA] should update user data when data is email', async () => {
         const email = 'test@blablabla.com';
@@ -205,7 +190,7 @@ describe("User Persistence Tests", () => {
     });
     it('[MODIFY DATA] should update user data when data is password', async () => {
         const email = 'test@blablabla.com';
-        const value = 'fsfghseruogsregfhsbreuf';
+        const value = 'password';
         const data = 'password';
 
         db.query = jest.fn().mockReturnValue({ rows: [{ password: value }] });
@@ -223,5 +208,22 @@ describe("User Persistence Tests", () => {
 
         jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(User.modifyDatas(email, data, value)).rejects.toThrow();
+    });
+    it('[SET TOKEN] should throw an error if the query fails', async () => {
+        const errorMessage = 'Error setting token';
+
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.setToken();
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
+    it('[FIND TOKEN] should return the user datas or an empty result', async () => {    
+        db.query = jest.fn().mockReturnValue({ rows: [{ token: "lalalalal" }] });
+    
+        const response = await User.findToken("lalalalal");
+        expect(response).toEqual({ token: "lalalalal" });
     });
 });

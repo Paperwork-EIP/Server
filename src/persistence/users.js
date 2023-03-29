@@ -20,13 +20,13 @@ module.exports = {
   },
   async find(email) {
     const { rows } = await db.query(sql`
-    SELECT * FROM user_table WHERE email=${email} LIMIT 1;
+    SELECT email, username FROM user_table WHERE email=${email} LIMIT 1;
     `);
     return rows[0];
   },
   async findUsername(username) {
     const { rows } = await db.query(sql`
-    SELECT * FROM user_table WHERE username=${username} LIMIT 1;
+    SELECT email, username FROM user_table WHERE username=${username} LIMIT 1;
     `);
     return rows[0];
   },
@@ -118,5 +118,21 @@ module.exports = {
       console.error(error);
       throw error;
     }
+  },
+  async setToken(email, token) {
+    try {
+      const { rows } = await db.query(sql`
+      UPDATE user_table SET token=${token} where email=${email};`);
+      return rows[0];
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  async findToken(token) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM user_table WHERE token=${token} LIMIT 1;
+    `);
+    return rows[0];
   }
 };

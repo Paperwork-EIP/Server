@@ -41,14 +41,14 @@ describe("Process proposal tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID TESTS] Process proposal", () => {
             test("[ADD] should add a process proposal with a 200 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 ProcessProposal.create = jest.fn().mockReturnValue({ something: 'not null' });
 
                 const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt",
+                    user_token: "ttttttttttttttttttttttttttttttt",
                 });
 
                 expect(response.statusCode).toBe(200);
@@ -82,7 +82,7 @@ describe("Process proposal tests", () => {
                     title: "TestTitle",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: ""
+                    user_token: ""
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -103,7 +103,7 @@ describe("Process proposal tests", () => {
                     title: "TestTitle",
                     description: "TestDescription",
                     content: "",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -113,7 +113,7 @@ describe("Process proposal tests", () => {
                 const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "TestDescription",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -124,7 +124,7 @@ describe("Process proposal tests", () => {
                     title: "TestTitle",
                     description: "",
                     content: "TestContent",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -134,7 +134,7 @@ describe("Process proposal tests", () => {
                 const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     content: "TestContent",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -145,7 +145,7 @@ describe("Process proposal tests", () => {
                     title: "",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -155,20 +155,20 @@ describe("Process proposal tests", () => {
                 const response = await request(server).post("/processProposal/add").send({
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "hsjskskskskssllslslssll"
+                    user_token: "hsjskskskskssllslslssll"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] user not found : should return a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue(null);
+                Users.findToken = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt",
+                    user_token: "ttttttttttttttttttttttttttttttt",
                 });
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('User not found.');
@@ -178,14 +178,14 @@ describe("Process proposal tests", () => {
                 let response;
 
                 try {
-                    Users.find = jest.fn().mockReturnValue({ id: 1 });
+                    Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                     sinon.stub(ProcessProposal, 'create').throws(new Error('db query failed'));
 
                     response = await request(server).post("/processProposal/add").send({
                         title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                         description: "TestDescription",
                         content: "TestContent",
-                        user_email: "ttttttttttttttttttttttttttttttt",
+                        user_token: "ttttttttttttttttttttttttttttttt",
                     });
                 } catch (error) {
                     expect(response.statusCode).toBe(500);
@@ -193,14 +193,14 @@ describe("Process proposal tests", () => {
 
             });
             test("[ADD] should return a 409 error status", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 ProcessProposal.create = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
-                    user_email: "ttttttttttttttttttttttttttttttt",
+                    user_token: "ttttttttttttttttttttttttttttttt",
                 });
 
                 expect(response.statusCode).toBe(409);
@@ -209,13 +209,13 @@ describe("Process proposal tests", () => {
                 let response;
 
                 try {
-                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                    sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
 
                     response = await request(server).post("/processProposal/add").send({
                         title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                         description: "TestDescription",
                         content: "TestContent",
-                        user_email: "ttttttttttttttttttttttttttttttt",
+                        user_token: "ttttttttttttttttttttttttttttttt",
                     });
                 } catch (error) {
                     expect(response.statusCode).toBe(500);

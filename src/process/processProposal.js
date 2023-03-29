@@ -5,11 +5,11 @@ const router = new Router();
 
 router.post('/add', async (request, response) => {
     try {
-        const { title, description, content, user_email } = request.body;
-        if (!title || !description || !content || !user_email) {
+        const { title, description, content, user_token } = request.body;
+        if (!title || !description || !content || !user_token) {
             return response.status(400).json({ message: 'Missing fields.' });
         }
-        const user = await User.find(user_email);
+        const user = await User.findToken(user_token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }

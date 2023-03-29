@@ -71,11 +71,11 @@ async function getMeeting(processes) {
 
 router.get("/getAll", async (request, response) => {
     try {
-        const { email } = request.query;
-        if (!email) {
+        const { token } = request.query;
+        if (!token) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
-        const user = await User.find(email);
+        const user = await User.findToken(token);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }

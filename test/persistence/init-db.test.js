@@ -1,6 +1,11 @@
 const initdb = require("../../src/persistence/init-db");
 const db = require('../../src/persistence/db');
 const sql = require('sql-template-strings');
+const sinon = require("sinon");
+
+afterAll(() => {
+    sinon.restore();
+});
 
 describe("Init db tests", () => {
     it("should have a db component", () => {
@@ -38,5 +43,12 @@ describe("Init db tests", () => {
 
         const comsTablesExist = await db.query(sql` SELECT*FROM coms `);
         expect(comsTablesExist).toBeTruthy();
+    });
+    test("[initAll] should throw an error if error occurs", async () => {
+        let response;
+        sinon.stub(db, 'query').throws(new Error('db query failed'));
+
+        response = await initdb.initAll();
+        expect(response).not.toBeNull();
     });
 });
