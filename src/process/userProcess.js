@@ -26,7 +26,7 @@ router.post('/add', async (request, response) => {
         } else {
             await UserStep.deleteAll(user_process.id);
         }
-        for (i in questions) {
+        for (let i in questions) {
             if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
@@ -67,7 +67,7 @@ router.post('/update', async (request, response) => {
             return response.status(404).json({ message: 'User process not found.' });
         }
         let res = [];
-        for (i in step) {
+        for (let i in step) {
             if (!await Step.getById(step[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
