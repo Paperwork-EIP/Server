@@ -61,18 +61,34 @@ describe("Calendar tests", () => {
                 expect(response._body.response).not.toBeNull();
             });
             test("[GET ALL] should get all meeting from calendar table with a 200 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                Step.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
 
+
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "hbjhbj"
+                    token: "hbjhbj"
                 });
 
                 expect(response.statusCode).toBe(200);
                 expect(response._body.message).toEqual("User appoinments.");
                 expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[DELETE] should delete a meeting from calendar table with a 200 status code", async () => {
+                UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ title: 'test' });
+                Calendar.set = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/calendar/delete").query({
+                    user_process_id: 1,
+                    step_id: 1
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Appoinment deleted.");
+                expect(response._body.response).not.toBeNull();
             });
         });
         describe("[INVALID CALENDAR TESTS]", () => {
@@ -346,14 +362,14 @@ describe("Calendar tests", () => {
                     console.log(error);
                 }
             });
-            test("[GET ALL] email missing : should not get all meeting from calendar table with a 400 status code", async () => {
+            test("[GET ALL] token missing : should not get all meeting from calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/getAll").query({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("[GET ALL] email empty : should not get all meeting from calendar table with a 400 status code", async () => {
+            test("[GET ALL] token empty : should not get all meeting from calendar table with a 400 status code", async () => {
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: ""
+                    token: ""
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -361,7 +377,7 @@ describe("Calendar tests", () => {
             test("[GET ALL] user not found : should not set a meeting in calendar table with a 404 status code", async () => {
                 Users.find = jest.fn().mockReturnValue(null);
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
+                    token: "123"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -369,11 +385,11 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] process not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
+                    token: "123"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -381,13 +397,13 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] user step not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
+                    token: "123"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -395,12 +411,12 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] process not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
+                    token: "123"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -408,14 +424,14 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] step not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.find = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
-                    email: "123"
+                    token: "123"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -424,9 +440,9 @@ describe("Calendar tests", () => {
             });
             test("[GET ALL] should return 500 status code if an error occurs", async () => {
                 try {
-                    sinon.stub(Users, 'find').throws(new Error('db query failed'));
+                    sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
                     const response = await request(server).get("/calendar/getAll").query({
-                        email: "123"
+                        token: "123"
                     });
                 } catch(error) {
                     expect(response.statusCode).toBe(500);

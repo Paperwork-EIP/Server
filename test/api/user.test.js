@@ -3,6 +3,7 @@ const sinon = require("sinon");
 const router = require("../../src/api/db/user");
 const { start, stop } = require('../../index');
 const User = require('../../src/persistence/users');
+const Settings = require('../../src/persistence/userSettings');
 
 describe("User connection tests", () => {
     const port = 3002;
@@ -103,7 +104,6 @@ describe("User connection tests", () => {
 
                 expect(response.statusCode).toBe(400);
             });
-
             test("password empty : should not register an user with a 400 status code", async () => {
                 const response = await request(server).post("/user/register").send({
                     username: "username",
@@ -224,16 +224,39 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(404);
             });
         });
+        describe("[VALID GETBYTOKEN TESTS]", () => {
+            test("should get an user data with a 200 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ email: "email" });
+                const response = await request(server).get("/user/getbytoken?token=test").send({});
+                expect(response.statusCode).toBe(200);
+            });
+        });
+        describe("[INVALID GETBYTOKEN TESTS]", () => {
+            test("should get an user data with a 400 status code", async () => {
+                const response = await request(server).get("/user/getbytoken?token=").send({});
+                expect(response.statusCode).toBe(400);
+            });
+            test("should get an user data with a 400 status code", async () => {
+                const response = await request(server).get("/user/getbytoken").send({});
+                expect(response.statusCode).toBe(400);
+            });
+            test("should get an user data with a 404 status code", async () => {
+                const response = await request(server).get("/user/getbytoken?token=lllll").send({});
+                expect(response.statusCode).toBe(404);
+            });
+        });
         describe("[VALID DELETE TESTS]", () => {
             test("should delete an user with a 200 status code", async () => {
-                const response = await request(server).get("/user/delete?email=emaillllllllllllllllllllllllllllllll").send({});
+                User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll" });
+                Settings.delete = jest.fn().mockReturnValue({ id: 1 });
+                const response = await request(server).get("/user/delete?token=test").send({});
 
                 expect(response.statusCode).toBe(200);
             });
         });
         describe("[INVALID DELETE TESTS]", () => {
             test("should delete an user with a 400 status code", async () => {
-                const response = await request(server).get("/user/delete?email=").send({});
+                const response = await request(server).get("/user/delete?token=").send({});
 
                 expect(response.statusCode).toBe(400);
             });
@@ -243,34 +266,24 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
             });
             test("should delete an user with a 404 status code", async () => {
-                const response = await request(server).get("/user/delete?email=lalalalalllllllllllllllllll").send({});
+                const response = await request(server).get("/user/delete?token=lalalalalllllllllllllllllll").send({});
 
                 expect(response.statusCode).toBe(404);
             });
         });
         describe("[VALID GET SETTINGS TESTS]", () => {
             test("should get settings with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "hyxjnscjksdcnhsdvcnsd",
-                    username: "hyxjnscjksdcnhsdvcnsd",
-                    password: "pass"
-                });
-                const response = await request(server).get("/user/getSettings?email=hyxjnscjksdcnhsdvcnsd").send({});
-                const deleteUser = await request(server).get("/user/delete?email=hyxjnscjksdcnhsdvcnsd").send({});
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
+                User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll" });
+                Settings.get = jest.fn().mockReturnValue({ id: 1 });
+                const response = await request(server).get("/user/getSettings?token=hyxjnscjksdcnhsdvcnsd").send({});
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
         });
         describe("[INVALID GET SETTINGS TESTS]", () => {
             test("should get settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/getSettings?email=").send({});
+                const response = await request(server).get("/user/getSettings?token=").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -282,7 +295,7 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should get settings with a 404 status code", async () => {
-                const response = await request(server).get("/user/getSettings?email=lalalalallllll").send({});
+                const response = await request(server).get("/user/getSettings?token=lalalalallllll").send({});
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
@@ -290,103 +303,88 @@ describe("User connection tests", () => {
         });
         describe("[VALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
-                    username: "usernamecbdbcjnsnicwsnwsjcbdycbdd",
-                    password: "pass"
-                });
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
+                User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll" });
+                User.find = jest.fn().mockReturnValue(null);
+                User.findUsername = jest.fn().mockReturnValue(null);
+                User.modifyDatas = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).post("/user/modifyDatas").send({
+                    token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
                     password: "pass2"
                 });
-                const getByUsername = await request(server).get("/user/getbyusername?username=usernamenvhksdjksdasdbjhasg").send({});
-                const login = await request(server).post("/user/login").send({
-                    email: "emailnvhksdjksdasdbjhasg",
-                    password: "pass2"
-                });
-                const getByOldEmail = await request(server).get("/user/getbyemail?email=emailcbdbcjnsnicwsnwsjcbdycbdd").send({});
-                const getByNewEmail = await request(server).get("/user/getbyemail?email=emailnvhksdjksdasdbjhasg").send({});
-                const getByOldUsername = await request(server).get("/user/getbyusername?username=usernamecbdbcjnsnicwsnwsjcbdycbdd").send({});
-                const deleteUser = await request(server).get("/user/delete?email=emailnvhksdjksdasdbjhasg").send({});
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-
-                expect(getByUsername.statusCode).toBe(200);
-                expect(getByUsername.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(getByOldEmail.statusCode).toBe(404);
-                expect(getByOldEmail.message).not.toBeNull();
-
-                expect(getByNewEmail.statusCode).toBe(200);
-                expect(getByNewEmail.message).not.toBeNull();
-
-                expect(getByOldUsername.statusCode).toBe(404);
-                expect(getByOldUsername.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
         });
         describe("[INVALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: "",
+                const response = await request(server).post("/user/modifyDatas").send({
+                    token: "",
                 });
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({});
+                const response = await request(server).post("/user/modifyDatas").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: " "
+                const response = await request(server).post("/user/modifyDatas").send({
+                    token: " "
                 });
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
+            test("should modify datas with a 409 status code (email already used)", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1 });
+                User.find = jest.fn().mockReturnValue({id: 1});
+                response = await request(server).post("/user/modifyDatas").send({
+                    token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
+                    username: "usernamenvhksdjksdasdbjhasg",
+                    new_email: "emailnvhksdjksdasdbjhasg",
+                    password: "pass2"
+                });
+
+                expect(response.statusCode).toBe(409);
+            });
+            test("should modify datas with a 409 status code (username already used)", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1 });
+                User.find = jest.fn().mockReturnValue(null);
+                User.findUsername = jest.fn().mockReturnValue({id: 1});
+                response = await request(server).post("/user/modifyDatas").send({
+                    token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
+                    username: "usernamenvhksdjksdasdbjhasg",
+                    new_email: "emailnvhksdjksdasdbjhasg",
+                    password: "pass2"
+                });
+
+                expect(response.statusCode).toBe(409);
+            });
         });
         describe("[VALID MODIFY SETTINGS TESTS]", () => {
             test("should modify settings with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
-                    username: "usernamebcidsncjdnscseeeee",
-                    password: "pass"
-                });
+                User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll", id: 1 });
+                Settings.modifySettings = jest.fn().mockReturnValue({ id: 1 });
                 const response = await request(server).get("/user/modifySettings").query({
-                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
+                    token: "emaiiiiiljbcsjcjsdncdsncksdnv",
                     night_mode: true,
                 });
-                const deleteUser = await request(server).get("/user/delete?email=emaiiiiiljbcsjcjsdncdsncksdnv").send({});
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
-
+                
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
         });
         describe("[INVALID MODIFY SETTINGS TESTS]", () => {
             test("should modify settings with a 400 status code", async () => {
                 const response = await request(server).get("/user/modifySettings").query({
-                    email: "",
+                    token: "",
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -400,7 +398,7 @@ describe("User connection tests", () => {
             });
             test("should modify settings with a 404 status code", async () => {
                 const response = await request(server).get("/user/modifySettings").query({
-                    email: " "
+                    token: " "
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -409,27 +407,17 @@ describe("User connection tests", () => {
         });
         describe("[VALID GET SETTINGS TESTS]", () => {
             test("should get settings with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "hyxjnscjksdcnhsdvcnsd",
-                    username: "hyxjnscjksdcnhsdvcnsd",
-                    password: "pass"
-                });
-                const response = await request(server).get("/user/getSettings?email=hyxjnscjksdcnhsdvcnsd").send({});
-                const deleteUser = await request(server).get("/user/delete?email=hyxjnscjksdcnhsdvcnsd").send({});
+                User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll" });
+                Settings.get = jest.fn().mockReturnValue({ id: 1 });
+                const response = await request(server).get("/user/getSettings?token=hyxjnscjksdcnhsdvcnsd").send({});
 
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
-                
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
             });
         });
         describe("[INVALID GET SETTINGS TESTS]", () => {
             test("should get settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/getSettings?email=").send({});
+                const response = await request(server).get("/user/getSettings?token=").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -441,126 +429,7 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should get settings with a 404 status code", async () => {
-                const response = await request(server).get("/user/getSettings?email=lalalalallllll").send({});
-
-                expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
-            });
-        });
-        describe("[VALID MODIFY DATAS TESTS]", () => {
-            test("should modify datas with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
-                    username: "usernamecbdbcjnsnicwsnwsjcbdycbdd",
-                    password: "pass"
-                });
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: "emailcbdbcjnsnicwsnwsjcbdycbdd",
-                    username: "usernamenvhksdjksdasdbjhasg",
-                    new_email: "emailnvhksdjksdasdbjhasg",
-                    password: "pass2"
-                });
-                const getByUsername = await request(server).get("/user/getbyusername?username=usernamenvhksdjksdasdbjhasg").send({});
-                const login = await request(server).post("/user/login").send({
-                    email: "emailnvhksdjksdasdbjhasg",
-                    password: "pass2"
-                });
-                const getByOldEmail = await request(server).get("/user/getbyemail?email=emailcbdbcjnsnicwsnwsjcbdycbdd").send({});
-                const getByNewEmail = await request(server).get("/user/getbyemail?email=emailnvhksdjksdasdbjhasg").send({});
-                const getByOldUsername = await request(server).get("/user/getbyusername?username=usernamecbdbcjnsnicwsnwsjcbdycbdd").send({});
-                const deleteUser = await request(server).get("/user/delete?email=emailnvhksdjksdasdbjhasg").send({});
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
-                
-                expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-
-                expect(getByUsername.statusCode).toBe(200);
-                expect(getByUsername.message).not.toBeNull();
-
-                expect(login.statusCode).toBe(200);
-                expect(login.message).not.toBeNull();
-
-                expect(getByOldEmail.statusCode).toBe(404);
-                expect(getByOldEmail.message).not.toBeNull();
-
-                expect(getByNewEmail.statusCode).toBe(200);
-                expect(getByNewEmail.message).not.toBeNull();
-
-                expect(getByOldUsername.statusCode).toBe(404);
-                expect(getByOldUsername.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
-            });
-        });
-        describe("[INVALID MODIFY DATAS TESTS]", () => {
-            test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: "",
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({});
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should modify datas with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifyDatas").query({
-                    email: " "
-                });
-
-                expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
-            });
-        });
-        describe("[VALID MODIFY SETTINGS TESTS]", () => {
-            test("should modify settings with a 200 status code", async () => {
-                const user = await request(server).post("/user/register").send({
-                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
-                    username: "usernamebcidsncjdnscseeeee",
-                    password: "pass"
-                });
-                const response = await request(server).get("/user/modifySettings").query({
-                    email: "emaiiiiiljbcsjcjsdncdsncksdnv",
-                    night_mode: true,
-                });
-                const deleteUser = await request(server).get("/user/delete?email=emaiiiiiljbcsjcjsdncdsncksdnv").send({});
-
-                expect(user.statusCode).toBe(200);
-                expect(user.message).not.toBeNull();
-
-                expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-
-                expect(deleteUser.statusCode).toBe(200);
-                expect(deleteUser.message).not.toBeNull();
-            });
-        });
-        describe("[INVALID MODIFY SETTINGS TESTS]", () => {
-            test("should modify settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifySettings").query({
-                    email: "",
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should modify settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifySettings").query({});
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should modify settings with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifySettings").query({
-                    email: " "
-                });
+                const response = await request(server).get("/user/getSettings?token=lalalalallllll").send({});
 
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
@@ -629,10 +498,10 @@ describe("User connection tests", () => {
             let response;
 
             try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
                 response = await request(server).get("/user/getSettings").query({
-                    email: 'email'
+                    token: 'email'
                 });
             } catch (error) {
                 expect(response.statusCode).toBe(500);
@@ -643,10 +512,10 @@ describe("User connection tests", () => {
             let response;
 
             try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
                 response = await request(server).get("/user/delete").query({
-                    email: 'email'
+                    token: 'email'
                 });
             } catch (error) {
                 expect(response.statusCode).toBe(500);
@@ -657,10 +526,10 @@ describe("User connection tests", () => {
             let response;
 
             try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/modifyDatas").query({
-                    email: 'email'
+                response = await request(server).post("/user/modifyDatas").send({
+                    token: 'email'
                 });
             } catch (error) {
                 expect(response.statusCode).toBe(500);
@@ -671,10 +540,24 @@ describe("User connection tests", () => {
             let response;
 
             try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
                 response = await request(server).get("/user/modifySettings").query({
-                    email: 'email'
+                    token: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[GET BY TOKEN 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/getbytoken").query({
+                    token: 'email'
                 });
             } catch (error) {
                 expect(response.statusCode).toBe(500);

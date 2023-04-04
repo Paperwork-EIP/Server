@@ -23,10 +23,12 @@ router.post('/register', async (request, response) => {
       }
       const user = await User.create(username, email, password);
       await Settings.create(user.id);
+      const token = jwt.sign({ user }, jwt_key);
+      await User.setToken(email, token);
       return response.status(200).json({
         message: 'User registered !',
         email: user.email,
-        jwt: jwt.sign({ user }, jwt_key)
+        jwt: token
       });
     } catch (error) {
       console.error(
@@ -50,10 +52,12 @@ router.post('/register', async (request, response) => {
         } else if (check_connect.code === "invalid") {
           return response.status(400).json({ message: 'Invalid password' });
         } else {
+          const token = jwt.sign({ user: check_connect.user }, jwt_key);
+          User.setToken(email, token);
           return response.status(200).json({
             message: 'User logged in !',
             email: check_connect.user.email,
-            jwt: jwt.sign({ user: check_connect.user }, jwt_key)
+            jwt: token
           });
         }
       })
@@ -67,7 +71,7 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyemail', async (request, response) => {
     try{
-      const { email } = request.query
+      const { email } = request.query;
       if (!email) {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }
@@ -85,7 +89,7 @@ router.post('/register', async (request, response) => {
 
   router.get('/getbyusername', async (request, response) => {
     try{
-      const { username } = request.query
+      const { username } = request.query;
       if (!username) {
         return response.status(400).json({ message: 'Missing parameter username.' });
       }
@@ -101,15 +105,33 @@ router.post('/register', async (request, response) => {
     }
   });
 
+  router.get('/getbytoken', async (request, response) => {
+    try{
+      const { token } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
+      }
+      const find = await User.findToken(token);
+      if (find) {
+        return response.status(200).json(find);
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
   router.get('/getSettings', async (request, response) => {
     try{
-      const { email } = request.query
-      if (!email) {
-        return response.status(400).json({ message: 'Missing parameter email.' });
+      const { token } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
       }
-      const find = await User.find(email)
+      const find = await User.findToken(token);
       if (find) {
-        const settings = await Settings.get(find.id)
+        const settings = await Settings.get(find.id);
         return response.status(200).json(settings);
       } else {
         return response.status(404).json({ message: 'User not found.' });
@@ -122,13 +144,13 @@ router.post('/register', async (request, response) => {
 
   router.get('/delete', async (request, response) => {
     try{
-      const { email } = request.query
-      if (!email) {
-        return response.status(400).json({ message: 'Missing parameter email.' });
+      const { token } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
       }
-      const find = await User.find(email)
+      const find = await User.findToken(token)
       if (find) {
-        await User.delete(email)
+        await User.delete(find.email)
         await Settings.delete(find.id)
         return response.status(200).json({ message: 'User deleted' });
       } else {
@@ -140,16 +162,16 @@ router.post('/register', async (request, response) => {
     }
   });
 
-  router.get('/modifyDatas', async (request, response) => {
+  router.post('/modifyDatas', async (request, response) => {
     try{
-      const { email, new_email, language,
+      const { token, new_email, language,
               username, firstname, name, age,
               adress, number_phone, profile_picture, password
-            } = request.query
-      if (!email) {
-        return response.status(400).json({ message: 'Missing parameter email.' });
+            } = request.body;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
       }
-      const find = await User.find(email)
+      const find = await User.findToken(token)
       if (find) {
         const data =
         {"language":language, "password": password,
@@ -157,14 +179,14 @@ router.post('/register', async (request, response) => {
           "adress":adress, "profile_picture":profile_picture, "number_phone":number_phone,
           "email":new_email, 
         }
-        if (await User.find(new_email) && new_email != email) {
+        if (await User.find(new_email) && new_email != find.email) {
           return response.status(409).json({ message: 'Email already used' });
         }
         if (await User.findUsername(username) && username != find.username) {
           return response.status(409).json({ message: 'Usename already used' });
         }
         for (let key in data) {
-          await User.modifyDatas(email, key, data[key]);
+          await User.modifyDatas(find.email, key, data[key]);
         }
         return response.status(200).json({ message: 'User updated' });
       } else {
@@ -177,11 +199,11 @@ router.post('/register', async (request, response) => {
 
   router.get('/modifySettings', async (request, response) => {
     try{
-      const { email, night_mode } = request.query;
-      if (!email) {
-        return response.status(400).json({ message: 'Missing parameter email.' });
+      const { token, night_mode } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
       }
-      const find = await User.find(email);
+      const find = await User.findToken(token);
       if (find) {
         const id = find.id;
         const data = {"night_mode":night_mode,};

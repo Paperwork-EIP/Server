@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const Process = require('../persistence/process');
 const Step = require('../persistence/step');
+const UserProcess = require('../persistence/userProcess');
 const router = new Router();
   
   router.post('/add', async (request, response) => {
@@ -33,10 +34,8 @@ const router = new Router();
         if(!find) {
           return response.status(404).json({ message: 'Process not found.' });
         } else {
-          const step = Step.deleteAll(find.id);
-          if (!step) {
-            return response.status(404).json({ message: 'Steps not found.' });
-          }
+          await Step.deleteAll(find.id);
+          await UserProcess.deleteAll(find.id);
           const res = await Process.delete(find.id);
           return response.status(200).json({
               message: 'Process and steps deleted!',
@@ -54,8 +53,7 @@ const router = new Router();
             response: res 
         });
     } catch (error) {
-        console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+      return response.status(500).json({ message: 'System error.' });
     }
   });
 
