@@ -435,7 +435,7 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
-        descripe("[VALID SEND VERIFICATION EMAIL TESTS]", () => {
+        describe("[VALID SEND VERIFICATION EMAIL TESTS]", () => {
             test("should send verification email with a 200 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1, email: "emma.rulliere@epitech.eu" });
 
@@ -445,7 +445,7 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
-        descripe("[INVALID SEND VERIFICATION EMAIL TESTS]", () => {
+        describe("[INVALID SEND VERIFICATION EMAIL TESTS]", () => {
             test("should send verification email with a 400 status code", async () => {
                 const response = await request(server).get("/user/sendVerificationEmail?token=").send({});
                 expect(response.statusCode).toBe(400);
@@ -469,13 +469,106 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
-        descripe("[VALID VERIFY EMAIL TESTS]", () => {
+        describe("[VALID VERIFY EMAIL TESTS]", () => {
             test("should verify email with a 200 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1 });
-                User.verifyEmail = jest.fn().mockReturnValue({ id: 1 });
+                User.setEmailVerified = jest.fn().mockReturnValue({ id: 1 });
 
                 const response = await request(server).get("/user/verifyEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
                 expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID VERIFY EMAIL TESTS]", () => {
+            test("should verify email with a 400 status code", async () => {
+                const response = await request(server).get("/user/verifyEmail?token=").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should verify email with a 400 status code", async () => {
+                const response = await request(server).get("/user/verifyEmail").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should verify email with a 404 status code", async () => {
+                const response = await request(server).get("/user/verifyEmail?token=lalalalallllll").send({});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+            test("should verify email with a 409 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
+
+                const response = await request(server).get("/user/verifyEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                expect(response.statusCode).toBe(409);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[VALID SEND RESET PASSWORD EMAIL TESTS]", () => {
+            test("should send reset password email with a 200 status code", async () => {
+                User.find = jest.fn().mockReturnValue({ email: "emma.rulliere@epitech.eu" });
+                User.setToken = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=emma.rulliere@epitech.eu").send({});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID SEND RESET PASSWORD EMAIL TESTS]", () => {
+            test("should send reset password email with a 400 status code", async () => {
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should send reset password email with a 400 status code", async () => {
+                const response = await request(server).get("/user/sendResetPasswordEmail").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should send reset password email with a 404 status code", async () => {
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=tesssst").send({});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[VALID RESET PASSWORD TESTS]", () => {
+            test("should reset password with a 200 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1 });
+                User.setPassword = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd&password=test").send({});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID RESET PASSWORD TESTS]", () => {
+            test("should reset password with a 400 status code, token empty", async () => {
+                const response = await request(server).get("/user/resetPassword?token=&password=lalala").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should reset password with a 400 status code, missing token", async () => {
+                const response = await request(server).get("/user/resetPassword?password=lalaal").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should reset password with a 400 status code, no arguments", async () => {
+                const response = await request(server).get("/user/resetPassword").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should reset password with a 400 status code, password missing", async () => {
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should reset password with a 400 status code, password empty", async () => {
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd&password=").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should reset password with a 404 status code", async () => {
+                const response = await request(server).get("/user/resetPassword?token=lalalalallllll&password=test").send({});
+                expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
         });
@@ -602,6 +695,64 @@ describe("User connection tests", () => {
 
                 response = await request(server).get("/user/getbytoken").query({
                     token: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[SEND VERIFICATION EMAIL 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/sendVerificationEmail").query({
+                    token: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[VERIFY EMAIL 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'setEmailVerified').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/verifyEmail").query({
+                    token: 'email',
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[SEND RESET PASSWORD EMAIL 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/sendResetPasswordEmail").query({
+                    email: 'email'
+                });
+            } catch (error) {
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual('System error.');
+            }
+        });
+        test('[RESET PASSWORD 500] should throw an error if an error occurs', async () => {
+            let response;
+
+            try {
+                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                response = await request(server).get("/user/resetPassword").query({
+                    token: 'email',
+                    password: 'password'
                 });
             } catch (error) {
                 expect(response.statusCode).toBe(500);

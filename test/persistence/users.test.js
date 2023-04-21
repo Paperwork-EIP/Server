@@ -226,4 +226,38 @@ describe("User Persistence Tests", () => {
         const response = await User.findToken("lalalalal");
         expect(response).toEqual({ token: "lalalalal" });
     });
+    if('[SET EMAIL VERIFIED] should return the user datas or an empty result', async () => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ email_verified: true }] });
+
+        const response = await User.setEmailVerified("lalala", true);
+        expect(response).toEqual({ email_verified: true });
+    });
+    it('[SET EMAIL VERIFIED] should throw an error if the query fails', async () => {
+        const errorMessage = 'Error setting email_verified';
+
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.setEmailVerified();
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
+    it('[SET PASSWORD] should return the user datas or an empty result', async () => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ password: "lalalalal" }] });
+
+        const response = await User.setPassword("lalala", "lalalalal");
+        expect(response).toEqual({ password: "lalalalal" });
+    });
+    it('[SET PASSWORD] should throw an error if the query fails', async () => {
+        const errorMessage = 'Error setting password';
+
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.setPassword("lalala", "lalalalal");
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
 });

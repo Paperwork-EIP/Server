@@ -307,7 +307,7 @@ router.post('/register', async (request, response) => {
               Data: "Reset Your Password"
             }
           },
-          Source: EMAIL
+          Source: process.env.EMAIL
         };
         await ses.sendEmail(params).promise();
         return response.status(200).json({ message: 'Email send.' });
@@ -322,11 +322,8 @@ router.post('/register', async (request, response) => {
   router.get('/resetPassword', async (request, response) => {
     try{
       const { token, password } = request.query;
-      if (!token) {
-        return response.status(400).json({ message: 'Missing parameter token.' });
-      }
-      if (!password) {
-        return response.status(400).json({ message: 'Missing parameter password.' });
+      if (!token || !password) {
+        return response.status(400).json({ message: 'Missing parameter token or password.' });
       }
       const find = await User.findToken(token);
       if (find) {

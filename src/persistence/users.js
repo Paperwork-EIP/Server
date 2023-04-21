@@ -145,9 +145,9 @@ module.exports = {
       throw error;
     }
   },
-  async setPassword(token) {
+  async setPassword(token, password) {
     try {
-      const hashedPassword = await bcrypt.hash(value, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
       UPDATE user_table SET password=${hashedPassword} where token=${token};`);
       return rows[0];
