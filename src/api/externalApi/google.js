@@ -1,18 +1,17 @@
 const { Router } = require('express');
 const router = new Router();
-const { google_clientID, google_secret } = require('../../const.json');
 const axios = require('axios');
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-const { jwt_key } = require('../../const.json');
+// const { jwt_key } = require('../../const.json');
 const REDIRECT_URI = 'http://localhost:3000/googleLogin';
 const {URLSearchParams} = require('url');
 
 function getGoogleAuthURL() {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     return `${rootUrl}?${new URLSearchParams([
-        ['client_id', google_clientID],
+        ['client_id', process.env.google_clientID],
         ['access_type', "offline"],
         ['redirect_uri', REDIRECT_URI],
         ['response_type', "code"],
@@ -34,10 +33,10 @@ router.get("/urlLogin", (request, response) => {
 async function getLoginTokens(code) {
     const url = "https://oauth2.googleapis.com/token";
     const values = new URLSearchParams([
-        ['client_id', google_clientID],
+        ['client_id', process.env.google_clientID],
         ['code', code],
         ['redirect_uri', REDIRECT_URI],
-        ['client_secret', google_secret],
+        ['client_secret', process.env.google_secret],
         ['grant_type', "authorization_code"]
     ]).toString();
     const tokens = await axios
@@ -73,12 +72,12 @@ router.get("/login", async (req, response) => {
             return response.status(200).json({
                 message: "Connected with google",
                 email: checkUser.email,
-                jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, jwt_key)
+                jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
             })
         } else {
             USER.create(user.data.id, user.data.email, access_token).then(user => {
                 TOKEN.set(user.email, 'google', access_token);
-                const jwtToken = jwt.sign({ user }, jwt_key);
+                const jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 return response.status(200).json({
                 message: "Connected with google",
                 jwt: jwtToken

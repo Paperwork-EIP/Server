@@ -435,6 +435,50 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
+        descripe("[VALID SEND VERIFICATION EMAIL TESTS]", () => {
+            test("should send verification email with a 200 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1, email: "emma.rulliere@epitech.eu" });
+
+                const response = await request(server).get("/user/sendVerificationEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
+
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        descripe("[INVALID SEND VERIFICATION EMAIL TESTS]", () => {
+            test("should send verification email with a 400 status code", async () => {
+                const response = await request(server).get("/user/sendVerificationEmail?token=").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should send verification email with a 400 status code", async () => {
+                const response = await request(server).get("/user/sendVerificationEmail").send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should send verification email with a 404 status code", async () => {
+                const response = await request(server).get("/user/sendVerificationEmail?token=lalalalallllll").send({});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+            test("should send verification email with a 409 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
+
+                const response = await request(server).get("/user/sendVerificationEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                expect(response.statusCode).toBe(409);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        descripe("[VALID VERIFY EMAIL TESTS]", () => {
+            test("should verify email with a 200 status code", async () => {
+                User.findToken = jest.fn().mockReturnValue({ id: 1 });
+                User.verifyEmail = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/user/verifyEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
         test('[REGISTER 500] should throw an error if an error occurs', async () => {
             let response;
 

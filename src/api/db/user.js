@@ -2,11 +2,10 @@ const { Router } = require('express');
 const User = require('../../persistence/users');
 const Settings = require('../../persistence/userSettings');
 const jwt = require('jsonwebtoken');
-const { jwt_key, EMAIL } = require('../../const');
 const router = new Router();
 const AWS = require('aws-sdk');
 const SERVER_URL = "https://prod.d1pxqc46foir5s.amplifyapp.com"
-AWS.config.loadFromPath('config.json');
+AWS.config.update({region:'us-east-1'});
 const ses = new AWS.SES();
 
 router.post('/register', async (request, response) => {
@@ -27,7 +26,7 @@ router.post('/register', async (request, response) => {
       }
       const user = await User.create(username, email, password);
       await Settings.create(user.id);
-      const token = jwt.sign({ user }, jwt_key);
+      const token = jwt.sign({ user }, process.env.jwt_key);
       await User.setToken(email, token);
       return response.status(200).json({
         message: 'User registered !',
@@ -56,7 +55,7 @@ router.post('/register', async (request, response) => {
         } else if (check_connect.code === "invalid") {
           return response.status(400).json({ message: 'Invalid password' });
         } else {
-          const token = jwt.sign({ user: check_connect.user }, jwt_key);
+          const token = jwt.sign({ user: check_connect.user }, process.env.jwt_key);
           User.setToken(email, token);
           return response.status(200).json({
             message: 'User logged in !',
@@ -249,7 +248,7 @@ router.post('/register', async (request, response) => {
               Data: "Verify Your Email Address"
             }
           },
-          Source: EMAIL
+          Source: process.env.EMAIL
         };
         await ses.sendEmail(params).promise();
         return response.status(200).json({ message: 'Email send.' });
@@ -289,7 +288,7 @@ router.post('/register', async (request, response) => {
         return response.status(400).json({ message: 'Missing parameter email.' });
       }
       const find = await User.find(email);
-      const token = jwt.sign({ find }, jwt_key);
+      const token = jwt.sign({ find }, process.env.jwt_key);
       await User.setToken(email, token);
       if (find) {
         const params = {
