@@ -7,8 +7,8 @@ module.exports = {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (username, email, password)
-        VALUES (${username}, ${email}, ${hashedPassword})
+      INSERT INTO user_table (username, email, password, email_verified)
+        VALUES (${username}, ${email}, ${hashedPassword}, false)
         RETURNING id, email;
       `);
       const [user] = rows;
@@ -134,5 +134,26 @@ module.exports = {
     SELECT * FROM user_table WHERE token=${token} LIMIT 1;
     `);
     return rows[0];
+  },
+  async setEmailVerified(token, is_verified) {
+    try {
+      const { rows } = await db.query(sql`
+      UPDATE user_table SET email-verified=${is_verified} where token=${token};`);
+      return rows[0];
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  async setPassword(token) {
+    try {
+      const hashedPassword = await bcrypt.hash(value, 10);
+      const { rows } = await db.query(sql`
+      UPDATE user_table SET password=${hashedPassword} where token=${token};`);
+      return rows[0];
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 };
