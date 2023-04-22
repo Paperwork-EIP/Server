@@ -138,7 +138,7 @@ module.exports = {
   async setEmailVerified(token, is_verified) {
     try {
       const { rows } = await db.query(sql`
-      UPDATE user_table SET email-verified=${is_verified} where token=${token};`);
+      UPDATE user_table SET email_verified=${is_verified} where token=${token};`);
       return rows[0];
     } catch (error) {
       console.error(error);
