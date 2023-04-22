@@ -24,7 +24,7 @@ router.post('/register', async (request, response) => {
         return response.status(409).json({ message: 'Usename already used' });
       }
       const user = await User.create(username, email, password);
-      await Settings.create(user.id);
+      await Settings.create(user.id);<<<<<<< preprod
       const token = jwt.sign({ user }, process.env.jwt_key);
       await User.setToken(email, token);
       return response.status(200).json({
