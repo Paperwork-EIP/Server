@@ -1,19 +1,17 @@
 const { Router } = require('express');
 const router = new Router();
 const axios = require('axios');
-const { messenger_clientID, messenger_secret } = require('../../const.json');
 const REDIRECT_URI = 'http://localhost:3000/facebookLogin';
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-const { jwt_key } = require('../../const.json');
 const {URLSearchParams} = require('url');
 
 function get_code() {
     const rootUrl = "https://graph.facebook.com/oauth/authorize";
   return `${rootUrl}?${new URLSearchParams([
     ['state', "paperwork"],
-    ['client_id', messenger_clientID],
+    ['client_id', process.env.messenger_clientID],
     ['scope', [
       'email',
       'public_profile'
@@ -31,8 +29,8 @@ async function getAccessToken(code) {
   const tokens = await axios
       .post(url, new URLSearchParams([
         ['code', code],
-        ['client_id', messenger_clientID],
-        ['client_secret', messenger_secret],
+        ['client_id', process.env.messenger_clientID],
+        ['client_secret', process.env.messenger_secret],
         ['redirect_uri', REDIRECT_URI],
         ['grant_type', "authorization_code"]
       ]).toString(), {
@@ -66,12 +64,12 @@ router.get("/", async (req, response) => {
       return response.status(200).json({
         message: "Connected with facebook",
         email: checkUser.email,
-        jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, jwt_key)
+        jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
       })
     } else {
       USER.create(user.data.id, user.data.email, user.data.access_token).then(user => {
         TOKEN.set(user.email, 'facebook', access_token);
-        const jwtToken = jwt.sign({ user }, jwt_key);
+        const jwtToken = jwt.sign({ user }, process.env.jwt_key);
         return response.status(200).json({
         message: "Connected with facebook",
         jwt: jwtToken
