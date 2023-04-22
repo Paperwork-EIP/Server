@@ -308,6 +308,102 @@ paths:
       summary: Update user's settings.
       tags:
           - user
+  /user/sendVerificationEmail:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          description: User token.
+      responses:
+        '200':
+          description: Email sent.
+        '400':
+          description: Missing parameter token.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Send verification email.
+      tags:
+          - user
+  /user/verifyEmail:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          description: User token.
+        - in: query
+          name: code
+          schema:
+            type: string
+          description: Verification code.
+      responses:
+        '200':
+          description: Email verified.
+        '400':
+          description: Missing parameter token or code.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Verify email.
+      tags:
+          - user
+  /user/sendResetPasswordEmail:
+    get:
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: User email.
+      responses:
+        '200':
+          description: Email sent.
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                description: User token.
+        '400':
+          description: Missing parameter email.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Send reset password email.
+      tags:
+          - user
+  /user/resetPassword:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          description: User token.
+        - in: query
+          name: password
+          schema:
+            type: string
+          description: New password.
+      responses:
+        '200':
+          description: Password reset.
+        '400':
+          description: Missing parameter token, or password.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Reset password.
+      tags:
+          - user
   /oauth/google/urlLogin:
     get:
       responses:
