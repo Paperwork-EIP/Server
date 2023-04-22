@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          node-version: 16,
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
