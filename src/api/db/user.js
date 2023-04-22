@@ -310,7 +310,7 @@ router.post('/register', async (request, response) => {
           Source: process.env.EMAIL
         };
         await ses.sendEmail(params).promise();
-        return response.status(200).json({ message: 'Email send.' });
+        return response.status(200).json({ message: 'Email send.', token: token });
       } else {
         return response.status(404).json({ message: 'User not found.' });
       }
