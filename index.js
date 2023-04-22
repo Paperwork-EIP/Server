@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const route = require('./src/api/index');
 const Process = require('./src/process/index');
+require('dotenv').config();
 
 let corsOptions = {
   origin: '*'
@@ -12,6 +13,10 @@ if (process.env.PORT === 8080) {
   corsOptions = {
     origin: 'http://54.86.209.237:8080'
   };
+} else {
+  if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+  }
 }
 app.use(cors(corsOptions));
 app.use(bodyParser.json());

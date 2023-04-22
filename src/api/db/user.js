@@ -2,8 +2,11 @@ const { Router } = require('express');
 const User = require('../../persistence/users');
 const Settings = require('../../persistence/userSettings');
 const jwt = require('jsonwebtoken');
-const { jwt_key } = require('../../const');
 const router = new Router();
+const AWS = require('aws-sdk');
+const URL = "https://localhost:3000"
+AWS.config.update({region:'us-east-1'});
+const ses = new AWS.SES();
 
 router.post('/register', async (request, response) => {
     try {
@@ -23,7 +26,7 @@ router.post('/register', async (request, response) => {
       }
       const user = await User.create(username, email, password);
       await Settings.create(user.id);
-      const token = jwt.sign({ user }, jwt_key);
+      const token = jwt.sign({ user }, process.env.jwt_key);
       await User.setToken(email, token);
       return response.status(200).json({
         message: 'User registered !',
@@ -52,7 +55,7 @@ router.post('/register', async (request, response) => {
         } else if (check_connect.code === "invalid") {
           return response.status(400).json({ message: 'Invalid password' });
         } else {
-          const token = jwt.sign({ user: check_connect.user }, jwt_key);
+          const token = jwt.sign({ user: check_connect.user }, process.env.jwt_key);
           User.setToken(email, token);
           return response.status(200).json({
             message: 'User logged in !',
@@ -218,5 +221,120 @@ router.post('/register', async (request, response) => {
       return response.status(500).json({ message: 'System error.' });
     }
   });
-
+  router.get('/sendVerificationEmail', async (request, response) => {
+    try{
+      const { token } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
+      }
+      const find = await User.findToken(token);
+      if (find) {
+        if (find.email_verified) {
+          return response.status(409).json({ message: 'Email already verified' });
+        }
+        const params = {
+          Destination: {
+            ToAddresses: [find.email]
+          },
+          Message: {
+            Body: {
+              Html: {
+                Charset: 'UTF-8',
+                Data: `<!DOCTYPE html><html lang="en\"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verification Email</title></head><body><h1>Verify your email</h1><p>Click on the following link to verify your email:</p><a href="${URL}/verifyEmail?token=${token}">${URL}/verifyEmail?token=${token}</a></body></html>`
+              }
+            },
+            Subject: {
+              Charset: "UTF-8",
+              Data: "Verify Your Email Address"
+            }
+          },
+          Source: process.env.EMAIL
+        };
+        await ses.sendEmail(params).promise();
+        return response.status(200).json({ message: 'Email send.' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    }
+    catch (error) {
+      return response.status(500).json({ message: 'System error.', error });
+    }
+  });
+  router.get('/verifyEmail', async (request, response) => {
+    try{
+      const { token } = request.query;
+      if (!token) {
+        return response.status(400).json({ message: 'Missing parameter token.' });
+      }
+      const find = await User.findToken(token);
+      if (find) {
+        if (find.email_verified) {
+          return response.status(409).json({ message: 'Email already verified' });
+        }
+        await User.setEmailVerified(token, true);
+        return response.status(200).json({ message: 'User email verified' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    }
+    catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+  router.get('/sendResetPasswordEmail', async (request, response) => {
+    try{
+      const { email } = request.query;
+      if (!email) {
+        return response.status(400).json({ message: 'Missing parameter email.' });
+      }
+      const find = await User.find(email);
+      const token = jwt.sign({ find }, process.env.jwt_key);
+      await User.setToken(email, token);
+      if (find) {
+        const params = {
+          Destination: {
+            ToAddresses: [find.email]
+          },
+          Message: {
+            Body: {
+              Html: {
+                Charset: 'UTF-8',
+                Data: `<!DOCTYPE html><html lang="en\"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reset Password Email</title></head><body><h1>Reset your password</h1><p>Click on the following link to reset your password:</p><a href="${URL}/resetPassword?token=${token}">${URL}/resetPassword?token=${token}</a></body></html>`
+              }
+            },
+            Subject: {
+              Charset: "UTF-8",
+              Data: "Reset Your Password"
+            }
+          },
+          Source: process.env.EMAIL
+        };
+        await ses.sendEmail(params).promise();
+        return response.status(200).json({ message: 'Email send.', token: token });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    }
+    catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
+  router.get('/resetPassword', async (request, response) => {
+    try{
+      const { token, password } = request.query;
+      if (!token || !password) {
+        return response.status(400).json({ message: 'Missing parameter token or password.' });
+      }
+      const find = await User.findToken(token);
+      if (find) {
+        await User.setPassword(token, password);
+        return response.status(200).json({ message: 'User password reset' });
+      } else {
+        return response.status(404).json({ message: 'User not found.' });
+      }
+    }
+    catch (error) {
+      return response.status(500).json({ message: 'System error.' });
+    }
+  });
 module.exports = router;
