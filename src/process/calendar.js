@@ -39,13 +39,18 @@ router.post("/set", async (request, response) => {
     }
 });
 
-async function getMeeting(processes) {
+async function getMeeting(processes, language) {
     let res = [];
     for (let i in processes) {
         let process = await Process.getById(processes[i].process_id);
         if (!process) {
             return 'Process not found.';
         }
+        let file = require('../data/' + process.title + '.json');
+        if (!file) {
+            return 'Data not found.';
+        }
+        let data = file[language];
         let userStep = await UserStep.getAllAppoinment(processes[i].id);
         if (!userStep) {
             return 'User step not found.';
@@ -60,8 +65,8 @@ async function getMeeting(processes) {
                     "user_process_id": userStep[j].user_process_id,
                     "process_title": process.title,
                     "step_id": userStep[j].step_id,
-                    "step_title": step.title,
-                    "step_description": step.description,
+                    "step_title": data.steps[j].title,
+                    "step_description": data.steps[j].description,
                 });
             }
         }
@@ -83,8 +88,8 @@ router.get("/getAll", async (request, response) => {
         if (!processes) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        let res = await getMeeting(processes);
-        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.') {
+        let res = await getMeeting(processes, user.language);
+        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
             return response.status(404).json({ message: 'Process, step or user step not found.' });
         }
         return response.status(200).json({ message: "User appoinments.", appoinment: res });

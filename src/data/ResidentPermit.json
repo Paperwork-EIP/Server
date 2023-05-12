@@ -1,0 +1,98 @@
+{
+    "english":
+    {
+        "title": "Resident Permit",
+        "description": "A French resident permit, also known as a titre de séjour, is a document that allows non-EU citizens to live and work in France for an extended period of time. The permit is issued by the French government and is valid for one year, renewable annually.",
+        "steps":
+        [
+            {
+                "title": "Prepare the necessary documents - Passport",
+                "description": "You will need a valid passport",
+                "question": "Do you have a valid passport ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Long-stay Visa",
+                "description": "You will need a long-stay visa",
+                "question": "Do you have a long-stay visa ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Proof of Accommodation",
+                "description": "You will need a proof of accommodation in France",
+                "question": "Do you have a proof of accommodation in France ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Proof of Financial Resources",
+                "description": "You will need a proof of financial resources",
+                "question": "Do you have a proof of financial resources ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Application Form",
+                "description": "You will need a completed application form",
+                "question": "Do you have a completed application form ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Health Insurance",
+                "description": "You will need a proof of health insurance coverage",
+                "question": "Do you have a proof of health insurance coverage ?"
+            },
+            {
+                "title": "Prepare the necessary documents - Photos",
+                "description": "You will need 2 passport-sized photos",
+                "question": "Do you have 2 passport-sized photos ?"
+            },
+            {
+                "title": "Book an appointment",
+                "description": "You will need to book an appointment at the prefecture or sub-prefecture in your place of residence. You can do this online or by phone.",
+                "question": "Did you book an appointment at the prefecture or sub-prefecture in your place of residence ?"
+            }
+        ]
+    },
+    "french":
+    {
+        "title": "Titre de séjour",
+        "description": "Un titre de séjour français est un document qui permet aux citoyens non européens de vivre et de travailler en France pendant une période prolongée. Le permis est délivré par le gouvernement français et est valable un an, renouvelable annuellement.",
+        "steps":
+        [
+            {
+                "title": "Préparez les documents nécessaires - Passeport",
+                "description": "Vous aurez besoin d'un passeport valide.",
+                "question": "Avez-vous un passeport valide ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Visa long séjour",
+                "description": "Vous aurez besoin d'un visa long séjour.",
+                "question": "Vous avez un visa long séjour ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Justificatif de logement ",
+                "description": "Vous aurez besoin d'un justificatif de logement en France.",
+                "question": "Avez-vous un justificatif de logement en France ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Preuve de ressources financières",
+                "description": "Vous aurez besoin d'un justificatif de ressources financières.",
+                "question": "Avez-vous un justificatif de ressources financières ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Formulaire de candidature",
+                "description": "Vous aurez besoin d'un formulaire de demande rempli.",
+                "question": "Avez-vous un formulaire de demande rempli ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Assurance maladie",
+                "description": "Vous aurez besoin d'une preuve de couverture d'assurance maladie.",
+                "question": "Avez-vous une preuve de couverture d'assurance maladie ?"
+            },
+            {
+                "title": "Préparer les documents nécessaires - Photos",
+                "description": "Vous aurez besoin de 2 photos d'identité.",
+                "question": "Avez-vous 2 photos d'identité ?"
+            },
+            {
+                "title": "Prenez rendez-vous",
+                "description": "Vous devrez prendre rendez-vous auprès de la préfecture ou sous-préfecture de votre lieu de résidence. Vous pouvez le faire en ligne ou par téléphone.",
+                "question": "Vous avez pris rendez-vous à la préfecture ou sous-préfecture de votre lieu de résidence ?"
+            }
+        ]
+    }
+}

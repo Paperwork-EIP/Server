@@ -91,4 +91,10 @@ module.exports = {
         `);
         return rows;
     },
+    async getByName(user_id, process_title) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_process WHERE user_id=${user_id} AND process_title=${process_title} LIMIT 1;
+        `);
+        return rows[0];
+    }
 };

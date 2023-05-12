@@ -48,7 +48,21 @@ const router = new Router();
   });
   router.get('/getAll', async (request, response) => {
     try {
-        const res = await Process.getAll();
+        const { language } = request.query;
+        const processes = await Process.getAll();
+        let res = [];
+        for (let i in processes) {
+            const file = require('../data/' + processes[i].title + '.json');
+            if (!file) {
+              return response.status(404).json({ message: 'Data not found.' });
+            }
+            const data = file[language];
+            res.push({
+              title: data.title,
+              description: data.description,
+              source: processes[i].source
+            });
+          }
         return response.status(200).json({
             response: res 
         });

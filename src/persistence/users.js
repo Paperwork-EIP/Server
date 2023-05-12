@@ -1,6 +1,7 @@
 const db = require('./db');
 const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
+const { getById } = require('./process');
 
 module.exports = {
   async create(username, email, password = '') {
@@ -27,6 +28,12 @@ module.exports = {
   async findUsername(username) {
     const { rows } = await db.query(sql`
     SELECT email, username FROM user_table WHERE username=${username} LIMIT 1;
+    `);
+    return rows[0];
+  },
+  async getById(id) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM user_table WHERE id=${id} LIMIT 1;
     `);
     return rows[0];
   },
