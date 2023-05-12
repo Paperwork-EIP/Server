@@ -49,6 +49,9 @@ const router = new Router();
   router.get('/getAll', async (request, response) => {
     try {
         const { language } = request.query;
+        if (!language) {
+          return response.status(400).json({ message: 'Missing parameters.' });
+        }
         const processes = await Process.getAll();
         let res = [];
         for (let i in processes) {

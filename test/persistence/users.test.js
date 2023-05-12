@@ -3,6 +3,7 @@ const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
 const User = require('../../src/persistence/users');
 const init_db = require('../../src/persistence/init-db');
+const { getById } = require('../../src/persistence/process');
 
 beforeAll(() => {
     init_db.initAll();
@@ -63,6 +64,12 @@ describe("User Persistence Tests", () => {
 
         expect(response).not.toBeNull();
         expect(response).toEqual(expectedResult);
+    });
+    it('[GETBYID] should return the user datas or an empty result', async () => {    
+        db.query = jest.fn().mockReturnValue({ rows: [{ id: 567 }] });
+    
+        const response = await User.getById(567);
+        expect(response).toEqual({ id: 567 });
     });
     it('[DELETE] should delete a user from the user_table', async () => {
         const email = 'test@example.com';
@@ -226,10 +233,10 @@ describe("User Persistence Tests", () => {
         const response = await User.findToken("lalalalal");
         expect(response).toEqual({ token: "lalalalal" });
     });
-    if('[SET EMAIL VERIFIED] should return the user datas or an empty result', async () => {
+    if('[SET EMAIL VERIFIED] should set the user email_verified on true', async () => {
         db.query = jest.fn().mockReturnValue({ rows: [{ email_verified: true }] });
 
-        const response = await User.setEmailVerified("lalala", true);
+        const response = await User.setEmailVerified();
         expect(response).toEqual({ email_verified: true });
     });
     it('[SET EMAIL VERIFIED] should throw an error if the query fails', async () => {

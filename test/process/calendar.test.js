@@ -61,12 +61,11 @@ describe("Calendar tests", () => {
                 expect(response._body.response).not.toBeNull();
             });
             test("[GET ALL] should get all meeting from calendar table with a 200 status code", async () => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
-                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 Step.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
-
 
                 const response = await request(server).get("/calendar/getAll").query({
                     token: "hbjhbj"
@@ -397,9 +396,9 @@ describe("Calendar tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] user step not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
-                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
@@ -407,7 +406,7 @@ describe("Calendar tests", () => {
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response._body.message).toEqual('Process, step, user step or data not found.');
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] process not found : should not set a meeting in calendar table with a 404 status code", async () => {
@@ -420,13 +419,13 @@ describe("Calendar tests", () => {
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response._body.message).toEqual('Process, step, user step or data not found.');
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] step not found : should not set a meeting in calendar table with a 404 status code", async () => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
-                Process.getById = jest.fn().mockReturnValue({ title: 'title' });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 
@@ -435,7 +434,23 @@ describe("Calendar tests", () => {
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual('Process, step or user step not found.');
+                expect(response._body.message).toEqual('Process, step, user step or data not found.');
+                expect(response.response).not.toBeNull();
+            });
+            test("[GET ALL] Data not found : should not set a meeting in calendar table with a 404 status code", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
+                jest.mock('../../src/data/Visa.json', () => null);
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+                Step.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getAll").query({
+                    token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Process, step, user step or data not found.');
                 expect(response.response).not.toBeNull();
             });
             test("[GET ALL] should return 500 status code if an error occurs", async () => {

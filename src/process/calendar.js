@@ -90,7 +90,7 @@ router.get("/getAll", async (request, response) => {
         }
         let res = await getMeeting(processes, user.language);
         if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
-            return response.status(404).json({ message: 'Process, step or user step not found.' });
+            return response.status(404).json({ message: 'Process, step, user step or data not found.' });
         }
         return response.status(200).json({ message: "User appoinments.", appoinment: res });
     } catch (error) {

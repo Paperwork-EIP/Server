@@ -16,19 +16,14 @@ router.post('/add', async (request, response) => {
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
-        if (await UserProcess.getByName(user.id, process_title)) {
+        if (await UserProcess.getByTitleAndUserID(user.id, process_title)) {
             return response.status(409).json({ message: 'User process already exist.' });
         }
         const process = await Process.get(process_title);
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        let user_process = await UserProcess.get(user.id, process.id);
-        if (!user_process) {
-            user_process = await UserProcess.create(user.id, process.id, process.title);
-        } else {
-            await UserStep.deleteAll(user_process.id);
-        }
+        user_process = await UserProcess.create(user.id, process.id, process.title);
         for (let i in questions) {
             if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
@@ -141,13 +136,13 @@ router.get('/getUserSteps', async (request, response) => {
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        const user_process = await UserProcess.get(user.id, process.id);
-        if (!user_process) {
-            return response.status(404).json({ message: 'User process not found.' });
-        }
         const file = require('../data/' + process.title + '.json');
         if (!file) {
             return response.status(404).json({ message: 'Data not found.' });
+        }
+        const user_process = await UserProcess.get(user.id, process.id);
+        if (!user_process) {
+            return response.status(404).json({ message: 'User process not found.' });
         }
         const data = file[user.language];
         const UserSteps = await UserStep.getAll(user_process.id);
