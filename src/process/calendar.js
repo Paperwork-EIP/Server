@@ -123,9 +123,9 @@ router.get("/getByPeriod", async (request, response) => {
         if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
             return response.status(404).json({ message: 'Process, step or user step not found.' });
         }
-        let year = NaN
-        let month = NaN
-        let day = NaN
+        let year;
+        let month;
+        let day;
         const invalidDate = date.split("-");
         year = parseInt(invalidDate[0]);
         month = parseInt(invalidDate[1]) - 1;
