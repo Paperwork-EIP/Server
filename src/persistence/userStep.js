@@ -20,8 +20,8 @@ module.exports = {
                     delay.setDate(delay.getDate() + day);
                 }
                 const { rows } = await db.query(sql`
-                INSERT INTO user_step (user_process_id, step_id, step_title, step_type, step_description, step_source, is_done, start_date, delay)
-                    VALUES (${user_process_id}, ${step_id}, ${step.title}, ${step.type}, ${step.description}, ${step.source}, ${is_done}, ${currentDate}, ${delay})
+                INSERT INTO user_step (user_process_id, step_id, is_done, start_date, delay)
+                    VALUES (${user_process_id}, ${step_id}, ${is_done}, ${currentDate}, ${delay})
                     RETURNING id, step_id;
                 `);
                 const [user_step] = rows;
@@ -69,19 +69,19 @@ module.exports = {
     },
     async getAll(user_process_id) {
         const { rows } = await db.query(sql`
-        SELECT * FROM user_step WHERE user_process_id=${user_process_id};
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} ORDER BY id;
         `);
         return rows;
     },
     async getAllAppoinment(user_process_id) {
         const { rows } = await db.query(sql`
-        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND appoinment IS NOT NULL;
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND appoinment IS NOT NULL ORDER BY id;
         `);
         return rows;
     },
     async getNotDone(user_process_id) {
         const { rows } = await db.query(sql`
-        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND is_done=false;
+        SELECT * FROM user_step WHERE user_process_id=${user_process_id} AND is_done=false ORDER BY id;
         `);
         return rows;
     }

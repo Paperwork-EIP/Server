@@ -5,8 +5,8 @@ module.exports = {
     async create(title, description, source = '', delay = null) {
         try {
             const { rows } = await db.query(sql`
-            INSERT INTO process (title, description, source, delay)
-                VALUES (${title}, ${description}, ${source}, ${delay})
+            INSERT INTO process (title, delay)
+                VALUES (${title}, ${delay})
                 RETURNING id, title;
             `);
             const [process] = rows;
@@ -40,7 +40,7 @@ module.exports = {
     },
     async getAll() {
         const { rows } = await db.query(sql`
-        SELECT title, source FROM process;
+        SELECT title FROM process ORDER BY id;
         `);
         return rows;
     },

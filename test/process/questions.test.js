@@ -1,4 +1,5 @@
 const request = require("supertest");
+const sinon = require("sinon");
 const router = require("../../src/process/index");
 const routerQuestions = require("../../src/process/questions");
 const Process = require("../../src/persistence/process");
@@ -14,8 +15,8 @@ describe("Questions tests", () => {
         jest.restoreAllMocks();
     });
 
-    beforeAll(() => {
-        server = start(port);
+    beforeAll(async () => {
+        server = await start(port);
     });
 
     afterAll(() => {
@@ -54,16 +55,17 @@ describe("Questions tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID TESTS]", () => {
             test("[GET] should get questions with a 200 status code", async () => {
-                const data = {
+                const data = [{
                     id: 1,
                     question: 'test'
-                };
+                }];
 
-                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
                 Step.getByProcess = jest.fn().mockReturnValue(data);
 
                 const response = await request(server).get("/processQuestions/get").query({
-                    title: "TestQuestions"
+                    title: "TestQuestions",
+                    language: "english"
                 });
 
                 expect(response.statusCode).toBe(200);
@@ -83,36 +85,73 @@ describe("Questions tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response._body.message).toEqual('Missing parameters.');
             });
+            test("[GET] empty language : should not get questions with a 400 status code", async () => {
+                const response = await request(server).get("/processQuestions/get").query({
+                    language: ""
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual('Missing parameters.');
+            });
             test("[GET] process not found : should not get questions with a 404 status code", async () => {
                 Process.get = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/processQuestions/get").query({
-                    title: "teeeeeeeessssst"
+                    title: "teeeeeeeessssst",
+                    language: "english"
                 });
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('Process not found.');
             });
             test("[GET] steps not found : should not get questions with a 404 status code", async () => {
-                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Step.getByProcess = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/processQuestions/get").query({
-                    title: "gggdhddhdjjdjdjk"
+                    title: "gggdhddhdjjdjdjk",
+                    language: "english"
                 });
 
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('Steps not found.');
             });
-            test("[GET] steps not found : should not get questions with a 404 status code", async () => {
-                Process.get = jest.fn().mockReturnValue({ something: 'not null' });
-                Step.getByProcess = jest.fn().mockReturnValue(null);
+            test("[GET] Data not found : should not get questions with a 404 status code", async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'cdcsdVisa' });
+                Step.getByProcess = jest.fn().mockReturnValue({id:1});
 
                 const response = await request(server).get("/processQuestions/get").query({
-                    title: "gggdhddhdjjdjdjk"
+                    title: "gggdhddhdjjdjdjk",
+                    language: "english"
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response.questions).not.toBeNull();
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET] Data not found : should not get questions with a 404 status code", async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
+                Step.getByProcess = jest.fn().mockReturnValue({id:1});
+                jest.mock('../../src/data/Visa.json', () => null);
+
+                const response = await request(server).get("/processQuestions/get").query({
+                    title: "gggdhddhdjjdjdjk",
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET] should throw an error if error occurs", async () => {
+                let response;
+
+                try {
+                    sinon.stub(Process, 'get').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/processQuestions/get").query({
+                        title: "teeeeeeeessssst",
+                        language: "english"
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                }
             });
         });
     });

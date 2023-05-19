@@ -5,14 +5,24 @@ const router = new Router();
   
   router.get('/get', async (request, response) => {
     try {
-        const { title } = request.query;
-        if (!title) {
+        const { title, language } = request.query;
+        if (!title || !language) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
         const process = await Process.get(title);
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return response.status(404).json({ message: 'Data not found.' });
+            }
+        } catch (error) {
+            return response.status(404).json({ message: 'Data not found.' });
+        }
+        const data = file[language];
         const steps = await Step.getByProcess(process.id);
         if (!steps || steps.length === 0) {
             return response.status(404).json({ message: 'Steps not found.' });
@@ -22,7 +32,7 @@ const router = new Router();
             questions.push(
                 {
                     step_id: steps[i].id,
-                    question: steps[i].question
+                    question: data.steps[i].question,
                 });
         }
         return response.status(200).json({ questions: questions })

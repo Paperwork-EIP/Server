@@ -25,7 +25,7 @@ describe("Index tests", () => {
                 expect(router).toBeDefined();
             });
             it("port existing : should start the server", async () => {
-                let server = start(port);
+                let server = await start(port);
                 stop();
 
                 expect(server).toBeDefined();
@@ -33,13 +33,13 @@ describe("Index tests", () => {
         });
         describe("[INVALID TESTS]", () => {
             it("port missing : should not start the server", async () => {
-                let server = start();
+                let server = await start();
                 stop();
 
                 expect(server).toBeNull();
             });
             it("port missing : should not start the server", async () => {
-                let server = start(0);
+                let server = await start(0);
                 stop();
 
                 expect(server).toBeNull();

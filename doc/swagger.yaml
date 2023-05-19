@@ -508,6 +508,12 @@ paths:
         - process
   /process/getAll:
     get:
+      parameters:
+        - in: query
+          name: language
+          schema:
+            type: string
+            description: Language of the user.
       responses:
         '200':
           description: All existing process.
@@ -611,6 +617,11 @@ paths:
           schema:
             type: string
             description: Title  of the process the user want to start.
+        - in: query
+          name: language
+          schema:
+            type: string
+            description: Language of the user.
       responses:
         '200':
           description: Process questions.
@@ -907,6 +918,48 @@ paths:
         '500':
           description: System error.
       summary: Get all the user appointments.
+      tags:
+        - calendar
+  /calendar/getByPeriod:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: Token of the user.
+        - in: query
+          name: date
+          schema:
+            type: string
+            example: "YYYY-MM-DD or YYYY-MM or YYYY"
+            description: Get all the appointments of the requested period
+      responses:
+        '200':
+            description: All the user appointments on the requested period of date value.
+            schema:
+              type: object
+              example:
+                {
+                    "message": "User appoinments.",
+                    "appoinment": [
+                        {
+                            "date": "2022-12-01T12:30:00.000Z",
+                            "user_process_id": 1,
+                            "process_title": "Process title",
+                            "step_id": 1,
+                            "step_title": "Step title",
+                            "step_description": "Description of the step."
+                        }
+                    ]
+                }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all the user appointmentson a given period.
       tags:
         - calendar
   /calendar/delete:

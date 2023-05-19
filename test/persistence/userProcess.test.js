@@ -4,8 +4,8 @@ const Process = require("../../src/persistence/process");
 const userProcess = require("../../src/persistence/userProcess");
 const init_db = require('../../src/persistence/init-db');
 
-beforeAll(() => {
-    init_db.initAll();
+beforeAll(async () => {
+    await init_db.initAll();
 });
 afterEach(() => {
     jest.restoreAllMocks();
@@ -189,5 +189,18 @@ describe("User Process Persistence Tests", () => {
 
         expect(spy).toHaveBeenCalled();
         expect(getAll).not.toBeNull();
+    });
+    it("[getByTitleAndUserID] should be called", async () => {
+        const result = {
+            id: 1,
+            user_id: user_id
+        };
+
+        db.query = jest.fn().mockReturnValue({ rows: [result] });
+        const spy = jest.spyOn(userProcess, "getByTitleAndUserID");
+        const getByTitleAndUserID = await userProcess.getByTitleAndUserID(user_id, process_title);
+
+        expect(spy).toHaveBeenCalled();
+        expect(getByTitleAndUserID).not.toBeNull();
     });
 });

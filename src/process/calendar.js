@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const fs = require('fs');
 const moment = require('moment');
 const UserProcess = require('../persistence/userProcess');
 const Process = require('../persistence/process');
@@ -39,13 +40,23 @@ router.post("/set", async (request, response) => {
     }
 });
 
-async function getMeeting(processes) {
+async function getMeeting(processes, language) {
     let res = [];
     for (let i in processes) {
         let process = await Process.getById(processes[i].process_id);
         if (!process) {
             return 'Process not found.';
         }
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return 'Data not found.';
+            }
+        } catch (error) {
+            return 'Data not found.';
+        }
+        let data = file[language];
         let userStep = await UserStep.getAllAppoinment(processes[i].id);
         if (!userStep) {
             return 'User step not found.';
@@ -58,10 +69,10 @@ async function getMeeting(processes) {
                 res.push({
                     "date": userStep[j].appoinment,
                     "user_process_id": userStep[j].user_process_id,
-                    "process_title": process.title,
+                    "process_title": data.title,
                     "step_id": userStep[j].step_id,
-                    "step_title": step.title,
-                    "step_description": step.description,
+                    "step_title": data.steps[j].title,
+                    "step_description": data.steps[j].description,
                 });
             }
         }
@@ -83,13 +94,50 @@ router.get("/getAll", async (request, response) => {
         if (!processes) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        let res = await getMeeting(processes);
-        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.') {
-            return response.status(404).json({ message: 'Process, step or user step not found.' });
+        let res = await getMeeting(processes, user.language);
+        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
+            return response.status(404).json({ message: 'Process, step, user step or data not found.' });
         }
         return response.status(200).json({ message: "User appoinments.", appoinment: res });
     } catch (error) {
         console.log(error);
+        return response.status(500).json({ message: "System error." });
+    }
+});
+
+router.get("/getByPeriod", async (request, response) => {
+    try {
+        const { token, date } = request.query;
+        if (!token || !date) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        const user = await User.findToken(token);
+        if (!user) {
+            return response.status(404).json({ message: 'User not found.' });
+        }
+        const processes = await UserProcess.getAll(user.id);
+        if (!processes) {
+            return response.status(404).json({ message: 'Process not found.' });
+        }
+        let res = await getMeeting(processes, user.language);
+        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
+            return response.status(404).json({ message: 'Process, step or user step not found.' });
+        }
+        let year = NaN
+        let month = NaN
+        let day = NaN
+        const invalidDate = date.split("-");
+        year = parseInt(invalidDate[0]);
+        month = parseInt(invalidDate[1]) - 1;
+        day = parseInt(invalidDate[2]);
+        let value = [];
+        for (i in res) {
+            if ((isNaN(year) || res[i].date.getFullYear() === year) && (isNaN(month) || res[i].date.getMonth() === month) && (isNaN(day) || res[i].date.getDate() === day)) {
+                value.push(res[i]);
+            }
+        }
+        return response.status(200).json({ message: "User appoinments.", appoinment: value });
+    } catch (error) {
         return response.status(500).json({ message: "System error." });
     }
 });

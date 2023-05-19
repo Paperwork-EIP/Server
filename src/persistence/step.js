@@ -2,12 +2,12 @@ const db = require('./db');
 const sql = require('sql-template-strings');
 
 module.exports = {
-    async create(title, type, description, question, source, delay, process_id = '', is_unique = false) {
+    async create(delay, process_id = '', is_unique = false) {
         try {
             const { rows } = await db.query(sql`
-            INSERT INTO step (title, type, description, question, source, is_unique, delay, process_id)
-                VALUES (${title}, ${type}, ${description}, ${question}, ${source}, ${is_unique}, ${delay}, ${process_id})
-                RETURNING id, title;
+            INSERT INTO step (is_unique, delay, process_id)
+                VALUES (${is_unique}, ${delay}, ${process_id})
+                RETURNING id;
             `);
             const [step] = rows;
             return step;          
@@ -28,7 +28,7 @@ module.exports = {
     },
     async getByProcess(process_id) {
         const { rows } = await db.query(sql`
-        SELECT * FROM step WHERE process_id=${process_id};
+        SELECT * FROM step WHERE process_id=${process_id} ORDER BY id;
         `);
         return rows;
     },

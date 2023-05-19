@@ -20,7 +20,7 @@ module.exports = {
     async getAll() {
         try {
             const { rows } = await db.query(sql`
-            SELECT * FROM process_proposal
+            SELECT * FROM process_proposal ORDER BY id
             `);
             return rows;
         } catch (error) {
