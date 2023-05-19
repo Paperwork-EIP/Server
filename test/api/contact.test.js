@@ -37,7 +37,7 @@ describe("Contact tests", () => {
             test("should receive a valid response for route '/sendEmail'", async () => {
                 const payload = {
                     email: "test",
-                    description: "test",
+                    content: "test",
                     name: "test"
                 };
                 const response = await request(server).get("/contact/sendEmail").query(payload);
@@ -49,7 +49,7 @@ describe("Contact tests", () => {
             test("status code 400, email empty", async () => {
                 const payload = {
                     email: "",
-                    description: "test",
+                    content: "test",
                     name: "test"
                 };
                 const response = await request(server).get("/contact/sendEmail").query(payload);
@@ -58,24 +58,24 @@ describe("Contact tests", () => {
             });
             test("status code 400, email missing", async () => {
                 const payload = {
-                    description: "test",
+                    content: "test",
                     name: "test"
                 };
                 const response = await request(server).get("/contact/sendEmail").send(payload);
 
                 expect(response.status).toBe(400);
             });
-            test("status code 400, description empty", async () => {
+            test("status code 400, content empty", async () => {
                 const payload = {
                     email: "test",
-                    description: "",
+                    content: "",
                     name: "test"
                 };
                 const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
-            test("status code 400, description missing", async () => {
+            test("status code 400, content missing", async () => {
                 const payload = {
                     email: "test",
                     name: "test"
@@ -87,7 +87,7 @@ describe("Contact tests", () => {
             test("status code 400, name empty", async () => {
                 const payload = {
                     email: "test",
-                    description: "test",
+                    content: "test",
                     name: ""
                 };
                 const response = await request(server).get("/contact/sendEmail").query(payload);
@@ -97,7 +97,7 @@ describe("Contact tests", () => {
             test("status code 400, name missing", async () => {
                 const payload = {
                     email: "test",
-                    description: "test",
+                    content: "test",
                     name: ""
                 };
                 const response = await request(server).get("/contact/sendEmail").query(payload);
@@ -109,7 +109,7 @@ describe("Contact tests", () => {
                     sinon.stub(ses, 'sendEmail').throws(new Error('Error.'));
                     const payload = {
                         email: "test",
-                        description: "test",
+                        content: "test",
                         name: "test"
                     };
                     const response = await request(server).get("/contact/sendEmail").query(payload);

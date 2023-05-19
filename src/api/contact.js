@@ -6,8 +6,8 @@ const ses = new AWS.SES();
 
 router.get('/sendEmail', async (request, response) => {
     try {
-        const { email, description, name } = request.query;
-        if (!email || !description || !name) {
+        const { email, content, name } = request.query;
+        if (!email || !content || !name) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
         const params = {
@@ -18,7 +18,7 @@ router.get('/sendEmail', async (request, response) => {
                 Body: {
                     Html: {
                         Charset: 'UTF-8',
-                        Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${name}</title></head><body><h1>Process proposition send by ${email}</h1><p>${description}</p></body></html>`
+                        Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${name}</title></head><body><h1>Process proposition send by ${email}</h1><p>${content}</p></body></html>`
                     }
                 },
                 Subject: {

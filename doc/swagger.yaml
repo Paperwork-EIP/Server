@@ -1053,7 +1053,7 @@ paths:
           name: email
           type: string
         - in: query
-          name: description
+          name: content
           type: string
         - in: query
           name: name
