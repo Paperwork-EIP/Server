@@ -165,7 +165,7 @@ router.post('/register', async (request, response) => {
     try{
       const { token, new_email, language,
               username, firstname, name, age,
-              adress, number_phone, profile_picture, password
+              address, number_phone, profile_picture, password
             } = request.body;
       if (!token) {
         return response.status(400).json({ message: 'Missing parameter token.' });
@@ -175,7 +175,7 @@ router.post('/register', async (request, response) => {
         const data =
         {"language":language, "password": password,
           "username":username, "firstname":firstname, "name":name, "age":age,
-          "adress":adress, "profile_picture":profile_picture, "number_phone":number_phone,
+          "address":address, "profile_picture":profile_picture, "number_phone":number_phone,
           "email":new_email, 
         }
         if (await User.find(new_email) && new_email != find.email) {
@@ -236,7 +236,7 @@ router.post('/register', async (request, response) => {
             Body: {
               Html: {
                 Charset: 'UTF-8',
-                Data: `<!DOCTYPE html><html lang="en\"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verification Email</title></head><body><h1>Verify your email</h1><p>Click on the following link to verify your email:</p><a href="${process.env.URL}/verifyEmail?token=${token}">${process.env.URL}/verifyEmail?token=${token}</a></body></html>`
+                Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verification Email</title></head><body><h1>Verify your email</h1><p>Click on the following link to verify your email:</p><a href="${process.env.URL}/verifyEmail?token=${token}">${process.env.URL}/verifyEmail?token=${token}</a></body></html>`
               }
             },
             Subject: {
