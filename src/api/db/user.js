@@ -236,7 +236,7 @@ router.post('/register', async (request, response) => {
             Body: {
               Html: {
                 Charset: 'UTF-8',
-                Data: `<!DOCTYPE html><html lang="en\"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verification Email</title></head><body><h1>Verify your email</h1><p>Click on the following link to verify your email:</p><a href="${process.env.URL}/verifyEmail?token=${token}">${process.env.URL}/verifyEmail?token=${token}</a></body></html>`
+                Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Verification Email</title></head><body><h1>Verify your email</h1><p>Click on the following link to verify your email:</p><a href="${process.env.URL}/verifyEmail?token=${token}">${process.env.URL}/verifyEmail?token=${token}</a></body></html>`
               }
             },
             Subject: {
