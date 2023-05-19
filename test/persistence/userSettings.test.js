@@ -2,8 +2,8 @@ const db = require('../../src/persistence/db');
 const UserSettings = require("../../src/persistence/userSettings");
 const init_db = require('../../src/persistence/init-db');
 
-beforeAll(() => {
-    init_db.initAll();
+beforeAll(async () => {
+    await init_db.initAll();
 });
 afterEach(() => {
     jest.restoreAllMocks();

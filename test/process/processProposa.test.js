@@ -10,8 +10,8 @@ describe("Process proposal tests", () => {
     const port = 3010;
     let server;
 
-    beforeAll(() => {
-        server = start(port);
+    beforeAll(async () => {
+        server = await start(port);
     });
 
     afterAll(() => {

@@ -3,9 +3,10 @@ const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
 const User = require('../../src/persistence/users');
 const init_db = require('../../src/persistence/init-db');
+const { getById } = require('../../src/persistence/process');
 
-beforeAll(() => {
-    init_db.initAll();
+beforeAll(async () => {
+    await init_db.initAll();
 });
 afterEach(() => {
     jest.restoreAllMocks();
@@ -63,6 +64,12 @@ describe("User Persistence Tests", () => {
 
         expect(response).not.toBeNull();
         expect(response).toEqual(expectedResult);
+    });
+    it('[GETBYID] should return the user datas or an empty result', async () => {    
+        db.query = jest.fn().mockReturnValue({ rows: [{ id: 567 }] });
+    
+        const response = await User.getById(567);
+        expect(response).toEqual({ id: 567 });
     });
     it('[DELETE] should delete a user from the user_table', async () => {
         const email = 'test@example.com';
@@ -190,7 +197,7 @@ describe("User Persistence Tests", () => {
     });
     it('[MODIFY DATA] should update user data when data is password', async () => {
         const email = 'test@blablabla.com';
-        const value = 'password';
+        const value = 'vyjhbhk';
         const data = 'password';
 
         db.query = jest.fn().mockReturnValue({ rows: [{ password: value }] });
@@ -226,11 +233,12 @@ describe("User Persistence Tests", () => {
         const response = await User.findToken("lalalalal");
         expect(response).toEqual({ token: "lalalalal" });
     });
-    if('[SET EMAIL VERIFIED] should return the user datas or an empty result', async () => {
+    it('[SET EMAIL VERIFIED] should set the user email_verified on true', async () => {
         db.query = jest.fn().mockReturnValue({ rows: [{ email_verified: true }] });
 
-        const response = await User.setEmailVerified("lalala", true);
+        const response = await User.setEmailVerified('1234', true);
         expect(response).toEqual({ email_verified: true });
+        expect(response).not.toBeNull();
     });
     it('[SET EMAIL VERIFIED] should throw an error if the query fails', async () => {
         const errorMessage = 'Error setting email_verified';
@@ -238,7 +246,7 @@ describe("User Persistence Tests", () => {
         db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
 
         try {
-            await User.setEmailVerified();
+            await User.setEmailVerified('1234', true);
         } catch (error) {
             expect(error.message).toBe(errorMessage);
         }

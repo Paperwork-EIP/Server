@@ -3,8 +3,8 @@ const db = require('../../src/persistence/db');
 const init_db = require('../../src/persistence/init-db');
 
 describe('Process Proposal Persistence Tests', () => {
-    beforeAll(() => {
-        init_db.initAll();
+    beforeAll(async () => {
+        await init_db.initAll();
     });
     afterEach(() => {
         jest.restoreAllMocks();

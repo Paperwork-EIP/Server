@@ -461,21 +461,9 @@ paths:
             type: string
           description: Title of the new process.
         - in: body
-          name: description
-          schema:
-            type: string
-          description: Description of the new process.
-        - in: body
-          name: source
-          schema:
-            type: string
-          description: Link of the source of the new process (governement website etc), can be NULL.
-        - in: body
           name: delay
           schema:
             type: string
-            format: date
-            pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
             example: "2022-11-24"
           description: Delay of the new process (how long it last), format date "YYYY-MM-DD", it can be NULL.
       responses:
@@ -508,6 +496,12 @@ paths:
         - process
   /process/getAll:
     get:
+      parameters:
+        - in: query
+          name: language
+          schema:
+            type: string
+            description: Language of the user.
       responses:
         '200':
           description: All existing process.
@@ -531,32 +525,6 @@ paths:
     post:
       parameters:
         - in: body
-          name: title
-          schema:
-            type: string
-            description: Title of the step.
-        - in: body
-          name: type
-          schema:
-            type: string
-            example: appointment
-            description: Type of the step (appointment or document).
-        - in: body
-          name: description
-          schema:
-            type: string
-            description: Description of the step.
-        - in: body
-          name: question
-          schema:
-            type: string
-            description: Question of the step (the one used for the intelligent quizz).
-        - in: body
-          name: source
-          schema:
-            type: string
-            description: Source of the step (link of a document for exemple) can be NULL.
-        - in: body
           name: is_unique
           schema:
             type: boolean
@@ -577,7 +545,7 @@ paths:
         '400':
           description: Missing parameters.
         '404':
-          description: Process not found.
+          description: Process not found or no more step to add.
         '500':
           description: System error.
       summary: Add a step to a process.
@@ -611,6 +579,11 @@ paths:
           schema:
             type: string
             description: Title  of the process the user want to start.
+        - in: query
+          name: language
+          schema:
+            type: string
+            description: Language of the user.
       responses:
         '200':
           description: Process questions.
@@ -907,6 +880,48 @@ paths:
         '500':
           description: System error.
       summary: Get all the user appointments.
+      tags:
+        - calendar
+  /calendar/getByPeriod:
+    get:
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: Token of the user.
+        - in: query
+          name: date
+          schema:
+            type: string
+            example: "YYYY-MM-DD or YYYY-MM or YYYY"
+            description: Get all the appointments of the requested period
+      responses:
+        '200':
+            description: All the user appointments on the requested period of date value.
+            schema:
+              type: object
+              example:
+                {
+                    "message": "User appoinments.",
+                    "appoinment": [
+                        {
+                            "date": "2022-12-01T12:30:00.000Z",
+                            "user_process_id": 1,
+                            "process_title": "Process title",
+                            "step_id": 1,
+                            "step_title": "Step title",
+                            "step_description": "Description of the step."
+                        }
+                    ]
+                }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User not found.
+        '500':
+          description: System error.
+      summary: Get all the user appointmentson a given period.
       tags:
         - calendar
   /calendar/delete:

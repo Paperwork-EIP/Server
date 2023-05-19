@@ -3,12 +3,12 @@ const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
-  async create(username, email, password = '') {
+  async create(username, email, password, language = 'english') {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (username, email, password, email_verified)
-        VALUES (${username}, ${email}, ${hashedPassword}, false)
+      INSERT INTO user_table (username, email, password, email_verified, language)
+        VALUES (${username}, ${email}, ${hashedPassword}, false, ${language})
         RETURNING id, email;
       `);
       const [user] = rows;
@@ -27,6 +27,12 @@ module.exports = {
   async findUsername(username) {
     const { rows } = await db.query(sql`
     SELECT email, username FROM user_table WHERE username=${username} LIMIT 1;
+    `);
+    return rows[0];
+  },
+  async getById(id) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM user_table WHERE id=${id} LIMIT 1;
     `);
     return rows[0];
   },

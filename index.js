@@ -22,11 +22,11 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const init_db = require('./src/persistence/init-db')
-init_db.initAll()
 
 let server;
 module.exports = {
-  start(port) {
+  async start(port) {
+    await init_db.initAll();
     if (!port) {
       return null;
     }
@@ -37,6 +37,8 @@ module.exports = {
     return app;
   },
   stop() {
-    server.close();
+    if (server) {
+      server.close();
+    }
   }
 };
