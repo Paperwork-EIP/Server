@@ -9,6 +9,7 @@ const Users = require("../../src/persistence/users");
 const Calendar = require("../../src/persistence/calendar");
 const UserStep = require("../../src/persistence/userStep");
 const { start, stop } = require("../../index");
+const moment = require("moment");
 
 describe("Calendar tests", () => {
     const port = 3009;
@@ -70,6 +71,23 @@ describe("Calendar tests", () => {
                 const response = await request(server).get("/calendar/getAll").query({
                     token: "hbjhbj"
                 });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("User appoinments.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] should get all meeting from calendar table in the concern period with a 200 status code", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
+                Step.getById = jest.fn().mockReturnValue({ id: 1 });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
+
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    token: "hbjhbj",
+                    date: "2023-04-25"
+                });
+                console.log(response._body);
 
                 expect(response.statusCode).toBe(200);
                 expect(response._body.message).toEqual("User appoinments.");
@@ -472,6 +490,91 @@ describe("Calendar tests", () => {
                 try {
                     sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
                     const response = await request(server).get("/calendar/getAll").query({
+                        token: "123"
+                    });
+                } catch(error) {
+                    expect(response.statusCode).toBe(500);
+                }
+            });
+            test("[GET BT PERIOD] token missing should return 400", async () => {
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    token: "",
+                    date: "2020-01-01"
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] token missing should return 400", async () => {
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    date: "2020-01-01",
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] User not found should return 404", async () => {
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    date: "2020-01-01",
+                    token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("User not found.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] User process not found should return 404", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                UserProcess.getAll = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    date: "2020-01-01",
+                    token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] User step not found should return 404", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    date: "2020-01-01",
+                    token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process, step or user step not found.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] Step not found should return 404", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
+                UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
+                UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+                Step.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/calendar/getByPeriod").query({
+                    date: "2020-01-01",
+                    token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process, step or user step not found.");
+                expect(response._body.appoinment).not.toBeNull();
+            });
+            test("[GET BT PERIOD] should return 500 status code if an error occurs", async () => {
+                let response;
+                try {
+                    sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
+                    response = await request(server).get("/calendar/getByPeriod").query({
+                        date: "2020-01-01",
                         token: "123"
                     });
                 } catch(error) {

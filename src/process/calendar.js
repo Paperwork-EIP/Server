@@ -105,6 +105,43 @@ router.get("/getAll", async (request, response) => {
     }
 });
 
+router.get("/getByPeriod", async (request, response) => {
+    try {
+        const { token, date } = request.query;
+        if (!token || !date) {
+            return response.status(400).json({ message: 'Missing parameters.' });
+        }
+        const user = await User.findToken(token);
+        if (!user) {
+            return response.status(404).json({ message: 'User not found.' });
+        }
+        const processes = await UserProcess.getAll(user.id);
+        if (!processes) {
+            return response.status(404).json({ message: 'Process not found.' });
+        }
+        let res = await getMeeting(processes, user.language);
+        if (res === 'Process not found.' || res === 'User step not found.' || res === 'Step not found.' || res === 'Data not found.') {
+            return response.status(404).json({ message: 'Process, step or user step not found.' });
+        }
+        let year = NaN
+        let month = NaN
+        let day = NaN
+        const invalidDate = date.split("-");
+        year = parseInt(invalidDate[0]);
+        month = parseInt(invalidDate[1]) - 1;
+        day = parseInt(invalidDate[2]);
+        let value = [];
+        for (i in res) {
+            if ((isNaN(year) || res[i].date.getFullYear() === year) && (isNaN(month) || res[i].date.getMonth() === month) && (isNaN(day) || res[i].date.getDate() === day)) {
+                value.push(res[i]);
+            }
+        }
+        return response.status(200).json({ message: "User appoinments.", appoinment: value });
+    } catch (error) {
+        return response.status(500).json({ message: "System error." });
+    }
+});
+
 router.get("/delete", async (request, response) => {
     try {
         const { user_process_id, step_id } = request.query;
