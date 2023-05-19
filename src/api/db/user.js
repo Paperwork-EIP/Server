@@ -45,14 +45,14 @@ router.post('/register', async (request, response) => {
           .status(400)
           .json({ message: 'Email or password missing' });
       }
-      User.connect(email, password, (check_connect) => {
+      await User.connect(email, password, async (check_connect) =>{
         if (check_connect.code === 'no email') {
           return response.status(404).json({ message: 'User does not exists' });
         } else if (check_connect.code === "invalid") {
           return response.status(400).json({ message: 'Invalid password' });
         } else {
           const token = jwt.sign({ user: check_connect.user }, process.env.jwt_key);
-          User.setToken(email, token);
+          await User.setToken(email, token);
           return response.status(200).json({
             message: 'User logged in !',
             email: check_connect.user.email,

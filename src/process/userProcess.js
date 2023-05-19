@@ -23,7 +23,7 @@ router.post('/add', async (request, response) => {
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        user_process = await UserProcess.create(user.id, process.id, process.title);
+        const user_process = await UserProcess.create(user.id, process.id, process.title);
         for (let i in questions) {
             if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });

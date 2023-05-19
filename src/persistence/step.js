@@ -12,6 +12,7 @@ module.exports = {
             const [step] = rows;
             return step;          
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
@@ -21,6 +22,7 @@ module.exports = {
             DELETE FROM step where process_id=${process_id};`);
             return rows[0];         
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
