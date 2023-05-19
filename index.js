@@ -23,14 +23,10 @@ app.use(bodyParser.json());
 
 const init_db = require('./src/persistence/init-db')
 
-async function init() {
-  await init_db.initAll();
-}
-
 let server;
 module.exports = {
-  start(port) {
-    init();
+  async start(port) {
+    await init_db.initAll();
     if (!port) {
       return null;
     }
@@ -41,6 +37,8 @@ module.exports = {
     return app;
   },
   stop() {
-    server.close();
+    if (server) {
+      server.close();
+    }
   }
 };

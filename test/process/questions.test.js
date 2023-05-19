@@ -15,8 +15,8 @@ describe("Questions tests", () => {
         jest.restoreAllMocks();
     });
 
-    beforeAll(() => {
-        server = start(port);
+    beforeAll(async () => {
+        server = await start(port);
     });
 
     afterAll(() => {
