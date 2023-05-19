@@ -131,7 +131,7 @@ router.get("/getByPeriod", async (request, response) => {
         month = parseInt(invalidDate[1]) - 1;
         day = parseInt(invalidDate[2]);
         let value = [];
-        for (i in res) {
+        for (let i in res) {
             if ((isNaN(year) || res[i].date.getFullYear() === year) && (isNaN(month) || res[i].date.getMonth() === month) && (isNaN(day) || res[i].date.getDate() === day)) {
                 value.push(res[i]);
             }
