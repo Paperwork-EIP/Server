@@ -87,7 +87,7 @@ module.exports = {
     },
     async getAll(user_id) {
         const { rows } = await db.query(sql`
-        SELECT * FROM user_process WHERE user_id=${user_id};
+        SELECT * FROM user_process WHERE user_id=${user_id} ORDER BY id;
         `);
         return rows;
     },

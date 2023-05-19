@@ -34,17 +34,13 @@ describe("Steps tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID STEP TESTS]", () => {
             test("[ADD] should add a step in the database with a 200 status code", async () => {
-                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
                 Step.create = jest.fn().mockReturnValue({ something: 'something'});
                 const response = await request(server).post("/step/add").send({
                     title: "TestStep",
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
                     is_unique: true,
                     delay: null,
-                    process_title: "vhffdguergrhgoor"
+                    process_title: "Visa"
                 });
 
                 expect(response.statusCode).toBe(200);
@@ -63,122 +59,6 @@ describe("Steps tests", () => {
             });
         });
         describe("[INVALID STEP TESTS]", () => {
-            test("[ADD] title missing : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "vhffdguergrhgoorfghjkkjhgf"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] title empty : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "",
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "vhffdguergrhgoorgdfsdadfgdsfead"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] type missing : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "vhffdguergrhgoorbguyjhbjgyuh"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] type empty : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "vhffdguergrhgooecnsbfsdhjbcvwecjwer"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] description missing : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "TestType",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "nbgvcfdfghjkhgfdcfgbjhbedccbedjcbjk"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] description empty : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "TestType",
-                    description: "",
-                    question: "Test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "fbgydhdjcmdnebvdnhcwcndlc"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] question missing : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "TestType",
-                    description: "This is a test",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "gjreuivnhuifdnvuwnuicdbnsbcbacebjrvns"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] question empty : should not create a step with a 400 status code", async () => {
-                const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "",
-                    source: "https://google.com",
-                    is_unique: true,
-                    delay: null,
-                    process_title: "cbgdscvghdsjkcfkvnjkdfbjhacbhasj"
-                });
-
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
             test("[ADD] process title missing : should not create a step with a 400 status code", async () => {
                 const response = await request(server).post("/step/add").send({
                     title: "Test",
@@ -211,11 +91,6 @@ describe("Steps tests", () => {
             test("[ADD] process title not found : should not create a step with a 404 status code", async () => {
                 Process.get = jest.fn().mockReturnValue(null);
                 const response = await request(server).post("/step/add").send({
-                    title: "Test",
-                    type: "TestType",
-                    description: "This is a test",
-                    question: "Test",
-                    source: "https://google.com",
                     is_unique: true,
                     delay: null,
                     process_title: "Unexpcted procss"
@@ -224,23 +99,53 @@ describe("Steps tests", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
-            test("[ADD] should throw an error if error occurs", async () => {
-                try{
-                    Process.get = jest.fn().mockReturnValue({ something: 'not null' });
-                    sinon.stub(Step, 'create').throws(new Error('db query failed'));
+            test("[ADD] should add a step with a 404 statuc code(no more step to create)", async () => {
+                Process.get = jest.fn().mockReturnValue({id: 1, title: "Visa"});
+                Step.getByProcess = jest.fn().mockReturnValue([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
+                const response = await request(server).post("/step/add").send({
+                    is_unique: true,
+                    delay: null,
+                    process_title: "Visa"
+                });
 
-                    const response = await request(server).post("/step/add").send({
-                        title: "TestStep",
-                        type: "TestType",
-                        description: "This is a test",
-                        question: "Test",
-                        source: "https://google.com",
-                        is_unique: true,
-                        delay: null,
-                        process_title: "vhffdguergrhgoor"
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('There is no more step to create for this process.');
+            });
+            test("[ADD] Data not found : should not create a step with a 404 status code(file empty)", async () => {
+                Process.get = jest.fn().mockReturnValue({id: 1, title: "Visa"});
+                jest.mock('../../src/data/Visa.json', () => null);
+                const response = await request(server).post("/step/add").send({
+                    is_unique: true,
+                    delay: null,
+                    process_title: "Unexpcted procss"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[ADD] Data not found : should not create a step with a 404 status code(file don't exist)", async () => {
+                Process.get = jest.fn().mockReturnValue({id: 1, title: "Visaxsxsx"});
+                const response = await request(server).post("/step/add").send({
+                    is_unique: true,
+                    delay: null,
+                    process_title: "Unexpcted procss"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[ADD] should throw an error with a 500 status code", async () => {
+                let response;
+                try {
+                    Process.get = jest.fn().mockReturnValue({ id: 1 });
+                    sinon.stub(Step, 'create').throws(new Error('db query failed'));
+                    
+                    response = await request(server).get("/step/add").query({
+                        process_title: "vhffdguergrhgoorgggggg"
                     });
                 } catch(e){
                     expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
                 }
             });
             test("[DELETE ALL] process title missing : should delete all steps with a 400 status code", async () => {

@@ -13,8 +13,13 @@ const router = new Router();
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        const file = require('../data/' + process.title + '.json');
-        if (!file) {
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return response.status(404).json({ message: 'Data not found.' });
+            }
+        } catch (error) {
             return response.status(404).json({ message: 'Data not found.' });
         }
         const data = file[language];

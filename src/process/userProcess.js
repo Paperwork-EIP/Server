@@ -136,8 +136,13 @@ router.get('/getUserSteps', async (request, response) => {
         if (!process) {
             return response.status(404).json({ message: 'Process not found.' });
         }
-        const file = require('../data/' + process.title + '.json');
-        if (!file) {
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return response.status(404).json({ message: 'Data not found.' });
+            }
+        } catch (error) {
             return response.status(404).json({ message: 'Data not found.' });
         }
         const user_process = await UserProcess.get(user.id, process.id);
@@ -152,6 +157,8 @@ router.get('/getUserSteps', async (request, response) => {
                 step_id: UserSteps[i].step_id,
                 title: data.steps[i].title,
                 description: data.steps[i].description,
+                type: data.steps[i].type,
+                source: data.steps[i].source,
                 is_done: UserSteps[i].is_done,
             });
         }
@@ -184,8 +191,13 @@ router.get('/getUserStepsById', async (request, response) => {
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
         }
-        const file = require('../data/' + process.title + '.json');
-        if (!file) {
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return response.status(404).json({ message: 'Data not found.' });
+            }
+        } catch (error) {
             return response.status(404).json({ message: 'Data not found.' });
         }
         const data = file[user.language];
@@ -196,6 +208,8 @@ router.get('/getUserStepsById', async (request, response) => {
                 step_id: UserSteps[i].step_id,
                 title: data.steps[i].title,
                 description: data.steps[i].description,
+                type: data.steps[i].type,
+                source: data.steps[i].source,
                 is_done: UserSteps[i].is_done,
             });
         }
@@ -227,15 +241,26 @@ router.get('/getUserProcesses', async (request, response) => {
             if (!process) {
                 return response.status(404).json({ message: 'Process not found.' });
             }
-            let file = require('../data/' + process.title + '.json');
-            if (!file) {
+            let file;
+            try {
+                file = require('../data/' + process.title + '.json');
+                if (!file) {
+                    return response.status(404).json({ message: 'Data not found.' });
+                }
+            } catch (error) {
                 return response.status(404).json({ message: 'Data not found.' });
             }
             let data = file[user.language];
             const percentage = await getPercentage(userProcesses[i].id);
             res.push({
                 pourcentage: percentage,
-                userProcess: data
+                userProcess: {
+                    id: userProcesses[i].id,
+                    process_id: userProcesses[i].process_id,
+                    title: data.title,
+                    description: data.description,
+                    source: data.source,
+                }
             });  
         }
         return response.status(200).json({

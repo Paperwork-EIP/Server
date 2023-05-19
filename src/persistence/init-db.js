@@ -9,7 +9,7 @@ module.exports = {
                 username text UNIQUE NOT NULL,
                 email text UNIQUE NOT NULL,
                 password text NOT NULL,
-                language text NULL,
+                language text NOT NULL,
                 name text NULL,
                 firstname text NULL,
                 adress text NULL,
@@ -39,21 +39,12 @@ module.exports = {
                 process_title text NOT NULL);`)
             await db.query(sql`CREATE TABLE IF NOT EXISTS step (
                 id SERIAL UNIQUE NOT NULL,
-                title text NOT NULL,
-                type text NOT NULL,
-                description text NOT NULL,
-                question text NOT NULL,
-                source text NULL,
                 is_unique bool NOT NULL,
                 delay text NULL,
                 process_id int NOT NULL);`)
             await db.query(sql`CREATE TABLE IF NOT EXISTS user_step (
                 id SERIAL UNIQUE NOT NULL,
                 step_id int NOT NULL,
-                step_title text NOT NULL,
-                step_type text NOT NULL,
-                step_description text NOT NULL,
-                step_source text NULL,
                 is_done bool NOT NULL,
                 start_date date NOT NULL,
                 end_date date NULL,
@@ -77,9 +68,11 @@ module.exports = {
             await db.query(sql`CREATE TABLE IF NOT EXISTS process (
                 id SERIAL UNIQUE NOT NULL,
                 title text UNIQUE NOT NULL,
-                description text NOT NULL,
-                source text NULL,
                 delay text NULL);`)
+            await db.query(sql`CREATE TABLE IF NOT EXISTS user_settings (
+                id SERIAL UNIQUE NOT NULL,
+                user_id int UNIQUE NOT NULL,
+                night_mode boolean NULL);`)
             await db.query(sql`CREATE TABLE IF NOT EXISTS posts (
                 id SERIAL UNIQUE NOT NULL,
                 title text NOT NULL,
@@ -100,11 +93,6 @@ module.exports = {
                 is_display int NOT NULL,
                 post_id int NOT NULL,
                 user_id int NOT NULL);`)
-            await db.query(sql`CREATE TABLE IF NOT EXISTS user_settings (
-                id SERIAL UNIQUE NOT NULL,
-                user_id int UNIQUE NOT NULL,
-                night_mode boolean
-              );`)
         } catch(error) {
             return error;
         }

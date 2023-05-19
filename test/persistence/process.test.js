@@ -12,23 +12,9 @@ describe('Process Persistence Tests', () => {
     it('[CREATE] should create a process', async () => {
         const title = 'Random Test That Title Is Unique';
         const description = 'This is a test process';
-        const source = 'Test Source';
         const delay = 5;
 
-        const response = await Process.create(title, description, source, delay);
-        await Process.delete(response.id);
-
-        expect(response).toEqual({
-            id: expect.any(Number),
-            title: expect.stringMatching(title),
-        });
-    });
-    it('[CREATE] should create a process without source', async () => {
-        const title = 'Random Test That Title Is Unique 5';
-        const description = 'This is a test process';
-        const delay = 5;
-
-        const response = await Process.create(title, description, delay);
+        const response = await Process.create(title, delay);
         await Process.delete(response.id);
 
         expect(response).toEqual({
@@ -39,21 +25,8 @@ describe('Process Persistence Tests', () => {
     it('[CREATE] should create a process without delay', async () => {
         const title = 'Random Test That Title Is Unique 3';
         const description = 'This is a test process';
-        const source = 'Test Source';
 
-        const response = await Process.create(title, description, source);
-        await Process.delete(response.id);
-
-        expect(response).toEqual({
-            id: expect.any(Number),
-            title: expect.stringMatching(title),
-        });
-    });
-    it('[CREATE] should create a process without source and delay', async () => {
-        const title = 'Random Test That Title Is Unique 4';
-        const description = 'This is a test process';
-
-        const response = await Process.create(title, description);
+        const response = await Process.create(title);
         await Process.delete(response.id);
 
         expect(response).toEqual({
@@ -68,7 +41,7 @@ describe('Process Persistence Tests', () => {
         const title = 'Random Test That Title Is Unique 43545';
         const description = 'This is a test process';
 
-        const create_response = await Process.create(title, description);
+        const create_response = await Process.create(title);
         const response = await Process.delete(create_response.id);
 
         expect(create_response).not.toBeNull();
@@ -94,16 +67,13 @@ describe('Process Persistence Tests', () => {
     });
     it('[GET] should return the process with the given title', async () => {
         const title = 'Random Test That Title Is Unique 3454';
-        const description = 'This is a test process';
         const expectedResponse = {
             id: expect.any(Number),
             title: title,
-            description: description,
-            source: '',
             delay: null
         };
 
-        await Process.create(title, description);
+        await Process.create(title);
         const response = await Process.get(title);
         await Process.delete(response.id);
 
@@ -111,16 +81,13 @@ describe('Process Persistence Tests', () => {
     });
     it('[GET BY ID] should return the process with the given id', async () => {
         const title = 'Random Test That Title Is Unique 345345';
-        const description = 'This is a test process';
         
-        await Process.create(title, description);
+        await Process.create(title);
         const process = await Process.get(title);
 
         const expectedResponse = {
             id: process.id,
             title: title,
-            description: description,
-            source: '',
             delay: null
         };
 
@@ -129,11 +96,10 @@ describe('Process Persistence Tests', () => {
 
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET ALL] should return an array of objects with title and source properties', async () => {
-        const title = 'Random Test That Title Is Unique 38678345';
-        const description = 'This is a test process';
+    it('[GET ALL] should return an array of objects with title', async () => {
+        const title = 'Random Test That Title Is Unique 38678345njkbh';
         
-        const created_process = await Process.create(title, description);
+        const created_process = await Process.create(title);
     
         const response = await Process.getAll();
         
@@ -141,6 +107,5 @@ describe('Process Persistence Tests', () => {
 
         expect(response).toBeInstanceOf(Array);
         expect(response[0]).toHaveProperty('title');
-        expect(response[0]).toHaveProperty('source');
     });
 });

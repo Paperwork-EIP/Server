@@ -1,15 +1,14 @@
 const db = require('./db');
 const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
-const { getById } = require('./process');
 
 module.exports = {
-  async create(username, email, password = '') {
+  async create(username, email, password, language = 'english') {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (username, email, password, email_verified)
-        VALUES (${username}, ${email}, ${hashedPassword}, false)
+      INSERT INTO user_table (username, email, password, email_verified, language)
+        VALUES (${username}, ${email}, ${hashedPassword}, false, ${language})
         RETURNING id, email;
       `);
       const [user] = rows;

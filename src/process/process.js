@@ -6,15 +6,15 @@ const router = new Router();
   
   router.post('/add', async (request, response) => {
     try {
-        const { title, description, source, delay } = request.body;
-        if (!title || !description) {
+        const { title, delay } = request.body;
+        if (!title) {
           return response.status(400).json({ message: 'Title or description missing' });
         }
         const find = await Process.get(title);
         if (find) {
           return response.status(400).json({ message: 'Process already exists.' });
         }
-        const res = await Process.create(title, description, source, delay);
+        const res = await Process.create(title, delay);
         return response.status(200).json({
             message: 'Process created!',
             response: res 
@@ -55,17 +55,22 @@ const router = new Router();
         const processes = await Process.getAll();
         let res = [];
         for (let i in processes) {
-            const file = require('../data/' + processes[i].title + '.json');
+          let file;
+          try {
+            file = require('../data/' + processes[i].title + '.json');
             if (!file) {
               return response.status(404).json({ message: 'Data not found.' });
             }
-            const data = file[language];
-            res.push({
-              title: data.title,
-              description: data.description,
-              source: processes[i].source
-            });
+          } catch (error) {
+            return response.status(404).json({ message: 'Data not found.' });
           }
+          const data = file[language];
+          res.push({
+            title: data.title,
+            description: data.description,
+            source: data.source
+          });
+        }
         return response.status(200).json({
             response: res 
         });

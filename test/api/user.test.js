@@ -4,6 +4,7 @@ const router = require("../../src/api/db/user");
 const { start, stop } = require('../../index');
 const User = require('../../src/persistence/users');
 const Settings = require('../../src/persistence/userSettings');
+const init_db = require('../../src/persistence/init-db');
 
 describe("User connection tests", () => {
     const port = 3002;
@@ -717,6 +718,7 @@ describe("User connection tests", () => {
         });
         test('[VERIFY EMAIL 500] should throw an error if an error occurs', async () => {
             let response;
+            User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
 
             try {
                 sinon.stub(User, 'setEmailVerified').throws(new Error('db query failed'));

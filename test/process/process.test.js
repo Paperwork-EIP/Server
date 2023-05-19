@@ -78,7 +78,6 @@ describe("Process tests", () => {
         describe("[INVALID PROCESS TESTS]", () => {
             test("[ADD] title missing : should not create a process with a 400 status code", async () => {
                 const response = await request(server).post("/process/add").send({
-                    description: "This is a test"
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -86,22 +85,6 @@ describe("Process tests", () => {
             test("[ADD] title empty : should not create a process with a 400 status code", async () => {
                 const response = await request(server).post("/process/add").send({
                     title: "",
-                    description: "This is a test"
-                });
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] describe missing : should not create a process with a 400 status code", async () => {
-                const response = await request(server).post("/process/add").send({
-                    title: "Test"
-                });
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("[ADD] describe empty : should not create a process with a 400 status code", async () => {
-                const response = await request(server).post("/process/add").send({
-                    title: "Test",
-                    description: ""
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -189,6 +172,12 @@ describe("Process tests", () => {
                 expect(response_put.message).not.toBeNull();
                 expect(response_delete.statusCode).toBe(404);
                 expect(response_delete.message).not.toBeNull();
+            });
+            test("[GET ALL] data not found : should not get all the processes with a 404 status code", async () => {
+                Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Viscscsa' }]);
+                const response = await request(server).get("/process/getAll?language=english").query({});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
             });
             test("[GET ALL] data not found : should not get all the processes with a 404 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Visa' }]);

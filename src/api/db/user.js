@@ -9,7 +9,7 @@ const ses = new AWS.SES();
 
 router.post('/register', async (request, response) => {
     try {
-      const { username, email, password} = request.body;
+      const { username, email, password, language} = request.body;
       if (!email || !password || !username) {
         return response
           .status(400)
@@ -23,7 +23,7 @@ router.post('/register', async (request, response) => {
       if (check_username) {
         return response.status(409).json({ message: 'Usename already used' });
       }
-      const user = await User.create(username, email, password);
+      const user = await User.create(username, email, password, language);
       await Settings.create(user.id);
       const token = jwt.sign({ user }, process.env.jwt_key);
       await User.setToken(email, token);
@@ -33,10 +33,7 @@ router.post('/register', async (request, response) => {
         jwt: token
       });
     } catch (error) {
-      console.error(
-        `createUser({ email: ${request.body.email} }) >> Error: ${error.stack}`
-      );
-      response.status(500).json();
+      return response.status(500).json({ message: 'System error.'});
     }
   });
 

@@ -115,6 +115,18 @@ describe("Questions tests", () => {
                 expect(response._body.message).toEqual('Steps not found.');
             });
             test("[GET] Data not found : should not get questions with a 404 status code", async () => {
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'cdcsdVisa' });
+                Step.getByProcess = jest.fn().mockReturnValue({id:1});
+
+                const response = await request(server).get("/processQuestions/get").query({
+                    title: "gggdhddhdjjdjdjk",
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET] Data not found : should not get questions with a 404 status code", async () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Step.getByProcess = jest.fn().mockReturnValue({id:1});
                 jest.mock('../../src/data/Visa.json', () => null);

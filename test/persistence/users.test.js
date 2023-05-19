@@ -197,7 +197,7 @@ describe("User Persistence Tests", () => {
     });
     it('[MODIFY DATA] should update user data when data is password', async () => {
         const email = 'test@blablabla.com';
-        const value = 'password';
+        const value = 'vyjhbhk';
         const data = 'password';
 
         db.query = jest.fn().mockReturnValue({ rows: [{ password: value }] });
@@ -233,11 +233,12 @@ describe("User Persistence Tests", () => {
         const response = await User.findToken("lalalalal");
         expect(response).toEqual({ token: "lalalalal" });
     });
-    if('[SET EMAIL VERIFIED] should set the user email_verified on true', async () => {
+    it('[SET EMAIL VERIFIED] should set the user email_verified on true', async () => {
         db.query = jest.fn().mockReturnValue({ rows: [{ email_verified: true }] });
 
-        const response = await User.setEmailVerified();
+        const response = await User.setEmailVerified('1234', true);
         expect(response).toEqual({ email_verified: true });
+        expect(response).not.toBeNull();
     });
     it('[SET EMAIL VERIFIED] should throw an error if the query fails', async () => {
         const errorMessage = 'Error setting email_verified';
@@ -245,7 +246,7 @@ describe("User Persistence Tests", () => {
         db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
 
         try {
-            await User.setEmailVerified();
+            await User.setEmailVerified('1234', true);
         } catch (error) {
             expect(error.message).toBe(errorMessage);
         }

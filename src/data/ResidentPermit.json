@@ -3,47 +3,71 @@
     {
         "title": "Resident Permit",
         "description": "A French resident permit, also known as a titre de séjour, is a document that allows non-EU citizens to live and work in France for an extended period of time. The permit is issued by the French government and is valid for one year, renewable annually.",
+        "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
         "steps":
         [
             {
                 "title": "Prepare the necessary documents - Passport",
+                "type": "Document",
                 "description": "You will need a valid passport",
-                "question": "Do you have a valid passport ?"
+                "question": "Do you have a valid passport ?",
+                "source": "https://en.wikipedia.org/wiki/Passport"
             },
             {
                 "title": "Prepare the necessary documents - Long-stay Visa",
-                "description": "You will need a long-stay visa",
-                "question": "Do you have a long-stay visa ?"
+                "type": "Document",
+                "description": "You will need your current long-stay visa, if you wish stay in France, you must file a application for a residence card within 2 months before the end of your visa to the prefecture or sub-prefecture of your home.",
+                "question": "Do you have a long-stay visa ?",
+                "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
             },
             {
                 "title": "Prepare the necessary documents - Proof of Accommodation",
+                "type": "Document",
                 "description": "You will need a proof of accommodation in France",
-                "question": "Do you have a proof of accommodation in France ?"
+                "question": "Do you have a proof of accommodation in France ?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
             },
             {
                 "title": "Prepare the necessary documents - Proof of Financial Resources",
+                "type": "Document",
                 "description": "You will need a proof of financial resources",
-                "question": "Do you have a proof of financial resources ?"
+                "question": "Do you have a proof of financial resources ?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
             },
             {
                 "title": "Prepare the necessary documents - Application Form",
+                "type": "Document",
                 "description": "You will need a completed application form",
-                "question": "Do you have a completed application form ?"
+                "question": "Do you have a completed application form ?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
             },
             {
                 "title": "Prepare the necessary documents - Health Insurance",
+                "type": "Document",
                 "description": "You will need a proof of health insurance coverage",
-                "question": "Do you have a proof of health insurance coverage ?"
+                "question": "Do you have a proof of health insurance coverage ?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
             },
             {
                 "title": "Prepare the necessary documents - Photos",
+                "type": "Document",
                 "description": "You will need 2 passport-sized photos",
-                "question": "Do you have 2 passport-sized photos ?"
+                "question": "Do you have 2 passport-sized photos ?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
             },
             {
                 "title": "Book an appointment",
+                "type": "Appointment",
                 "description": "You will need to book an appointment at the prefecture or sub-prefecture in your place of residence. You can do this online or by phone.",
-                "question": "Did you book an appointment at the prefecture or sub-prefecture in your place of residence ?"
+                "question": "Did you book an appointment at the prefecture or sub-prefecture in your place of residence ?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens"
+            },
+            {
+                "title": "Get your resident permit",
+                "type": "Appointment",
+                "description": "You will need to go to the prefecture or sub-prefecture in your place of residence to get your resident permit.",
+                "question": "Did you go to the prefecture or sub-prefecture in your place of residence to get your resident permit ?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour"
             }
         ]
     },
@@ -51,47 +75,71 @@
     {
         "title": "Titre de séjour",
         "description": "Un titre de séjour français est un document qui permet aux citoyens non européens de vivre et de travailler en France pendant une période prolongée. Le permis est délivré par le gouvernement français et est valable un an, renouvelable annuellement.",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F39",
         "steps":
         [
             {
                 "title": "Préparez les documents nécessaires - Passeport",
+                "type": "Document",
                 "description": "Vous aurez besoin d'un passeport valide.",
-                "question": "Avez-vous un passeport valide ?"
+                "question": "Avez-vous un passeport valide ?",
+                "source": "https://fr.wikipedia.org/wiki/Passeport"
             },
             {
                 "title": "Préparer les documents nécessaires - Visa long séjour",
+                "type": "Document",
                 "description": "Vous aurez besoin d'un visa long séjour.",
-                "question": "Vous avez un visa long séjour ?"
+                "question": "Vous avez un visa long séjour ?",
+                "source": "https://www.service-public.fr/particuliers/vosdroits/F16162"
             },
             {
                 "title": "Préparer les documents nécessaires - Justificatif de logement ",
+                "type": "Document",
                 "description": "Vous aurez besoin d'un justificatif de logement en France.",
-                "question": "Avez-vous un justificatif de logement en France ?"
+                "question": "Avez-vous un justificatif de logement en France ?",
+                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
             },
             {
                 "title": "Préparer les documents nécessaires - Preuve de ressources financières",
+                "type": "Document",
                 "description": "Vous aurez besoin d'un justificatif de ressources financières.",
-                "question": "Avez-vous un justificatif de ressources financières ?"
+                "question": "Avez-vous un justificatif de ressources financières ?",
+                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
             },
             {
                 "title": "Préparer les documents nécessaires - Formulaire de candidature",
+                "type": "Document",
                 "description": "Vous aurez besoin d'un formulaire de demande rempli.",
-                "question": "Avez-vous un formulaire de demande rempli ?"
+                "question": "Avez-vous un formulaire de demande rempli ?",
+                "source": "https://france-visas.gouv.fr/fr/web/france-visas/formulaires"
             },
             {
                 "title": "Préparer les documents nécessaires - Assurance maladie",
+                "type": "Document",
                 "description": "Vous aurez besoin d'une preuve de couverture d'assurance maladie.",
-                "question": "Avez-vous une preuve de couverture d'assurance maladie ?"
+                "question": "Avez-vous une preuve de couverture d'assurance maladie ?",
+                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
             },
             {
                 "title": "Préparer les documents nécessaires - Photos",
+                "type": "Document",
                 "description": "Vous aurez besoin de 2 photos d'identité.",
-                "question": "Avez-vous 2 photos d'identité ?"
+                "question": "Avez-vous 2 photos d'identité ?",
+                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
             },
             {
                 "title": "Prenez rendez-vous",
+                "type": "Appointment",
                 "description": "Vous devrez prendre rendez-vous auprès de la préfecture ou sous-préfecture de votre lieu de résidence. Vous pouvez le faire en ligne ou par téléphone.",
-                "question": "Vous avez pris rendez-vous à la préfecture ou sous-préfecture de votre lieu de résidence ?"
+                "question": "Vous avez pris rendez-vous à la préfecture ou sous-préfecture de votre lieu de résidence ?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens"
+            },
+            {
+                "title": "Récupérez votre titre de séjour",
+                "type": "Appointment",
+                "description": "Vous devrez récupérer votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence.",
+                "question": "Vous avez récupéré votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence ?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour"
             }
         ]
     }

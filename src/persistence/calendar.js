@@ -10,7 +10,7 @@ module.exports = {
                 convertedDate = moment(date, "YYYY-MM-DD HH:mm:ss").toDate();
             }
             const { rows } = await db.query(sql`
-            UPDATE user_step SET appoinment=${convertedDate} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, appoinment
+            UPDATE user_step SET appoinment=${convertedDate} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, appoinment;
             `);
             return rows[0];
         } catch (error) {

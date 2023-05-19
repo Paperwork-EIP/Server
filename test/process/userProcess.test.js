@@ -196,7 +196,7 @@ describe("User process", () => {
             });
             test("[GET USER PROCESSES] should return user steps with a 200 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'french' });
-                UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
+                UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1, process_id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
@@ -206,7 +206,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: visa.french }]);
+                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.french.title, description: visa.french.description, source: visa.french.source } }]);
                 expect(response._body.message).toEqual('User processes');
             });
         });
@@ -698,10 +698,20 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('User process not found.');
             });
-            test("[GET USER STEPS] data not found : should not get a user step with a 404 status code", async () => {
+            test("[GET USER STEPS] data not found : should not get a user step with a 404 status code(file empty)", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 jest.mock('../../src/data/Visa.json', () => null);
+                const response = await request(server).get("/userProcess/getUserSteps").query({
+                    user_token: "ghjkdhicudhsnklvnsdvnds",
+                    process_title: "hahaha"
+                });
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET USER STEPS] data not found : should not get a user step with a 404 status code(file don't exist)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visacdscsd' });
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
@@ -759,11 +769,24 @@ describe("User process", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            test("[GET USER STEPS BY ID] data not found : should not get a user step with a 404 status code", async () => {
+            test("[GET USER STEPS BY ID] data not found : should not get a user step with a 404 status code (file empty)", async () => {
                 Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 jest.mock('../../src/data/Visa.json', () => null);
+                UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
+
+                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                    user_process_id: 4567865,
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET USER STEPS BY ID] data not found : should not get a user step with a 404 status code (file don't exist)", async () => {
+                Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'english' });
+                UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
+                Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visagggg' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
 
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
@@ -834,11 +857,23 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('Process not found.');
             });
-            test("[GET USER PROCESSES] Data not found : should not get a user processes with a 404 status code", async () => {
+            test("[GET USER PROCESSES] Data not found : should not get a user processes with a 404 status code(file empty)", async () => {
                 Users.findToken = jest.fn().mockReturnValue({id: 1, language: 'english'});
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({title: 'Visa'});
                 jest.mock('../../src/data/Visa.json', () => null);
+
+                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                    user_token: "123"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('Data not found.');
+            });
+            test("[GET USER PROCESSES] Data not found : should not get a user processes with a 404 status code(file don't exist)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({id: 1, language: 'english'});
+                UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
+                Process.getById = jest.fn().mockReturnValue({title: 'Visxsxsa'});
 
                 const response = await request(server).get("/userProcess/getUserProcesses").query({
                     user_token: "123"

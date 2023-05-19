@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const fs = require('fs');
 const moment = require('moment');
 const UserProcess = require('../persistence/userProcess');
 const Process = require('../persistence/process');
@@ -46,8 +47,13 @@ async function getMeeting(processes, language) {
         if (!process) {
             return 'Process not found.';
         }
-        let file = require('../data/' + process.title + '.json');
-        if (!file) {
+        let file;
+        try {
+            file = require('../data/' + process.title + '.json');
+            if (!file) {
+                return 'Data not found.';
+            }
+        } catch (error) {
             return 'Data not found.';
         }
         let data = file[language];
@@ -63,7 +69,7 @@ async function getMeeting(processes, language) {
                 res.push({
                     "date": userStep[j].appoinment,
                     "user_process_id": userStep[j].user_process_id,
-                    "process_title": process.title,
+                    "process_title": data.title,
                     "step_id": userStep[j].step_id,
                     "step_title": data.steps[j].title,
                     "step_description": data.steps[j].description,
