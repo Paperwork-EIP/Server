@@ -99,9 +99,9 @@ module.exports = {
         UPDATE user_table SET age=${value} where email=${email};`);
         return rows[0];
       }
-      if (data === "adress") {
+      if (data === "address") {
         const { rows } = await db.query(sql`
-        UPDATE user_table SET adress=${value} where email=${email};`);
+        UPDATE user_table SET address=${value} where email=${email};`);
         return rows[0];
       }
       if (data === "number_phone") {

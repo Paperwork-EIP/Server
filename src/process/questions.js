@@ -35,7 +35,7 @@ const router = new Router();
                     question: data.steps[i].question,
                 });
         }
-        return response.status(200).json({ questions: questions })
+        return response.status(200).json({ title: data.title, questions: questions })
     } catch (error) {
         console.error(error);
         return response.status(500).json({ message: 'System error.' });

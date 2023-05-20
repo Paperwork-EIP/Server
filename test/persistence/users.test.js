@@ -165,10 +165,10 @@ describe("User Persistence Tests", () => {
 
         expect(result).toEqual({ age: value });
     });
-    it('[MODIFY DATA] should update user data when data is adress', async () => {
+    it('[MODIFY DATA] should update user data when data is address', async () => {
         const email = 'test@blablabla.com';
-        const value = 'adress';
-        const data = 'adress';
+        const value = 'address';
+        const data = 'address';
 
         db.query = jest.fn().mockReturnValue({ rows: [{ adress: value }] });
         const result = await User.modifyDatas(email, data, value);
