@@ -260,6 +260,7 @@ router.get('/getUserProcesses', async (request, response) => {
                     title: data.title,
                     description: data.description,
                     source: data.source,
+                    stocked_title: process.title,
                 }
             });  
         }

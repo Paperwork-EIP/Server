@@ -12,7 +12,7 @@ module.exports = {
                 language text NOT NULL,
                 name text NULL,
                 firstname text NULL,
-                adress text NULL,
+                address text NULL,
                 profile_picture text NULL,
                 age int NULL,
                 number_phone int NULL,

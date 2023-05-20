@@ -68,7 +68,8 @@ const router = new Router();
           res.push({
             title: data.title,
             description: data.description,
-            source: data.source
+            source: data.source,
+            stocked_title: processes[i].title,
           });
         }
         return response.status(200).json({
