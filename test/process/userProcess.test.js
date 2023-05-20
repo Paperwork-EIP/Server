@@ -206,7 +206,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.french.title, description: visa.french.description, source: visa.french.source } }]);
+                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.french.title, description: visa.french.description, source: visa.french.source, stocked_title: 'Visa' } }]);
                 expect(response._body.message).toEqual('User processes');
             });
         });

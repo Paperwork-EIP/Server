@@ -500,7 +500,9 @@ paths:
                 "response": [
                     {
                         "title": "Vital card",
-                        "source": "https://www.service-public.fr/particuliers/vosdroits/F265?lang=en"
+                        "description": "test",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F265?lang=en",
+                        "stocked_title": "VitalCard"
                     }
                 ]
               }
@@ -779,14 +781,12 @@ paths:
                 "message": "User processes",
                 "response": [
                     {
-                        "id": 1,
-                        "is_done": false,
-                        "start_process_date": "2022-12-29T00:00:00.000Z",
-                        "end_process_date": null,
-                        "expire_date": null,
-                        "user_id": 1,
-                        "process_id": 1,
-                        "process_title": "Vital card"
+                      "id": 1,
+                      "process_id": 1,
+                      "title": "Visa long séjour",
+                      "description": "ExampleDescription",
+                      "source": "link",
+                      "stocked_title": "Visa",
                     },
                     ...
                 ]

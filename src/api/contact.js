@@ -12,13 +12,13 @@ router.get('/sendEmail', async (request, response) => {
         }
         const params = {
             Destination: {
-                ToAddresses: ['paperwork_2024@labeip.epitech.eu']
+                ToAddresses: ['emma.rulliere@epitech.eu']
             },
             Message: {
                 Body: {
                     Html: {
                         Charset: 'UTF-8',
-                        Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${name}</title></head><body><h1>Process proposition send by ${email}</h1><p>${content}</p></body></html>`
+                        Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Process proposal</title></head><body><h1>Process proposition send by ${name}, email: ${email}</h1><p>${content}</p></body></html>`
                     }
                 },
                 Subject: {
