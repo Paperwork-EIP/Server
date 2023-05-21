@@ -295,7 +295,7 @@ router.post('/register', async (request, response) => {
             Body: {
               Html: {
                 Charset: 'UTF-8',
-                Data: `<!DOCTYPE html><html lang="en\"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reset Password Email</title></head><body><h1>Reset your password</h1><p>Click on the following link to reset your password:</p><a href="${process.env.URL}/resetPassword?token=${token}">${process.env.URL}/resetPassword?token=${token}</a></body></html>`
+                Data: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Reset Password Email</title></head><body><h1>Reset your password</h1><p>Click on the following link to reset your password:</p><a href="${process.env.URL}/resetPassword?token=${token}">${process.env.URL}/resetPassword?token=${token}</a></body></html>`
               }
             },
             Subject: {
