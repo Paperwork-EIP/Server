@@ -112,10 +112,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: user_token,
                     process_title: process_title,
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -135,10 +135,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: user_token,
                     process_title: process_title,
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -164,7 +164,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process deleted!');
             });
             test("[GET USER STEPS] should return user steps with a 200 status code", async () => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'french' });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'français' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -182,7 +182,7 @@ describe("User process", () => {
             test("[GET USER STEPS BY ID] should return user steps with a 200 status code", async () => {
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
-                Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'french' });
+                Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'français' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
 
@@ -195,7 +195,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process steps');
             });
             test("[GET USER PROCESSES] should return user steps with a 200 status code", async () => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'french' });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'français' });
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1, process_id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -206,7 +206,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.french.title, description: visa.french.description, source: visa.french.source, stocked_title: 'Visa' } }]);
+                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.français.title, description: visa.français.description, source: visa.français.source, stocked_title: 'Visa' } }]);
                 expect(response._body.message).toEqual('User processes');
             });
         });
@@ -370,10 +370,10 @@ describe("User process", () => {
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "Test",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -384,10 +384,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: "",
                     process_title: "Test",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -397,10 +397,10 @@ describe("User process", () => {
             test("[UPDATE] process title missing : should not update a user process with a 400 status code", async () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: "test@test.com",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -411,10 +411,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: "test@test.com",
                     process_title: "",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -425,7 +425,7 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     user_token: "test@test.com",
                     process_title: "Test",
-                    step: null
+                    questions: null
                 });
 
                 expect(response.statusCode).toBe(400);
@@ -446,10 +446,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_token: "h",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -464,10 +464,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "t",
                     user_token: "qqqqqqqq",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -483,10 +483,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_token: "wwwwwwww",
-                    step:
+                    questions:
                         [{
                             step_id: 1,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -503,10 +503,10 @@ describe("User process", () => {
                 const response = await request(server).post("/userProcess/update").send({
                     process_title: 1,
                     user_token: "emaimvaafg",
-                    step:
+                    questions:
                         [{
                             step_id: 8734,
-                            is_done: true
+                            response: true
                         }]
                 });
 
@@ -527,10 +527,10 @@ describe("User process", () => {
                     response = await request(server).post("/userProcess/update").send({
                         user_token: user_token,
                         process_title: process_title,
-                        step:
+                        questions:
                             [{
                                 step_id: 1,
-                                is_done: true
+                                response: true
                             }]
                     });
                 } catch { error } {

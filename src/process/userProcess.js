@@ -48,8 +48,8 @@ router.post('/add', async (request, response) => {
 
 router.post('/update', async (request, response) => {
     try {
-        const { user_token, process_title, step } = request.body;
-        if (!user_token || !process_title || !step) {
+        const { user_token, process_title, questions } = request.body;
+        if (!user_token || !process_title || !questions) {
             return response.status(400).json({ message: 'Missing parameters.' });
         }
         const user = await User.findToken(user_token);
@@ -65,11 +65,11 @@ router.post('/update', async (request, response) => {
             return response.status(404).json({ message: 'User process not found.' });
         }
         let res = [];
-        for (let i in step) {
-            if (!await Step.getById(step[i].step_id)) {
+        for (let i in questions) {
+            if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
-            res.push(await UserStep.update(user_process.id, step[i].step_id, step[i].is_done));
+            res.push(await UserStep.update(user_process.id, questions[i].step_id, questions[i].response));
         }
         const notDone = await UserStep.getNotDone(user_process.id);
         let done = false;
@@ -165,6 +165,7 @@ router.get('/getUserSteps', async (request, response) => {
         const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
+            stocked_title: process.title,
             pourcentage: pourcentage,
             response: res
         });
@@ -216,6 +217,7 @@ router.get('/getUserStepsById', async (request, response) => {
         const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
+            stocked_title: process.title,
             pourcentage: pourcentage,
             response: res
         });
