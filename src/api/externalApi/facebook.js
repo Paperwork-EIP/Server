@@ -67,7 +67,7 @@ router.get("/", async (req, response) => {
         jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
       })
     } else {
-      USER.create(user.data.id, user.data.email, user.data.access_token).then(user => {
+      await USER.create(user.data.id, user.data.email, user.data.access_token).then(user => {
         TOKEN.set(user.email, 'facebook', access_token);
         const jwtToken = jwt.sign({ user }, process.env.jwt_key);
         return response.status(200).json({

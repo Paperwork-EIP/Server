@@ -4,7 +4,6 @@ const axios = require('axios');
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-// const { jwt_key } = require('../../const.json');
 const REDIRECT_URI = 'http://localhost:3000/googleLogin';
 const {URLSearchParams} = require('url');
 
@@ -75,7 +74,7 @@ router.get("/login", async (req, response) => {
                 jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
             })
         } else {
-            USER.create(user.data.id, user.data.email, access_token).then(user => {
+            await USER.create(user.data.id, user.data.email, access_token).then(user => {
                 TOKEN.set(user.email, 'google', access_token);
                 const jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 return response.status(200).json({

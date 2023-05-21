@@ -661,22 +661,22 @@ paths:
             required:
               - user_token
               - process_title
-              - step
+              - questions
             properties:
               process_title:
                 type: string
                 example: ProcessTitle
-                description: Title of the process of the step.
+                description: Title of the process of the steps to change.
               user_token:
                 type: string
                 example: userTokenExemple
-              step:
+              questions:
                 type: object
                 example:
                   [
                     {
                       step_id: id,
-                      is_done: true
+                      response: true
                     },
                     ...
                   ]
