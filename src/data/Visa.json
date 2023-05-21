@@ -9,7 +9,7 @@
             {
                 "title": "Determine the type of visa you need.",
                 "type": "Information",
-                "description": "dentify the category of long-term visa that suits your purpose of travel to France. This could include a work visa, student visa, family reunion visa, or other relevant visa category.",
+                "description": "Identify the category of long-term visa that suits your purpose of travel to France. This could include a work visa, student visa, family reunion visa, or other relevant visa category.",
                 "question": "Do you know wich type of visa you need?",
                 "source": "https://france-visas.gouv.fr/en/web/france-visas"
             },
