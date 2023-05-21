@@ -263,6 +263,7 @@ router.get('/getUserProcesses', async (request, response) => {
                     description: data.description,
                     source: data.source,
                     stocked_title: process.title,
+                    is_done: userProcesses[i].is_done,
                 }
             });  
         }
