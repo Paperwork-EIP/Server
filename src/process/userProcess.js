@@ -165,7 +165,7 @@ router.get('/getUserSteps', async (request, response) => {
         const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
-            stocked_title: process.title,
+            title: data.title,
             pourcentage: pourcentage,
             response: res
         });
@@ -217,7 +217,7 @@ router.get('/getUserStepsById', async (request, response) => {
         const pourcentage = await getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
-            stocked_title: process.title,
+            title: data.title,
             pourcentage: pourcentage,
             response: res
         });

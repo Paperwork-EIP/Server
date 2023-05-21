@@ -735,6 +735,52 @@ paths:
             example:
               {
                 "message": "User process steps",
+                "title": "ProcessTitle",
+                "pourcentage": 33,
+                "response":
+                [
+                  {
+                      "id": 1,
+                      "step_id": 1,
+                      "step_title": "stepTitle1",
+                      "step_type": "stepType",
+                      "step_description": "stepDescription",
+                      "step_source": "stepSource",
+                      "is_done": false,
+                      "start_date": "2052-12-29T00:00:00.000Z",
+                      "end_date": null,
+                      "delay": "2052-12-29T00:00:00.000Z",
+                      "appoinment": null,
+                      "user_process_id": 2
+                  },
+                  ...
+                ]
+              }
+        '400':
+          description: Missing parameters.
+        '404':
+          description: User or process not found.
+        '500':
+          description: System error.
+      summary: Get user step for a process.
+      tags:
+        - userProcess
+  /userProcess/getUserStepsById:
+    get:
+      parameters:
+        - in: query
+          name: user_process_id
+          type: string
+          description: Process title of the user process.
+      responses:
+        '200':
+          description: User steps data.
+          schema:
+            type: object
+            example:
+              {
+                "message": "User process steps",
+                "title": "ProcessTitle",
                 "pourcentage": 33,
                 "response":
                 [
