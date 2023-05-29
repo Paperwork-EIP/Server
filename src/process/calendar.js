@@ -70,6 +70,7 @@ async function getMeeting(processes, language) {
                     "date": userStep[j].appoinment,
                     "user_process_id": userStep[j].user_process_id,
                     "process_title": data.title,
+                    "stocked_title": process.title,
                     "step_id": userStep[j].step_id,
                     "step_title": data.steps[j].title,
                     "step_description": data.steps[j].description,
