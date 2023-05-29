@@ -737,6 +737,7 @@ paths:
             example:
               {
                 "message": "User process steps",
+                "id": 1,
                 "title": "ProcessTitle",
                 "pourcentage": 33,
                 "response":
@@ -782,6 +783,7 @@ paths:
             example:
               {
                 "message": "User process steps",
+                "id": 1,
                 "title": "ProcessTitle",
                 "pourcentage": 33,
                 "response":
