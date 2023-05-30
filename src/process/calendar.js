@@ -40,7 +40,7 @@ router.post("/set", async (request, response) => {
     }
 });
 
-async function getMettingBis(userStep, data) {
+async function getMettingBis(process, userStep, data) {
     let res = [];
     let i = 0;
     for (let j in userStep) {
@@ -85,7 +85,7 @@ async function getMeeting(processes, language) {
         if (!userStep) {
             return 'User step not found.';
         }
-        res = await getMettingBis(userStep, data);
+        res = await getMettingBis(process, userStep, data);
         if (res === 'Step not found.') {
             return res;
         }
