@@ -40,8 +40,32 @@ router.post("/set", async (request, response) => {
     }
 });
 
-async function getMeeting(processes, language) {
+async function getMettingBis(userStep, data) {
     let res = [];
+    let i = 0;
+    for (let j in userStep) {
+        let userSteps = await UserStep.getAll(userStep[j].user_process_id);
+        if (!userSteps) {
+            return 'Step not found.';
+        } else {
+            for (i = 0; userSteps[i] && userSteps[i].step_id != userStep[j].step_id; i++);
+            res.push({
+                "date": userStep[j].appoinment,
+                "user_process_id": userStep[j].user_process_id,
+                "process_title": data.title,
+                "stocked_title": process.title,
+                "step_id": userStep[j].step_id,
+                "step_title": data.steps[i].title,
+                "step_description": data.steps[i].description,
+            });
+        }
+    }
+    return res;
+}
+
+async function getMeeting(processes, language) {
+    let value = [];
+    let res;
     for (let i in processes) {
         let process = await Process.getById(processes[i].process_id);
         if (!process) {
@@ -61,24 +85,13 @@ async function getMeeting(processes, language) {
         if (!userStep) {
             return 'User step not found.';
         }
-        for (let j in userStep) {
-            let step = await Step.getById(userStep[j].step_id);
-            if (!step) {
-                return 'Step not found.';
-            } else {
-                res.push({
-                    "date": userStep[j].appoinment,
-                    "user_process_id": userStep[j].user_process_id,
-                    "process_title": data.title,
-                    "stocked_title": process.title,
-                    "step_id": userStep[j].step_id,
-                    "step_title": data.steps[j].title,
-                    "step_description": data.steps[j].description,
-                });
-            }
+        res = await getMettingBis(userStep, data);
+        if (res === 'Step not found.') {
+            return res;
         }
+        value = value.concat(res);
     }
-    return res;
+    return value;
 }
 
 router.get("/getAll", async (request, response) => {
@@ -139,6 +152,7 @@ router.get("/getByPeriod", async (request, response) => {
         }
         return response.status(200).json({ message: "User appoinments.", appoinment: value });
     } catch (error) {
+        console.log(error);
         return response.status(500).json({ message: "System error." });
     }
 });

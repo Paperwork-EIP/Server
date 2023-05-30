@@ -65,8 +65,8 @@ describe("Calendar tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
-                Step.getById = jest.fn().mockReturnValue({ title: 'title' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
+                UserStep.getAll = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
 
                 const response = await request(server).get("/calendar/getAll").query({
                     token: "hbjhbj"
@@ -80,8 +80,8 @@ describe("Calendar tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
-                Step.getById = jest.fn().mockReturnValue({ id: 1 });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
+                UserStep.getAll = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
 
                 const response = await request(server).get("/calendar/getByPeriod").query({
                     token: "hbjhbj",
@@ -445,7 +445,7 @@ describe("Calendar tests", () => {
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
-                Step.getById = jest.fn().mockReturnValue(null);
+                UserStep.getAll = jest.fn().mockReturnValue(null);
 
                 const response = await request(server).get("/calendar/getAll").query({
                     token: "123"
