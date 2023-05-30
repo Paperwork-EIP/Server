@@ -63,17 +63,20 @@ async function getMeeting(processes, language) {
         }
         for (let j in userStep) {
             let step = await Step.getById(userStep[j].step_id);
-            if (!step) {
+            let userSteps = await UserStep.getAll(userStep[j].user_process_id);
+            if (!step || !userSteps) {
                 return 'Step not found.';
             } else {
+                let i = 0;
+                for (i; userSteps[i] && userSteps[i].step_id != userStep[j].step_id; i++);
                 res.push({
                     "date": userStep[j].appoinment,
                     "user_process_id": userStep[j].user_process_id,
                     "process_title": data.title,
                     "stocked_title": process.title,
                     "step_id": userStep[j].step_id,
-                    "step_title": data.steps[j].title,
-                    "step_description": data.steps[j].description,
+                    "step_title": data.steps[i].title,
+                    "step_description": data.steps[i].description,
                 });
             }
         }

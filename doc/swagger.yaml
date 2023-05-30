@@ -915,6 +915,7 @@ paths:
                             "date": "2022-12-01T12:30:00.000Z",
                             "user_process_id": 1,
                             "process_title": "Process title",
+                            "stocked_title": "ProcessTitle",
                             "step_id": 1,
                             "step_title": "Step title",
                             "step_description": "Description of the step."
