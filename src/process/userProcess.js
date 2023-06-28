@@ -4,6 +4,7 @@ const User = require('../persistence/users');
 const Process = require('../persistence/process');
 const Step = require('../persistence/step');
 const UserStep = require('../persistence/userStep');
+const UserUnderStep = require('../persistence/userUnderStep');
 const router = new Router();
 
 router.post('/add', async (request, response) => {
@@ -29,6 +30,11 @@ router.post('/add', async (request, response) => {
                 return response.status(404).json({ message: 'Step not found.' });
             }
             await UserStep.create(user_process.id, questions[i].step_id, questions[i].response);
+            if (questions[i].underQuestions && questions[i].response == false) {
+                for (let j in questions[i].underQuestions) {
+                    await UserUnderStep.add(user_process.id, questions[i].step_id, questions[i].underQuestions[j].response);
+                }
+            }
         }
         const notDone = await UserStep.getNotDone(user_process.id);
         if (notDone.length === 0) {
@@ -153,6 +159,22 @@ router.get('/getUserSteps', async (request, response) => {
         const UserSteps = await UserStep.getAll(user_process.id);
         let res = [];
         for (let i in UserSteps) {
+            let UserUnderSteps = await UserUnderStep.getAllByStepId(user_process.id, UserSteps[i].step_id);
+            let k = [];
+            if (UserUnderSteps.length > 0 && UserSteps[i].is_done == false) {
+                for (let j in UserUnderSteps) {
+                    if (UserUnderSteps[j].step_id === UserSteps[i].step_id) {
+                        k.push({
+                            id: UserUnderSteps[j].id,
+                            title: data.steps[i].underQuestions[j].title,
+                            description: data.steps[i].underQuestions[j].description,
+                            type: data.steps[i].underQuestions[j].type,
+                            source: data.steps[i].underQuestions[j].source,
+                            is_done: UserUnderSteps[j].is_done,
+                        });
+                    }
+                }
+            }
             res.push({
                 step_id: UserSteps[i].step_id,
                 title: data.steps[i].title,
@@ -160,6 +182,7 @@ router.get('/getUserSteps', async (request, response) => {
                 type: data.steps[i].type,
                 source: data.steps[i].source,
                 is_done: UserSteps[i].is_done,
+                under_steps: k
             });
         }
         const pourcentage = await getPercentage(user_process.id);

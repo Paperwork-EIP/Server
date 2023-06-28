@@ -18,7 +18,24 @@
                 "type": "Document",
                 "description": "You will need a valid passport, it must be valid for at least three months beyond your planned date of departure.",
                 "question": "Do you have a valid passport?",
-                "source": "https://en.wikipedia.org/wiki/Passport"
+                "source": "https://en.wikipedia.org/wiki/Passport",
+                "underQuestions":
+                [
+                    {
+                        "title": "Prepare the necessary documents - passport - Passport validity.",
+                        "type": "Document",
+                        "description": "Your passport must be valid for at least three months beyond your planned date of departure.",
+                        "question": "Is your passport valid for at least three months beyond your planned date of departure?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Prepare the necessary documents - passport - Passport blank pages.",
+                        "type": "Document",
+                        "description": "Your passport must have at least two blank pages.",
+                        "question": "Does your passport have at least two blank pages?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    }
+                ]
             },
             {
                 "title": "Prepare the necessary documents - Visa application form.",

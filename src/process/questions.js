@@ -29,11 +29,27 @@ const router = new Router();
         }
         let questions = [];
         for (let i in steps) {
-            questions.push(
+            if(!data.steps[i].underQuestions) {
+                questions.push(
                 {
                     step_id: steps[i].id,
                     question: data.steps[i].question,
                 });
+            } else {
+                let m = [];
+                for (let j in data.steps[i].underQuestions) {
+                    m.push({
+                        step_id: steps[i].id,
+                        question: data.steps[i].underQuestions[j].question
+                    });
+                }
+                questions.push(
+                {
+                    step_id: steps[i].id,
+                    question: data.steps[i].question,
+                    underQuestions: m
+                });
+            }
         }
         return response.status(200).json({ title: data.title, questions: questions })
     } catch (error) {
