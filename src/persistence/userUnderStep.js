@@ -16,10 +16,10 @@ module.exports = {
             throw error;
         }
     },
-    async update(user_process_id, step_id, is_done) {
+    async update(user_process_id, step_id, id, is_done) {
         try {
             const { rows } = await db.query(sql`
-            UPDATE user_under_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, is_done;
+            UPDATE user_under_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND step_id=${step_id} AND id=${id} RETURNING id, is_done;
             `);
             const [user_under_step] = rows;
             return user_under_step;
@@ -41,6 +41,12 @@ module.exports = {
     async getAllByStepId(user_process_id, step_id) {
         const { rows } = await db.query(sql`
         SELECT * FROM user_under_step WHERE user_process_id=${user_process_id} AND step_id=${step_id} ORDER BY id;
+        `);
+        return rows;
+    },
+    async getAllNotDoneByStepId(user_process_id, step_id) {
+        const { rows } = await db.query(sql`
+        SELECT * FROM user_under_step WHERE user_process_id=${user_process_id} AND step_id=${step_id} AND is_done=false ORDER BY id;
         `);
         return rows;
     }

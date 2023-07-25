@@ -583,19 +583,58 @@ paths:
             type: object
             example:
               {
+                "title": "Long-term visa.",
                 "questions": [
-                  {
-                      step_id: 1,
-                      question: "stepQuestion1"
-                  },
-                  {
-                      step_id: 2,
-                      question: "stepQuestion2"
-                  },
-                  {
-                      step_id: 3,
-                      question: "stepQuestion3"
-                  }
+                    {
+                        "step_id": 1,
+                        "question": "Do you know wich type of visa you need?"
+                    },
+                    {
+                        "step_id": 2,
+                        "question": "Do you have a valid passport?",
+                        "underQuestions": [
+                            {
+                                "step_id": 2,
+                                "question": "Is your passport valid for at least three months beyond your planned date of departure?"
+                            },
+                            {
+                                "step_id": 2,
+                                "question": "Does your passport have at least two blank pages?"
+                            }
+                        ]
+                    },
+                    {
+                        "step_id": 3,
+                        "question": "Do you have a complete visa application form?"
+                    },
+                    {
+                        "step_id": 4,
+                        "question": "Do you have two recent passport photos?"
+                    },
+                    {
+                        "step_id": 5,
+                        "question": "Do you have proof of accommodation?"
+                    },
+                    {
+                        "step_id": 6,
+                        "question": "Do you have proof of financial means?"
+                    },
+                    {
+                        "step_id": 7,
+                        "question": "Do you have proof of travel insurance?"
+                    },
+                    {
+                        "step_id": 8,
+                        "question": "Do you have purpose-specific documents? (Work visa, student visa, family reunion visa, or other relevant visa category)"
+                    },
+                    {
+                        "step_id": 9,
+                        "question": "Have you submitted your application?"
+                    },
+                    {
+                        "step_id": 10,
+                        "question": "Have you collected your visa yet?"
+                    }
                 ]
               }
         '400':
@@ -635,6 +674,20 @@ paths:
                       step_id: id,
                       response: false
                     },
+                    {
+                      "step_id": 2,
+                      "response": false,
+                      "underQuestions": [
+                          {
+                              "step_id": 2,
+                              "response": false
+                          },
+                          {
+                              "step_id": 2,
+                              "response": true
+                          }
+                      ]
+                    },
                     ...
                   ]
                 description: User responses to the intelligent quizz.
@@ -657,7 +710,7 @@ paths:
       parameters:
         - in: body
           name: UserProcess
-          description: Add a user process.
+          description: Add a user process. if all the under steps are done, the main step is done.
           schema:
             type: object
             required:
@@ -679,6 +732,21 @@ paths:
                     {
                       step_id: id,
                       response: true
+                    },
+                    {
+                      "step_id": 2,
+                      "response": false,
+                      "underQuestions":
+                      [
+                          {
+                              "id": 5,
+                              "response": false
+                          },
+                          {
+                              "id": 6,
+                              "response": true
+                          }
+                      ]  
                     },
                     ...
                   ]
@@ -743,18 +811,36 @@ paths:
                 "response":
                 [
                   {
-                      "id": 1,
-                      "step_id": 1,
-                      "step_title": "stepTitle1",
-                      "step_type": "stepType",
-                      "step_description": "stepDescription",
-                      "step_source": "stepSource",
-                      "is_done": false,
-                      "start_date": "2052-12-29T00:00:00.000Z",
-                      "end_date": null,
-                      "delay": "2052-12-29T00:00:00.000Z",
-                      "appoinment": null,
-                      "user_process_id": 2
+                    "id": 1,
+                    "step_id": 1,
+                    "step_title": "stepTitle1",
+                    "step_type": "stepType",
+                    "step_description": "stepDescription",
+                    "step_source": "stepSource",
+                    "is_done": false,
+                    "start_date": "2052-12-29T00:00:00.000Z",
+                    "end_date": null,
+                    "delay": "2052-12-29T00:00:00.000Z",
+                    "appoinment": null,
+                    "user_process_id": 2,
+                    "under_steps": [
+                      {
+                          "id": 5,
+                          "title": "Prepare the necessary documents - passport - Passport validity.",
+                          "description": "Your passport must be valid for at least three months beyond your planned date of departure.",
+                          "type": "Document",
+                          "source": "https://en.wikipedia.org/wiki/Passport",
+                          "is_done": true
+                      },
+                      {
+                          "id": 6,
+                          "title": "Prepare the necessary documents - passport - Passport blank pages.",
+                          "description": "Your passport must have at least two blank pages.",
+                          "type": "Document",
+                          "source": "https://en.wikipedia.org/wiki/Passport",
+                          "is_done": true
+                      }
+                    ]
                   },
                   ...
                 ]
@@ -800,7 +886,25 @@ paths:
                       "end_date": null,
                       "delay": "2052-12-29T00:00:00.000Z",
                       "appoinment": null,
-                      "user_process_id": 2
+                      "user_process_id": 2,
+                      "under_steps": [
+                      {
+                          "id": 5,
+                          "title": "Prepare the necessary documents - passport - Passport validity.",
+                          "description": "Your passport must be valid for at least three months beyond your planned date of departure.",
+                          "type": "Document",
+                          "source": "https://en.wikipedia.org/wiki/Passport",
+                          "is_done": true
+                      },
+                      {
+                          "id": 6,
+                          "title": "Prepare the necessary documents - passport - Passport blank pages.",
+                          "description": "Your passport must have at least two blank pages.",
+                          "type": "Document",
+                          "source": "https://en.wikipedia.org/wiki/Passport",
+                          "is_done": true
+                      }
+                    ]
                   },
                   ...
                 ]
