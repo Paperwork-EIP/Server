@@ -30,7 +30,7 @@ router.post('/add', async (request, response) => {
                 return response.status(404).json({ message: 'Step not found.' });
             }
             await UserStep.create(user_process.id, questions[i].step_id, questions[i].response);
-            if (questions[i].underQuestions && questions[i].response == false) {
+            if (questions[i].underQuestions && questions[i].underQuestions.length > 0) {
                 for (let j in questions[i].underQuestions) {
                     await UserUnderStep.add(user_process.id, questions[i].step_id, questions[i].underQuestions[j].response);
                 }
@@ -82,14 +82,14 @@ router.post('/update', async (request, response) => {
             if (!await Step.getById(questions[i].step_id)) {
                 return response.status(404).json({ message: 'Step not found.' });
             }
-            if (questions[i].underQuestions) {
+            if (questions[i].underQuestions && questions[i].underQuestions.length > 0) {
                 for (let j in questions[i].underQuestions) {
                     await UserUnderStep.update(user_process.id, questions[i].step_id, questions[i].underQuestions[j].id, questions[i].underQuestions[j].response);
                 }
             }
             let underStepNotDone = await UserUnderStep.getAllNotDoneByStepId(user_process.id, questions[i].step_id);
             let underStep = await UserUnderStep.getAllByStepId(user_process.id, questions[i].step_id); 
-            if (underStepNotDone.length === 0 && underStep.length > 0) {
+            if (questions[i].underQuestions && questions[i].underQuestions.length > 0 && underStepNotDone.length === 0 && underStep.length > 0) {
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, true));
             } else if (underStepNotDone.length > 0 && underStep.length > 0) {
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, false));

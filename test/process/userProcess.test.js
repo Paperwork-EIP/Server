@@ -8,6 +8,7 @@ const Step = require("../../src/persistence/step");
 const Process = require("../../src/persistence/process");
 const UserProcess = require("../../src/persistence/userProcess");
 const UserStep = require("../../src/persistence/userStep");
+const UserUnderStep = require("../../src/persistence/userUnderStep");
 const visa = require("../../src/data/Visa.json");
 const fs = require('fs');
 
@@ -48,7 +49,7 @@ describe("User process", () => {
 
     describe("[INTEGRATION TESTS", () => {
         describe("[VALID USER PROCESS TESTS]", () => {
-            test("[ADD] should add a user process with a 200 status code", async () => {
+            test("[ADD] should add a user process with a 200 status code with understep not done", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
                 UserProcess.get = jest.fn().mockReturnValue(null);
@@ -56,6 +57,9 @@ describe("User process", () => {
                 UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.add = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.getAllNotDoneByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
@@ -65,7 +69,48 @@ describe("User process", () => {
                     questions: [
                         {
                             step_id: 1,
-                            response: true
+                            response: false,
+                            underQuestions: [
+                                {
+                                    id: 1,
+                                    response: false
+                                }
+                            ]
+                        },
+                    ]
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+                expect(response._body.message).toEqual('User process created!');
+            });
+            test("[ADD] should add a user process with a 200 status code with understep done", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue(null);
+                UserProcess.getByTitleAndUserID = jest.fn().mockReturnValue(null);
+                UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.add = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.getAllNotDoneByStepId = jest.fn().mockReturnValue([]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
+                UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
+
+                const response = await request(server).post("/userProcess/add").send({
+                    process_title: process_title,
+                    user_token: user_token,
+                    questions: [
+                        {
+                            step_id: 1,
+                            response: false,
+                            underQuestions: [
+                                {
+                                    id: 1,
+                                    response: false
+                                }
+                            ]
                         },
                     ]
                 });
@@ -100,11 +145,14 @@ describe("User process", () => {
                 expect(response.message).not.toBeNull();
                 expect(response._body.message).toEqual('User process created!');
             });
-            test("[UPDATE] should update user process with receive data with a 200 status code", async () => {
+            test("[UPDATE] should update user process with receive data with a 200 status code, with under step bot done", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserUnderStep.update = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.getAllNotDoneByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
                 UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
@@ -115,7 +163,13 @@ describe("User process", () => {
                     questions:
                         [{
                             step_id: 1,
-                            response: true
+                            response: true,
+                            underQuestions: [
+                                {
+                                    id: 1,
+                                    response: true
+                                }
+                            ]
                         }]
                 });
 
@@ -123,11 +177,45 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process updated!');
                 expect(response._body.response).toEqual([{ something: 'something' }]);
             });
-            test("[UPDATE] should update user process with receive data with a 200 status code(sgetNotDone empty)", async () => {
+            test("[UPDATE] should update user process with receive data with a 200 status code, with under step all done", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserUnderStep.update = jest.fn().mockReturnValue({ something: 'something' });
+                UserUnderStep.getAllNotDoneByStepId = jest.fn().mockReturnValue([]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1 }]);
+                UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
+                UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
+                UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
+
+                const response = await request(server).post("/userProcess/update").send({
+                    user_token: user_token,
+                    process_title: process_title,
+                    questions:
+                        [{
+                            step_id: 1,
+                            response: true,
+                            underQuestions: [
+                                {
+                                    id: 1,
+                                    response: true
+                                }
+                            ]
+                        }]
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual('User process updated!');
+                expect(response._body.response).toEqual([{ something: 'something' }]);
+            });
+            test("[UPDATE] should update user process with receive data with a 200 status code(getNotDone empty)", async () => {
+                Users.findToken = jest.fn().mockReturnValue({ id: 1 });
+                Process.get = jest.fn().mockReturnValue({ id: 1, title: 'truc' });
+                UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
+                UserUnderStep.getAllNotDoneByStepId = jest.fn().mockReturnValue([]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([]);
                 UserStep.update = jest.fn().mockReturnValue({ something: 'something' });
                 UserStep.getNotDone = jest.fn().mockReturnValue([]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
@@ -168,6 +256,7 @@ describe("User process", () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
 
                 const response = await request(server).get("/userProcess/getUserSteps").query({
@@ -184,6 +273,7 @@ describe("User process", () => {
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'français' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
+                UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
 
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
@@ -200,6 +290,7 @@ describe("User process", () => {
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
+                // UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }])
 
                 const response = await request(server).get("/userProcess/getUserProcesses").query({
                     user_token: user_token

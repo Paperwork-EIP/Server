@@ -14,70 +14,63 @@
                 "source": "https://france-visas.gouv.fr/en/web/france-visas"
             },
             {
-                "title": "Prepare the necessary documents - passport.",
+                "title": "Prepare the necessary documents",
                 "type": "Document",
-                "description": "You will need a valid passport, it must be valid for at least three months beyond your planned date of departure.",
-                "question": "Do you have a valid passport?",
-                "source": "https://en.wikipedia.org/wiki/Passport",
+                "description": "You will need to get all those document for your visa application.",
+                "question": "Do you already have all the necessary documents?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
                 "underQuestions":
                 [
                     {
-                        "title": "Prepare the necessary documents - passport - Passport validity.",
+                        "title": "passport.",
                         "type": "Document",
-                        "description": "Your passport must be valid for at least three months beyond your planned date of departure.",
-                        "question": "Is your passport valid for at least three months beyond your planned date of departure?",
+                        "description": "You will need a valid passport, it must be valid for at least three months beyond your planned date of departure.",
+                        "question": "Do you have a valid passport?",
                         "source": "https://en.wikipedia.org/wiki/Passport"
                     },
                     {
-                        "title": "Prepare the necessary documents - passport - Passport blank pages.",
+                        "title": "Visa application form.",
                         "type": "Document",
-                        "description": "Your passport must have at least two blank pages.",
-                        "question": "Does your passport have at least two blank pages?",
-                        "source": "https://en.wikipedia.org/wiki/Passport"
+                        "description": "You will need to complete a visa application form. You can download the form from the website https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "Do you have a complete visa application form?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Photos.",
+                        "type": "Document",
+                        "description": "You will need to provide two passport photos. The photos must be recent, in color, and measure 3.5 cm x 4.5 cm. The photos must be taken against a white background.",
+                        "question": "Do you have two recent passport photos?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of accommodation.",
+                        "type": "Document",
+                        "description": "You will need to provide proof of accommodation. This could include a hotel reservation, a rental agreement, or a letter of invitation from your host in France.",
+                        "question": "Do you have proof of accommodation?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of financial means.",
+                        "type": "Document",
+                        "description": "You will need to provide proof of financial means. This could include bank statements, pay slips, or other relevant documents.",
+                        "question": "Do you have proof of financial means?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of travel insurance.",
+                        "type": "Document",
+                        "description": "You will need to provide proof of travel insurance. The insurance must cover the entire duration of your stay in France.",
+                        "question": "Do you have proof of travel insurance?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Purpose-specific documents.",
+                        "type": "Document",
+                        "description": "Work visa: Employment contract, letter from the employer, work permit, and proof of professional qualifications.\nStudent visa: Acceptance letter from a recognized educational institution, proof of payment of tuition fees, and academic transcripts.\nFamily reunion visa: Proof of family relationship, such as marriage or birth certificates, and a letter of invitation from the family member residing in France.",
+                        "question": "Do you have purpose-specific documents? (Work visa, student visa, family reunion visa, or other relevant visa category)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
                     }
                 ]
-            },
-            {
-                "title": "Prepare the necessary documents - Visa application form.",
-                "type": "Document",
-                "description": "You will need to complete a visa application form. You can download the form from the website https://france-visas.gouv.fr/en/web/france-visas/forms.",
-                "question": "Do you have a complete visa application form?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
-            },
-            {
-                "title": "Prepare the necessary documents - Photos.",
-                "type": "Document",
-                "description": "You will need to provide two passport photos. The photos must be recent, in color, and measure 3.5 cm x 4.5 cm. The photos must be taken against a white background.",
-                "question": "Do you have two recent passport photos?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Proof of accommodation.",
-                "type": "Document",
-                "description": "You will need to provide proof of accommodation. This could include a hotel reservation, a rental agreement, or a letter of invitation from your host in France.",
-                "question": "Do you have proof of accommodation?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Proof of financial means.",
-                "type": "Document",
-                "description": "You will need to provide proof of financial means. This could include bank statements, pay slips, or other relevant documents.",
-                "question": "Do you have proof of financial means?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Proof of travel insurance.",
-                "type": "Document",
-                "description": "You will need to provide proof of travel insurance. The insurance must cover the entire duration of your stay in France.",
-                "question": "Do you have proof of travel insurance?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Purpose-specific documents.",
-                "type": "Document",
-                "description": "Work visa: Employment contract, letter from the employer, work permit, and proof of professional qualifications.\nStudent visa: Acceptance letter from a recognized educational institution, proof of payment of tuition fees, and academic transcripts.\nFamily reunion visa: Proof of family relationship, such as marriage or birth certificates, and a letter of invitation from the family member residing in France.",
-                "question": "Do you have purpose-specific documents? (Work visa, student visa, family reunion visa, or other relevant visa category)",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
             },
             {
                 "title": "Schedule an appointment.",
@@ -110,52 +103,63 @@
                 "source": "https://france-visas.gouv.fr/en/web/france-visas"
             },
             {
-                "title": "Préparez les documents nécessaires - passeport.",
+                "title": "Préparez les documents nécessaires.",
                 "type": "Document",
-                "description": "Vous aurez besoin d'un passeport valide, il doit être valide pendant au moins trois mois après la date prévue de votre départ.",
-                "question": "Avez-vous un passeport valide?",
-                "source": "https://en.wikipedia.org/wiki/Passport"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Formulaire de demande de visa.",
-                "type": "Document",
-                "description": "Vous devrez remplir un formulaire de demande de visa. Vous pouvez télécharger le formulaire sur le site Web https://france-visas.gouv.fr/en/web/france-visas/forms.",
-                "question": "Avez-vous un formulaire de demande de visa complet?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Photos.",
-                "description": "Vous devrez fournir deux photos d'identité. Les photos doivent être récentes, en couleur et mesurer 3,5 cm x 4,5 cm. Les photos doivent être prises sur un fond blanc.",
-                "question": "Avez-vous deux photos d'identité récentes?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Preuve d'hébergement.",
-                "type": "Document",
-                "description": "Vous devrez fournir une preuve d'hébergement. Cela pourrait inclure une réservation d'hôtel, un contrat de location ou une lettre d'invitation de votre hôte en France.",
-                "question": "Avez-vous une preuve d'hébergement?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Preuve de moyens financiers.",
-                "type": "Document",
-                "description": "Vous devrez fournir une preuve de moyens financiers. Cela pourrait inclure des relevés bancaires, des fiches de paie ou d'autres documents pertinents.",
-                "question": "Avez-vous une preuve de moyens financiers?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Preuve d'assurance voyage.",
-                "type": "Document",
-                "description": "Vous devrez fournir une preuve d'assurance voyage. L'assurance doit couvrir toute la durée de votre séjour en France.",
-                "question": "Avez-vous une preuve d'assurance voyage?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Préparez les documents nécessaires - Documents spécifiques au type de visa.",
-                "type": "Document",
-                "description": "Visa de travail: contrat de travail, lettre de l'employeur, permis de travail et preuve de qualifications professionnelles.\nVisa d'étudiant: lettre d'acceptation d'un établissement d'enseignement reconnu, preuve de paiement des frais de scolarité et relevés de notes.\nVisa de regroupement familial: preuve de lien familial, tels que certificats de mariage ou de naissance, et lettre d'invitation du membre de la famille résidant en France.",
-                "question": "Avez-vous les documents spécifiques au type de visa? (Visa de travail, visa d'étudiant, visa de regroupement familial ou autre catégorie de visa pertinente)",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                "description": "Vous devrez obtenir tous ces documents pour votre demande de visa.",
+                "question": "Avez-vous déjà tous les documents nécessaires?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions":
+                [
+                    {
+                        "title": "passeport.",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un passeport valide, il doit être valide pendant au moins trois mois après la date de départ prévue.",
+                        "question": "Avez-vous un passeport valide?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Formulaire de demande de visa.",
+                        "type": "Document",
+                        "description": "Vous devrez remplir un formulaire de demande de visa. Vous pouvez télécharger le formulaire sur le site Web https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "Avez-vous un formulaire de demande de visa complet?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Photos.",
+                        "type": "Document",
+                        "description": "Vous devrez fournir deux photos d'identité. Les photos doivent être récentes, en couleur et mesurer 3,5 cm x 4,5 cm. Les photos doivent être prises sur un fond blanc.",
+                        "question": "Avez-vous deux photos d'identité récentes?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve d'hébergement.",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve d'hébergement. Cela pourrait inclure une réservation d'hôtel, un contrat de location ou une lettre d'invitation de votre hôte en France.",
+                        "question": "Avez-vous une preuve d'hébergement?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve de moyens financiers.",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve de moyens financiers. Cela pourrait inclure des relevés bancaires, des fiches de paie ou d'autres documents pertinents.",
+                        "question": "Avez-vous une preuve de moyens financiers?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve d'assurance voyage.",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve d'assurance voyage. L'assurance doit couvrir toute la durée de votre séjour en France.",
+                        "question": "Avez-vous une preuve d'assurance voyage?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Documents spécifiques à l'objectif.",
+                        "type": "Document",
+                        "description": "Visa de travail: contrat de travail, lettre de l'employeur, permis de travail et preuve de qualifications professionnelles.\nVisa d'étudiant: lettre d'acceptation d'un établissement d'enseignement reconnu, preuve du paiement des frais de scolarité et relevés de notes.\nVisa de regroupement familial: preuve de la relation familiale, tels que les certificats de mariage ou de naissance, et une lettre d'invitation du membre de la famille résidant en France.",
+                        "question": "Avez-vous des documents spécifiques à l'objectif? (Visa de travail, visa d'étudiant, visa de regroupement familial ou autre catégorie de visa pertinente)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
             },
             {
                 "title": "Prenez rendez-vous.",

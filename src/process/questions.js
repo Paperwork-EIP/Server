@@ -29,7 +29,7 @@ const router = new Router();
         }
         let questions = [];
         for (let i in steps) {
-            if(!data.steps[i].underQuestions) {
+            if(!data.steps[i].underQuestions || data.steps[i].underQuestions.length === 0) {
                 questions.push(
                 {
                     step_id: steps[i].id,
