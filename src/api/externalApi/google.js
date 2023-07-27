@@ -54,9 +54,7 @@ router.get("/login", async (req, response) => {
                 message: "Missing code param.",
             });
         }
-        console.log("test1");
         const { id_token, access_token } = await getLoginTokens(code);
-        console.log("test2");
         const user = await axios.get(
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
             {
@@ -65,15 +63,12 @@ router.get("/login", async (req, response) => {
                 },
             }
         );
-        console.log("test3");
         const checkUser = await USER.find(user.data.email);
         let jwtToken;
         if (checkUser) {
             await TOKEN.set(checkUser.email, 'google', access_token);
             jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
             await USER.setToken(checkUser.email, jwtToken);
-
-            console.log("test4");
             return response.status(200).json({
                 message: "Connected with google",
                 email: checkUser.email,
@@ -84,8 +79,6 @@ router.get("/login", async (req, response) => {
                 await TOKEN.set(user.email, 'google', access_token);
                 jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 await USER.setToken(user.email, jwtToken);
-
-                console.log("test5");
                 return response.status(200).json({
                     message: "Connected with google",
                     email: user.email,
