@@ -60,10 +60,12 @@ router.get("/", async (req, response) => {
     const checkUser = await USER.find(user.data.email)
     if (checkUser) {
       await TOKEN.set(checkUser.email, 'facebook', access_token);
+      const jwtToken = jwt.sign({ user }, process.env.jwt_key);
+      await USER.setToken(user.email, jwtToken);
       return response.status(200).json({
         message: "Connected with facebook",
         email: checkUser.email,
-        jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
+        jwt: jwtToken
       })
     } else {
       await USER.create(user.data.id, user.data.email, user.data.access_token, "english", true).then(async user =>{
