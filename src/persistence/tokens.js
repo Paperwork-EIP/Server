@@ -1,17 +1,15 @@
 const db = require('./db');
 
 module.exports = {
-  async set(email, service, token, callback) {
+  async set(email, service, token) {
     try {
       let query;
       if (token)
         query = 'UPDATE user_table SET '+ service + '_token' + ' = \'' + token + '\' WHERE email = \'' + email + '\';';
       else
         query = 'UPDATE user_table SET '+ service + '_token' + ' = \'\' WHERE email = \'' + email + '\';';
-      db.query(query).then(() => {
-        callback(true)
-      }).catch(e => {
-      })
+        await db.query(query);
+        return;
     } catch (error) {
       console.error(error);
       throw error;

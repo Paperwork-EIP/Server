@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const router = new Router();
 const axios = require('axios');
-const REDIRECT_URI = 'http://localhost:3000/facebookLogin';
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
@@ -16,7 +15,7 @@ function get_code() {
       'email',
       'public_profile'
     ].join(" ")],
-    ['redirect_uri', REDIRECT_URI]
+    ['redirect_uri', process.env.messenger_redirect_uri]
   ]).toString()}`;
 }
 
@@ -31,7 +30,7 @@ async function getAccessToken(code) {
         ['code', code],
         ['client_id', process.env.messenger_clientID],
         ['client_secret', process.env.messenger_secret],
-        ['redirect_uri', REDIRECT_URI],
+        ['redirect_uri', process.env.messenger_redirect_uri],
         ['grant_type', "authorization_code"]
       ]).toString(), {
       headers: {
@@ -67,7 +66,7 @@ router.get("/", async (req, response) => {
         jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
       })
     } else {
-      await USER.create(user.data.id, user.data.email, user.data.access_token).then(async user =>{
+      await USER.create(user.data.id, user.data.email, user.data.access_token, "english", true).then(async user =>{
         await TOKEN.set(user.email, 'facebook', access_token);
         const jwtToken = jwt.sign({ user }, process.env.jwt_key);
         return response.status(200).json({
