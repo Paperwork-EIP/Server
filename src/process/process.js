@@ -6,38 +6,6 @@ const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
-  router.post('/create', async (request, response) => {
-    try {
-      const { title, content, delay } = request.body;
-      if (!title || !content) {
-        return response.status(400).json({ message: 'Title or content missing' });
-      }
-      const find = await Process.get(title);
-      if (find) {
-        return response.status(400).json({ message: 'Process already exists.' });
-      }
-      const jsonData = JSON.stringify(content, null, 2);
-      const filePath = path.join(__dirname, '../data', `${title}.json`);
-      fs.writeFile(filePath, jsonData, function (err, result) {
-        if (err) {
-          console.log('error', err);
-          return response.status(500).json({ message: 'Error writing file.' });
-        }
-        return response.status(200).json({
-          message: 'Process created!',
-          response: jsonData
-        });
-      });
-      const res = await Process.create(title, delay);
-      return response.status(200).json({
-        message: 'Process created!',
-        response: res
-      });
-    } catch (err) {
-      console.error(err);
-      return response.status(500).json({ message: 'System error.' });
-    }
-  });
   router.post('/add', async (request, response) => {
     try {
         const { title, delay } = request.body;
