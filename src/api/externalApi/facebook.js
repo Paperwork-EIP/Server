@@ -83,7 +83,7 @@ router.get("/", async (req, response) => {
         });
       }
   } catch (e) {
-      console.error(e);
+      // console.error(e);
       return response.status(500).json({
           message: "Connection with facebook failed",
       });
