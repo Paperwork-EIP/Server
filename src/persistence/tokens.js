@@ -8,8 +8,8 @@ module.exports = {
         query = 'UPDATE user_table SET '+ service + '_token' + ' = \'' + token + '\' WHERE email = \'' + email + '\';';
       else
         query = 'UPDATE user_table SET '+ service + '_token' + ' = \'\' WHERE email = \'' + email + '\';';
-      await db.query(query);
-      return;
+      const { row } = await db.query(query);
+      return row[0];
     } catch (error) {
       console.error(error);
       throw error;
