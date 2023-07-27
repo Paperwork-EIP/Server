@@ -547,8 +547,13 @@ TN:
 SF:src/persistence/db.js
 FNF:0
 FNH:0
+<<<<<<< HEAD
 DA:1,22
 DA:3,22
+=======
+DA:1,21
+DA:3,21
+>>>>>>> 24282312e1fa0160b269d0cf75a0b37d28478efd
 LF:2
 LH:2
 BRF:0
@@ -559,6 +564,7 @@ SF:src/persistence/init-db.js
 FN:5,(anonymous_0)
 FNF:1
 FNH:1
+<<<<<<< HEAD
 FNDA:26,(anonymous_0)
 DA:1,22
 DA:2,22
@@ -579,6 +585,27 @@ DA:92,25
 DA:102,1
 LF:17
 LH:17
+=======
+FNDA:25,(anonymous_0)
+DA:1,21
+DA:2,21
+DA:4,21
+DA:6,25
+DA:7,25
+DA:23,24
+DA:31,24
+DA:40,24
+DA:45,24
+DA:54,24
+DA:60,24
+DA:68,24
+DA:72,24
+DA:76,24
+DA:87,24
+DA:97,1
+LF:16
+LH:16
+>>>>>>> 24282312e1fa0160b269d0cf75a0b37d28478efd
 BRF:0
 BRH:0
 end_of_record
