@@ -59,7 +59,7 @@ router.get("/", async (req, response) => {
               },
           }
       );
-      console.log("user", user.data);
+      console.log("user :", user.data);
       const checkUser = await USER.find(user.data.email);
       let jwtToken;
       if (checkUser) {
@@ -88,7 +88,7 @@ router.get("/", async (req, response) => {
           });
       }
   } catch (e) {
-      console.error(e);
+      // console.error(e);
       return response.status(500).json({
           message: "Connection with facebook failed",
       });
