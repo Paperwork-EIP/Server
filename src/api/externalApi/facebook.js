@@ -82,7 +82,8 @@ router.get("/", async (req, response) => {
               console.log("test5");
               return response.status(200).json({
                   message: "Connected with facebook",
-                  jwt: jwtToken,
+                email: user.email,
+                  jwt: jwtToken
               });
           });
       }

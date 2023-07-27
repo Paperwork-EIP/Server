@@ -88,7 +88,8 @@ router.get("/login", async (req, response) => {
                 console.log("test5");
                 return response.status(200).json({
                     message: "Connected with google",
-                    jwt: jwtToken,
+                    email: user.email,
+                    jwt: jwtToken
                 });
             });
         }
