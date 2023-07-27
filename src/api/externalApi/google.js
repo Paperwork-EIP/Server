@@ -70,7 +70,7 @@ router.get("/login", async (req, response) => {
         let jwtToken;
         if (checkUser) {
             await TOKEN.set(checkUser.email, 'google', access_token);
-            jwtToken = jwt.sign({ user }, process.env.jwt_key);
+            jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
             await USER.setToken(user.email, jwtToken);
             console.log("test4");
             return response.status(200).json({
