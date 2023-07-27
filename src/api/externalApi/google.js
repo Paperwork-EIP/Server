@@ -75,6 +75,7 @@ router.get("/login", async (req, response) => {
             await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
                 await TOKEN.set(user.email, 'google', access_token);
                 const jwtToken = jwt.sign({ user }, process.env.jwt_key);
+                await USER.setToken(user.email, jwtToken);
                 return response.status(200).json({
                 message: "Connected with google",
                 jwt: jwtToken
