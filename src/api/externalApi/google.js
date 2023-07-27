@@ -52,9 +52,11 @@ router.get("/login", async (req, response) => {
         if (!code) {
             return response.status(409).json({
                 message: "Missing code param.",
-            })
+            });
         }
-        const { id_token, access_token } = await getLoginTokens(code)
+        console.log("test1");
+        const { id_token, access_token } = await getLoginTokens(code);
+        console.log("test2");
         const user = await axios.get(
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
             {
@@ -62,34 +64,40 @@ router.get("/login", async (req, response) => {
                     Authorization: `Bearer ${id_token}`,
                 },
             }
-        )
+        );
+        console.log("test3");
         const checkUser = await USER.find(user.data.email);
+        let jwtToken;
         if (checkUser) {
             await TOKEN.set(checkUser.email, 'google', access_token);
-            const jwtToken = jwt.sign({ user }, process.env.jwt_key);
+            jwtToken = jwt.sign({ user }, process.env.jwt_key);
             await USER.setToken(user.email, jwtToken);
+            console.log("test4");
             return response.status(200).json({
                 message: "Connected with google",
                 email: checkUser.email,
-                jwt: jwtToken
-            })
+                jwt: jwtToken,
+            });
         } else {
             await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
                 await TOKEN.set(user.email, 'google', access_token);
-                const jwtToken = jwt.sign({ user }, process.env.jwt_key);
+                jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 await USER.setToken(user.email, jwtToken);
+
+                console.log("test5");
                 return response.status(200).json({
-                message: "Connected with google",
-                jwt: jwtToken
-                })
-            })
+                    message: "Connected with google",
+                    jwt: jwtToken,
+                });
+            });
         }
     } catch (e) {
         console.error(e);
         return response.status(500).json({
             message: "Connection with google failed",
-        })
+        });
     }
-})
+});
+
 
 module.exports = router;
