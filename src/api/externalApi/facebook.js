@@ -48,9 +48,7 @@ router.get("/", async (req, response) => {
               message: "Missing code param.",
           });
       }
-      console.log("test1");
       const { access_token } = await getAccessToken(code);
-      console.log("test2");
       const user = await axios.get(
           `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
           {
@@ -59,33 +57,28 @@ router.get("/", async (req, response) => {
               },
           }
       );
-      console.log("user :", user.data);
       const checkUser = await USER.find(user.data.email);
       let jwtToken;
       if (checkUser) {
-          await TOKEN.set(checkUser.email, 'facebook', access_token);
-          jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
-          await USER.setToken(checkUser.email, jwtToken);
-
-          console.log("test4");
+        await TOKEN.set(checkUser.email, 'facebook', access_token);
+        jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
+        await USER.setToken(checkUser.email, jwtToken);
+        return response.status(200).json({
+            message: "Connected with facebook",
+            email: checkUser.email,
+            jwt: jwtToken,
+        });
+    } else {
+        await USER.create(user.id, user.email, access_token, "english", true).then(async user => {
+          await TOKEN.set(user.email, 'facebook', access_token);
+          jwtToken = jwt.sign({ user }, process.env.jwt_key);
+          await USER.setToken(user.email, jwtToken);
           return response.status(200).json({
               message: "Connected with facebook",
-              email: checkUser.email,
-              jwt: jwtToken,
+            email: user.email,
+              jwt: jwtToken
           });
-      } else {
-          await USER.create(user.data.id, user.data.email, user.data.access_token, "english", true).then(async user => {
-              await TOKEN.set(user.email, 'facebook', access_token);
-              jwtToken = jwt.sign({ user }, process.env.jwt_key);
-              await USER.setToken(user.email, jwtToken);
-
-              console.log("test5");
-              return response.status(200).json({
-                  message: "Connected with facebook",
-                email: user.email,
-                  jwt: jwtToken
-              });
-          });
+        });
       }
   } catch (e) {
       // console.error(e);
