@@ -59,7 +59,7 @@ router.get("/", async (req, response) => {
               },
           }
       );
-      console.log("test3");
+      console.log("user", user.data);
       const checkUser = await USER.find(user.data.email);
       let jwtToken;
       if (checkUser) {
