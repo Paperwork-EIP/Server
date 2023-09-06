@@ -16,6 +16,19 @@ module.exports = {
             throw error;
         }
     },
+    async update(id, delay = null) {
+        try {
+            const { rows } = await db.query(sql`
+            UPDATE process SET delay=${delay} WHERE id=${id}
+            RETURNING id, title;
+            `);
+            const [process] = rows;
+            return process;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
     async delete(id) {
         try {
             const { rows } = await db.query(sql`
