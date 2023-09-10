@@ -94,12 +94,14 @@ router.get("/login", async (req, response) => {
     }
 });
 async function getMobileUser(access_token, id_token) {
-    const url = "https://www.googleapis.com/oauth2/v1/userinfo";
-    const user = await axios.get(url + '?alt=json&access_token=' + access_token, values, {
-        headers: {
-            Authorization: `Bearer ${id_token}`,
-        },
-    });
+    const user = await axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+        {
+            headers: {
+                Authorization: `Bearer ${id_token}`,
+            },
+        }
+    );
     return user;
 }
 router.get("/mobileLogin", async (req, response) => {
