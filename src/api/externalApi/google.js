@@ -4,7 +4,6 @@ const axios = require('axios');
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-const url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
 const {URLSearchParams} = require('url');
 
 function getGoogleAuthURL() {
@@ -97,6 +96,7 @@ router.get("/login", async (req, response) => {
 router.get("/mobileLogin", async (req, response) => {
     try {
         const { id_token, access_token } = req.query;
+        const url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
         if (!id_token || !access_token) {
             return response.status(409).json({message: "Missing token param.",});
         }
