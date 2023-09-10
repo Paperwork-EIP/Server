@@ -93,21 +93,22 @@ router.get("/login", async (req, response) => {
         });
     }
 });
+async function getMobileUser(access_token, id_token) {
+    const url = "https://www.googleapis.com/oauth2/v1/userinfo";
+    const user = await axios.get(url + '?alt=json&access_token=' + access_token, values, {
+        headers: {
+            Authorization: `Bearer ${id_token}`,
+        },
+    });
+    return user;
+}
 router.get("/mobileLogin", async (req, response) => {
     try {
         const { id_token, access_token } = req.query;
-        const url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=';
         if (!id_token || !access_token) {
             return response.status(409).json({message: "Missing token param.",});
         }
-        const user = await axios.get(
-            url + access_token,
-            {
-                headers: {
-                    Authorization: `Bearer ${id_token}`,
-                },
-            }
-        );
+        const user = await getMobileUser(access_token, id_token);
         const checkUser = await USER.find(user.data.email);
         let jwtToken;
         if (checkUser) {

@@ -4,7 +4,6 @@ const axios = require('axios');
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-const url = 'https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name';
 const {URLSearchParams} = require('url');
 
 function get_code() {
@@ -88,21 +87,24 @@ router.get("/", async (req, response) => {
       });
   }
 });
+async function getMobileUser(access_token) {
+  const user = await axios.get(
+    `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
+    {
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    }
+  );
+  return user;
+}
 router.get("/mobileLogin", async (req, response) => {
   try {
     const { access_token } = req.query;
-    const url = 'https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name';
     if (!access_token) {
       return response.status(409).json({message: "Missing token param.",});
     }
-    const user = await axios.get(
-      url,
-      {
-          headers: {
-              Authorization: `Bearer ${access_token}`,
-          },
-      }
-    );
+    const user = await getMobileUser(access_token);
     const checkUser = await USER.find(user.data.email);
     let jwtToken;
     if (checkUser) {
