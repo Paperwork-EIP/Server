@@ -93,9 +93,9 @@ router.get("/login", async (req, response) => {
         });
     }
 });
-router.post("/mobileLogin", async (req, response) => {
+router.get("/mobileLogin", async (req, response) => {
     try {
-        const { id_token, access_token } = req.body;
+        const { id_token, access_token } = req.query;
         if (!id_token || !access_token) {
             return response.status(409).json({message: "Missing token param.",});
         }
