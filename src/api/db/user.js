@@ -170,7 +170,7 @@ router.post('/register', async (request, response) => {
       if (!token) {
         return response.status(400).json({ message: 'Missing parameter token.' });
       }
-      const find = await User.findToken(token)
+      const find = await User.findToken(token);
       if (find) {
         const data =
         {"language":language, "password": password,

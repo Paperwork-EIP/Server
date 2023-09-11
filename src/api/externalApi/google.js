@@ -4,7 +4,6 @@ const axios = require('axios');
 const USER = require('../../persistence/users');
 const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
-const REDIRECT_URI = 'http://localhost:3000/googleLogin';
 const {URLSearchParams} = require('url');
 
 function getGoogleAuthURL() {
@@ -12,7 +11,7 @@ function getGoogleAuthURL() {
     return `${rootUrl}?${new URLSearchParams([
         ['client_id', process.env.google_clientID],
         ['access_type', "offline"],
-        ['redirect_uri', REDIRECT_URI],
+        ['redirect_uri', process.env.google_redirect_uri],
         ['response_type', "code"],
         ['prompt', "consent"],
         ['scope', [
@@ -34,7 +33,7 @@ async function getLoginTokens(code) {
     const values = new URLSearchParams([
         ['client_id', process.env.google_clientID],
         ['code', code],
-        ['redirect_uri', REDIRECT_URI],
+        ['redirect_uri', process.env.google_redirect_uri],
         ['client_secret', process.env.google_secret],
         ['grant_type', "authorization_code"]
     ]).toString();
@@ -53,42 +52,47 @@ router.get("/login", async (req, response) => {
         if (!code) {
             return response.status(409).json({
                 message: "Missing code param.",
-            })
+            });
         }
-        const { id_token, access_token } = await getLoginTokens(code)
-        const user = await axios
-        .get(
+        const { id_token, access_token } = await getLoginTokens(code);
+        const user = await axios.get(
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
             {
-            headers: {
-                Authorization: `Bearer ${id_token}`,
-            },
+                headers: {
+                    Authorization: `Bearer ${id_token}`,
+                },
             }
-            )
+        );
         const checkUser = await USER.find(user.data.email);
+        let jwtToken;
         if (checkUser) {
             await TOKEN.set(checkUser.email, 'google', access_token);
+            jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
+            await USER.setToken(checkUser.email, jwtToken);
             return response.status(200).json({
                 message: "Connected with google",
                 email: checkUser.email,
-                jwt: jwt.sign({user: {id: checkUser.id, email: checkUser.email }}, process.env.jwt_key)
-            })
+                jwt: jwtToken,
+            });
         } else {
-            await USER.create(user.data.id, user.data.email, access_token).then(async user => {
+            await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
                 await TOKEN.set(user.email, 'google', access_token);
-                const jwtToken = jwt.sign({ user }, process.env.jwt_key);
+                jwtToken = jwt.sign({ user }, process.env.jwt_key);
+                await USER.setToken(user.email, jwtToken);
                 return response.status(200).json({
-                message: "Connected with google",
-                jwt: jwtToken
-                })
-            })
+                    message: "Connected with google",
+                    email: user.email,
+                    jwt: jwtToken
+                });
+            });
         }
     } catch (e) {
         console.error(e);
         return response.status(500).json({
             message: "Connection with google failed",
-        })
+        });
     }
-})
+});
+
 
 module.exports = router;

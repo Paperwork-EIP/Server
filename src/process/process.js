@@ -3,12 +3,14 @@ const Process = require('../persistence/process');
 const Step = require('../persistence/step');
 const UserProcess = require('../persistence/userProcess');
 const router = new Router();
+const path = require('path');
+const fs = require('fs');
 
   router.post('/add', async (request, response) => {
     try {
         const { title, delay } = request.body;
         if (!title) {
-          return response.status(400).json({ message: 'Title or description missing' });
+          return response.status(400).json({ message: 'Title missing' });
         }
         const find = await Process.get(title);
         if (find) {
