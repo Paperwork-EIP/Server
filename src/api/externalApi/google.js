@@ -93,6 +93,53 @@ router.get("/login", async (req, response) => {
         });
     }
 });
-
+async function getMobileUser(access_token, id_token) {
+    const user = await axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+        {
+            headers: {
+                Authorization: `Bearer ${id_token}`,
+            },
+        }
+    );
+    return user;
+}
+router.get("/mobileLogin", async (req, response) => {
+    try {
+        const { id_token, access_token } = req.query;
+        if (!id_token || !access_token) {
+            return response.status(409).json({message: "Missing token param.",});
+        }
+        const user = await getMobileUser(access_token, id_token);
+        const checkUser = await USER.find(user.data.email);
+        let jwtToken;
+        if (checkUser) {
+            await TOKEN.set(checkUser.email, 'google', access_token);
+            jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
+            await USER.setToken(checkUser.email, jwtToken);
+            return response.status(200).json({
+                message: "Connected with google",
+                email: checkUser.email,
+                jwt: jwtToken,
+            });
+        } else {
+            await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
+                await TOKEN.set(user.email, 'google', access_token);
+                jwtToken = jwt.sign({ user }, process.env.jwt_key);
+                await USER.setToken(user.email, jwtToken);
+                return response.status(200).json({
+                    message: "Connected with google",
+                    email: user.email,
+                    jwt: jwtToken
+                });
+            });
+        }
+    } catch (e) {
+        console.error(e);
+        return response.status(500).json({
+            message: "Connection with google failed",
+        });
+    }
+});
 
 module.exports = router;
