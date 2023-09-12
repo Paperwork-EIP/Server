@@ -94,41 +94,4 @@ router.get("/login", async (req, response) => {
     }
 });
 
-router.post("/mobileLogin", async (req, response) => {
-    try {
-        const { id, email, access_token } = req.body;
-        if (!id || !email || !access_token) {
-            return response.status(409).json({message: "Missing params.",});
-        }
-        const checkUser = await USER.find(email);
-        let jwtToken;
-        if (checkUser) {
-            await TOKEN.set(checkUser.email, 'google', access_token);
-            jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
-            await USER.setToken(checkUser.email, jwtToken);
-            return response.status(200).json({
-                message: "Connected with google",
-                email: checkUser.email,
-                jwt: jwtToken,
-            });
-        } else {
-            await USER.create(id, email, access_token, "english", true).then(async user => {
-                await TOKEN.set(email, 'google', access_token);
-                jwtToken = jwt.sign({ user }, process.env.jwt_key);
-                await USER.setToken(email, jwtToken);
-                return response.status(200).json({
-                    message: "Connected with google",
-                    email: email,
-                    jwt: jwtToken
-                });
-            });
-        }
-    } catch (e) {
-        console.error(e);
-        return response.status(500).json({
-            message: "Connection with google failed",
-        });
-    }
-});
-
 module.exports = router;
