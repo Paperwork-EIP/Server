@@ -344,17 +344,17 @@ router.post('/register', async (request, response) => {
       const checkUser = await User.find(email);
       let jwtToken;
       if (checkUser) {
-        await TOKEN.set(checkUser.email, 'facebook', access_token);
+        await TOKEN.set(checkUser.email, 'googleFacebook', access_token);
         jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
         await User.setToken(checkUser.email, jwtToken);
         return response.status(200).json({
-            message: "Connected with facebook",
+            message: "Connected with google or facebook",
             email: checkUser.email,
             jwt: jwtToken,
         });
       } else {
         await User.create(id, email, access_token, "english", true).then(async user => {
-          await TOKEN.set(email, 'facebook', access_token);
+          await TOKEN.set(email, 'googleFacebook', access_token);
           jwtToken = jwt.sign({ user }, process.env.jwt_key);
           await User.setToken(email, jwtToken);
           return response.status(200).json({
