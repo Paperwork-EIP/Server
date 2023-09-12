@@ -354,7 +354,7 @@ router.post('/register', async (request, response) => {
         });
       } else {
         await User.create(id, email, access_token, "english", true).then(async user => {
-          await TOKEN.set(email, 'googleFacebook', access_token);
+          await TOKEN.set(email, oauth, access_token);
           jwtToken = jwt.sign({ user }, process.env.jwt_key);
           await User.setToken(email, jwtToken);
           return response.status(200).json({
