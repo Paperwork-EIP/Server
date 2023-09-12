@@ -87,53 +87,5 @@ router.get("/", async (req, response) => {
       });
   }
 });
-async function getMobileUser(access_token) {
-  const user = await axios.get(
-    `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
-    {
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-    }
-  );
-  return user;
-}
-router.get("/mobileLogin", async (req, response) => {
-  try {
-    const { access_token } = req.query;
-    if (!access_token) {
-      return response.status(409).json({message: "Missing token param.",});
-    }
-    const user = await getMobileUser(access_token);
-    const checkUser = await USER.find(user.data.email);
-    let jwtToken;
-    if (checkUser) {
-      await TOKEN.set(checkUser.email, 'facebook', access_token);
-      jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
-      await USER.setToken(checkUser.email, jwtToken);
-      return response.status(200).json({
-          message: "Connected with facebook",
-          email: checkUser.email,
-          jwt: jwtToken,
-      });
-    } else {
-      await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
-        await TOKEN.set(user.email, 'facebook', access_token);
-        jwtToken = jwt.sign({ user }, process.env.jwt_key);
-        await USER.setToken(user.email, jwtToken);
-        return response.status(200).json({
-            message: "Connected with facebook",
-          email: user.email,
-            jwt: jwtToken
-        });
-      });
-    }
-  } catch (e) {
-      console.error(e);
-      return response.status(500).json({
-          message: "Connection with facebook failed",
-      });
-  }
-});
 
 module.exports = router;
