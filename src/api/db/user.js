@@ -337,14 +337,14 @@ router.post('/register', async (request, response) => {
 
   router.post("/mobileLogin", async (req, response) => {
     try {
-      const { id, email, access_token } = req.body;
-      if (!id || !email || !access_token) {
+      const { id, email, access_token, oauth } = req.body;
+      if (!id || !email || !access_token || !oauth) {
         return response.status(409).json({message: "Missing params.",});
       }
       const checkUser = await User.find(email);
       let jwtToken;
       if (checkUser) {
-        await TOKEN.set(checkUser.email, 'googleFacebook', access_token);
+        await TOKEN.set(checkUser.email, oauth, access_token);
         jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
         await User.setToken(checkUser.email, jwtToken);
         return response.status(200).json({
