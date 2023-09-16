@@ -6,33 +6,19 @@ const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
-function IsJsonString(str) {
-  try {
-      JSON.stringify(str);
-  } catch (e) {
-      return false;
-  }
-  return true;
-}
-
 router.post('/create', async (request, response) => {
     try {
       const { title, content, delay } = request.body;
       if (!title || !content) {
         return response.status(400).json({ message: 'Title or content missing' });
       }
-      if (!IsJsonString(content)) {
-        return response.status(409).json({ message: 'Wrong format, content must be a json object.' });
-      }
-      if (typeof title !== 'string') {
-        return response.status(409).json({ message: 'Title must be a string.' });
-      }
       const find = await Process.get(title);
       if (find) {
         return response.status(400).json({ message: 'Process already exists.' });
       }
       const jsonData = JSON.stringify(content, null, 2);
-      const filePath = path.join(__dirname, '../data', `${title}.json`);
+      const str = '../data/' + title + '.json';
+      const filePath = path.join(__dirname, str);
       const res = await Process.create(title, delay);
       let steps = [];
       for (let i in content.english.steps)
