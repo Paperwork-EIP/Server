@@ -6,11 +6,26 @@ const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
+function IsJsonString(str) {
+  try {
+      JSON.stringify(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
 router.post('/create', async (request, response) => {
     try {
       const { title, content, delay } = request.body;
       if (!title || !content) {
         return response.status(400).json({ message: 'Title or content missing' });
+      }
+      if (!IsJsonString(content)) {
+        return response.status(409).json({ message: 'Wrong format, content must be a json object.' });
+      }
+      if (typeof title !== 'string') {
+        return response.status(409).json({ message: 'Title must be a string.' });
       }
       const find = await Process.get(title);
       if (find) {
