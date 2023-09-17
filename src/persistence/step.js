@@ -16,6 +16,20 @@ module.exports = {
             throw error;
         }
     },
+    async update(step_id, delay, is_unique) {
+        try {
+            const { rows } = await db.query(sql`
+            UPDATE step SET delay=${delay}, is_unique=${is_unique}
+            WHERE id=${step_id}
+            RETURNING id;
+            `);
+            const [step] = rows;
+            return step;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
     async deleteAll(process_id) {
         try {
             const { rows } = await db.query(sql`

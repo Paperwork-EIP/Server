@@ -36,7 +36,7 @@ module.exports = {
     async update(user_process_id, step_id, is_done) {
         try {
             const { rows } = await db.query(sql`
-            UPDATE user_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, is_done;
+            UPDATE user_step SET is_done=${is_done} WHERE user_process_id=${user_process_id} AND step_id=${step_id} RETURNING id, user_process_id, step_id, is_done;
             `);
             const [user_step] = rows;
             return user_step;

@@ -55,10 +55,16 @@ describe("Questions tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID TESTS]", () => {
             test("[GET] should get questions with a 200 status code", async () => {
-                const data = [{
-                    id: 1,
-                    question: 'test'
-                }];
+                const data = [
+                    {
+                        id: 1,
+                        question: 'test'
+                    },
+                    {
+                        id: 2,
+                        question: 'test2'
+                    }
+                ];
 
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
                 Step.getByProcess = jest.fn().mockReturnValue(data);

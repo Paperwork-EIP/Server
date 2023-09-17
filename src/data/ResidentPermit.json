@@ -7,53 +7,62 @@
         "steps":
         [
             {
-                "title": "Prepare the necessary documents - Passport",
+                "title": "Prepare the necessary documents.",
                 "type": "Document",
-                "description": "You will need a valid passport",
-                "question": "Do you have a valid passport ?",
-                "source": "https://en.wikipedia.org/wiki/Passport"
-            },
-            {
-                "title": "Prepare the necessary documents - Long-stay Visa",
-                "type": "Document",
-                "description": "You will need your current long-stay visa, if you wish stay in France, you must file a application for a residence card within 2 months before the end of your visa to the prefecture or sub-prefecture of your home.",
-                "question": "Do you have a long-stay visa ?",
-                "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
-            },
-            {
-                "title": "Prepare the necessary documents - Proof of Accommodation",
-                "type": "Document",
-                "description": "You will need a proof of accommodation in France",
-                "question": "Do you have a proof of accommodation in France ?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Proof of Financial Resources",
-                "type": "Document",
-                "description": "You will need a proof of financial resources",
-                "question": "Do you have a proof of financial resources ?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Application Form",
-                "type": "Document",
-                "description": "You will need a completed application form",
-                "question": "Do you have a completed application form ?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
-            },
-            {
-                "title": "Prepare the necessary documents - Health Insurance",
-                "type": "Document",
-                "description": "You will need a proof of health insurance coverage",
-                "question": "Do you have a proof of health insurance coverage ?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-            },
-            {
-                "title": "Prepare the necessary documents - Photos",
-                "type": "Document",
-                "description": "You will need 2 passport-sized photos",
-                "question": "Do you have 2 passport-sized photos ?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                "description": "You will need a file of about ten completed documents for your resident permit request.",
+                "question": "Do you have a complete file for your resident permit application?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+                "underQuestions": [
+                    {
+                        "title": "Passport",
+                        "type": "Document",
+                        "description": "You will need a valid passport",
+                        "question": "Do you have a valid passport ?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Long-stay Visa",
+                        "type": "Document",
+                        "description": "You will need your current long-stay visa, if you wish stay in France, you must file a application for a residence card within 2 months before the end of your visa to the prefecture or sub-prefecture of your home.",
+                        "question": "Do you have a long-stay visa ?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
+                    },
+                    {
+                        "title": "Proof of Accommodation",
+                        "type": "Document",
+                        "description": "You will need a proof of accommodation in France",
+                        "question": "Do you have a proof of accommodation in France ?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of Financial Resources",
+                        "type": "Document",
+                        "description": "You will need a proof of financial resources",
+                        "question": "Do you have a proof of financial resources ?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Application Form",
+                        "type": "Document",
+                        "description": "You will need a completed application form",
+                        "question": "Do you have a completed application form ?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Health Insurance",
+                        "type": "Document",
+                        "description": "You will need a proof of health insurance coverage",
+                        "question": "Do you have a proof of health insurance coverage ?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Photos",
+                        "type": "Document",
+                        "description": "You will need 2 passport-sized photos",
+                        "question": "Do you have 2 passport-sized photos ?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
             },
             {
                 "title": "Book an appointment",
@@ -79,53 +88,62 @@
         "steps":
         [
             {
-                "title": "Préparez les documents nécessaires - Passeport",
+                "title": "Préparez les documents nécessaires.",
                 "type": "Document",
-                "description": "Vous aurez besoin d'un passeport valide.",
-                "question": "Avez-vous un passeport valide ?",
-                "source": "https://fr.wikipedia.org/wiki/Passeport"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Visa long séjour",
-                "type": "Document",
-                "description": "Vous aurez besoin d'un visa long séjour.",
-                "question": "Vous avez un visa long séjour ?",
-                "source": "https://www.service-public.fr/particuliers/vosdroits/F16162"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Justificatif de logement ",
-                "type": "Document",
-                "description": "Vous aurez besoin d'un justificatif de logement en France.",
-                "question": "Avez-vous un justificatif de logement en France ?",
-                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Preuve de ressources financières",
-                "type": "Document",
-                "description": "Vous aurez besoin d'un justificatif de ressources financières.",
-                "question": "Avez-vous un justificatif de ressources financières ?",
-                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Formulaire de candidature",
-                "type": "Document",
-                "description": "Vous aurez besoin d'un formulaire de demande rempli.",
-                "question": "Avez-vous un formulaire de demande rempli ?",
-                "source": "https://france-visas.gouv.fr/fr/web/france-visas/formulaires"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Assurance maladie",
-                "type": "Document",
-                "description": "Vous aurez besoin d'une preuve de couverture d'assurance maladie.",
-                "question": "Avez-vous une preuve de couverture d'assurance maladie ?",
-                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
-            },
-            {
-                "title": "Préparer les documents nécessaires - Photos",
-                "type": "Document",
-                "description": "Vous aurez besoin de 2 photos d'identité.",
-                "question": "Avez-vous 2 photos d'identité ?",
-                "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
+                "description": "Vous aurez besoin d'un dossier de plusieurs documents complétés votre demande de permis de résidence.",
+                "question": "Avez-vous un dossier complet avec les documents nécessaires à votre demande de permis de résidence ?",
+                "source": "https://www.service-public.fr/particuliers/vosdroits/F39",
+                "underQuestions": [
+                    {
+                        "title": "Passeport",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un passeport valide.",
+                        "question": "Avez-vous un passeport valide ?",
+                        "source": "https://fr.wikipedia.org/wiki/Passeport"   
+                    },
+                    {
+                        "title": "Visa long séjour",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un visa long séjour.",
+                        "question": "Vous avez un visa long séjour ?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162"
+                    },
+                    {
+                        "title": "Justificatif de logement ",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un justificatif de logement en France.",
+                        "question": "Avez-vous un justificatif de logement en France ?",
+                        "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve de ressources financières",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un justificatif de ressources financières.",
+                        "question": "Avez-vous un justificatif de ressources financières ?",
+                        "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Formulaire de candidature",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un formulaire de demande rempli.",
+                        "question": "Avez-vous un formulaire de demande rempli ?",
+                        "source": "https://france-visas.gouv.fr/fr/web/france-visas/formulaires"
+                    },
+                    {
+                        "title": "Assurance maladie",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'une preuve de couverture d'assurance maladie.",
+                        "question": "Avez-vous une preuve de couverture d'assurance maladie ?",
+                        "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Photos",
+                        "type": "Document",
+                        "description": "Vous aurez besoin de 2 photos d'identité.",
+                        "question": "Avez-vous 2 photos d'identité ?",
+                        "source": "https://france-visas.gouv.fr/fr/web/france-visas/faq"
+                    }
+                ]
             },
             {
                 "title": "Prenez rendez-vous",
