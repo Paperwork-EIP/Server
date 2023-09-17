@@ -14,7 +14,7 @@ router.post('/create', async (request, response) => {
     }
     const find = await Process.get(title);
     if (find) {
-      return response.status(400).json({ message: 'Process already exists.' });
+      return response.status(409).json({ message: 'Process already exists.' });
     }
     const jsonData = JSON.stringify(content, null, 2);
     const filePath = path.join(__dirname, '../data', `${title}.json`);
