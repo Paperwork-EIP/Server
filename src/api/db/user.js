@@ -339,7 +339,7 @@ router.post('/register', async (request, response) => {
     try {
       const { id, email, access_token, oauth } = req.body;
       if (!id || !email || !access_token || !oauth) {
-        return response.status(409).json({message: "Missing params.",});
+        return response.status(400).json({message: "Missing params.",});
       }
       const checkUser = await User.find(email);
       let jwtToken;
