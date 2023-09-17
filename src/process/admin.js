@@ -170,7 +170,7 @@ router.get('/getStep', async (request, response) => {
     if (!find) {
       return response.status(404).json({ message: 'Process not found.' });
     }
-    const target = Step.getById(step_id);
+    const target = await Step.getById(step_id);
     if (!target) {
       return response.status(404).json({ message: 'Target step not found.' });
     }
@@ -229,7 +229,7 @@ router.post('/updateStep', async (request, response) => {
     if (!find) {
       return response.status(404).json({ message: 'Process not found.' });
     }
-    const target = Step.getById(step_id);
+    const target = await Step.getById(step_id);
     if (!target) {
       return response.status(404).json({ message: 'Target step not found.' });
     }
