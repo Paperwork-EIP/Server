@@ -20,8 +20,9 @@ router.post('/create', async (request, response) => {
     const filePath = path.join(__dirname, '../data', `${title}.json`);
     const res = await Process.create(title, delay);
     let steps = [];
-    for (let i in content.english.steps)
+    for (let i = 0; content[(Object.keys(content)[0])].steps[i]; i++) {
       steps.push(await Step.create(null, res.id, false));
+    }
     fs.writeFile(filePath, jsonData, function (err, result) {
       if (err) {
         console.log('error', err);
@@ -68,6 +69,7 @@ router.get('/deleteProcess', async (request, response) => {
     return response.status(500).json({ message: 'System error.' });
   }
 });
+
 router.post('/modifyProcess', async (request, response) => {
   try {
     const { stocked_title, title, description, source, delay, language } = request.body;
@@ -82,42 +84,43 @@ router.post('/modifyProcess', async (request, response) => {
       await Process.update(find.id, delay);
     }
     if (title || description || source) {
-      const filePath = path.join(__dirname, '../data', `${stocked_title}.json`);
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.log('error', err);
-          return response.status(500).json({ message: 'Error reading file.' });
-        }
-        const file = JSON.parse(data);
-        if (!file) {
-          return response.status(404).json({ message: 'File not found.' });
-        }
-        if (title) {
-          file[language].title = title;
-        }
-        if (description) {
-          file[language].description = description;
-        }
-        if (source) {
-          file[language].source = source;
-        }
-        const jsonData = JSON.stringify(file, null, 2);
-        fs.writeFile(filePath, jsonData, (err, result) => {
-          if (err) {
-            return response.status(500).json({ message: 'Error writing file.' });
-          }
-          return response.status(200).json({
-            message: 'Process modified!',
-            process_id: find.id,
-            process_title: stocked_title
-          });
-        });
-      });
-    }} catch (error) {
-      console.error(error);
-      return response.status(500).json({ message: 'System error.' });
+      await modifyProcessFile(stocked_title, language, title, description, source);
     }
-  });
+    response.status(200).json({
+      message: 'Process modified!',
+      process_id: find.id,
+      process_title: stocked_title
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'System error.' });
+  }
+});
+
+async function modifyProcessFile(stocked_title, language, title, description, source) {
+  const filePath = path.join(__dirname, '../data', `${stocked_title}.json`);
+  try {
+    const data = await fs.promises.readFile(filePath, 'utf8');
+    const file = JSON.parse(data);
+    if (!file) {
+      throw new Error('File not found.');
+    }
+    if (title) {
+      file[language].title = title;
+    }
+    if (description) {
+      file[language].description = description;
+    }
+    if (source) {
+      file[language].source = source;
+    }
+    const jsonData = JSON.stringify(file, null, 2);
+    await fs.promises.writeFile(filePath, jsonData);
+  } catch (err) {
+    throw new Error('Error reading/writing file.');
+  }
+};
+
 router.get('/getProcess', async (request, response) => {
   try {
     const { stocked_title } = request.query;
@@ -136,7 +139,7 @@ router.get('/getProcess', async (request, response) => {
       }
       const file = JSON.parse(data);
       let process = [];
-      for (i in Object.keys(file)) {
+      for (let i in Object.keys(file)) {
         process.push({
           language: Object.keys(file)[i],
           content: {
@@ -187,7 +190,7 @@ router.get('/getStep', async (request, response) => {
     }
     let step = [];
     for (i in Object.keys(file)) {
-      for (j in allSteps) {
+      for (let j in allSteps) {
         if (allSteps[j].id == step_id) {
           step.push({
             language: Object.keys(file)[i],
@@ -215,6 +218,7 @@ router.get('/getStep', async (request, response) => {
     return response.status(500).json({ message: 'System error.' });
   }
 });
+
 router.post('/updateStep', async (request, response) => {
   try {
     const { stocked_title, step_id, language, delay = 0, title, type, description, question, source, is_unique = false } = request.body;
@@ -276,7 +280,7 @@ router.post('/updateStep', async (request, response) => {
       return response.status(200).json({
         message: 'Step updated!',
         stocked_title: stocked_title,
-        steps: step
+        step: step
       });
     } catch (error) {
       return response.status(404).json({ message: 'Data not found.' });
