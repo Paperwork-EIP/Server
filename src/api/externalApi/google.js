@@ -94,5 +94,4 @@ router.get("/login", async (req, response) => {
     }
 });
 
-
 module.exports = router;

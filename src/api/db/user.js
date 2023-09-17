@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const User = require('../../persistence/users');
 const Settings = require('../../persistence/userSettings');
+const TOKEN = require('../../persistence/tokens');
 const jwt = require('jsonwebtoken');
 const router = new Router();
 const AWS = require('aws-sdk');
@@ -331,6 +332,43 @@ router.post('/register', async (request, response) => {
     }
     catch (error) {
       return response.status(500).json({ message: 'System error.' });
+    }
+  });
+
+  router.post("/mobileLogin", async (req, response) => {
+    try {
+      const { id, email, access_token, oauth } = req.body;
+      if (!id || !email || !access_token || !oauth) {
+        return response.status(409).json({message: "Missing params.",});
+      }
+      const checkUser = await User.find(email);
+      let jwtToken;
+      if (checkUser) {
+        await TOKEN.set(checkUser.email, oauth, access_token);
+        jwtToken = jwt.sign({ checkUser }, process.env.jwt_key);
+        await User.setToken(checkUser.email, jwtToken);
+        return response.status(200).json({
+            message: "Connected with google or facebook",
+            email: checkUser.email,
+            jwt: jwtToken,
+        });
+      } else {
+        await User.create(id, email, access_token, "english", true).then(async user => {
+          await TOKEN.set(email, oauth, access_token);
+          jwtToken = jwt.sign({ user }, process.env.jwt_key);
+          await User.setToken(email, jwtToken);
+          return response.status(200).json({
+              message: "Connected with google or facebook",
+            email: email,
+              jwt: jwtToken
+          });
+        });
+      }
+    } catch (e) {
+        console.error(e);
+        return response.status(500).json({
+            message: "Connection with google or facebook failed",
+        });
     }
   });
 module.exports = router;
