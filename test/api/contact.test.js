@@ -7,7 +7,7 @@ AWS.config.update({ region: 'us-east-1' });
 const ses = new AWS.SES();
 
 describe("Contact tests", () => {
-    const port = 3001;
+    const port = 4000;
     let server;
 
     beforeAll(async () => {

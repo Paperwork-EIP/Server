@@ -50,7 +50,12 @@ module.exports = {
                 end_date date NULL,
                 delay date NULL,
                 appoinment timestamp NULL,
-                user_process_id int NULL);`)
+                user_process_id int NOT NULL);`)
+            await db.query(sql`CREATE TABLE IF NOT EXISTS user_under_step (
+                id SERIAL UNIQUE NOT NULL,
+                step_id int NOT NULL,
+                is_done bool NOT NULL,
+                user_process_id int NOT NULL);`)
             await db.query(sql`CREATE TABLE IF NOT EXISTS report (
                 id SERIAL UNIQUE NOT NULL,
                 description text NOT NULL,
