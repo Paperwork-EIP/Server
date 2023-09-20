@@ -192,6 +192,17 @@ router.get('/getStep', async (request, response) => {
     for (i in Object.keys(file)) {
       for (let j in allSteps) {
         if (allSteps[j].id == step_id) {
+          let underQuestionsArray = [];
+          for (let k in file[Object.keys(file)[i]].steps[j].underQuestions) {
+            underQuestionsArray.push({
+              id: k,
+              title: file[Object.keys(file)[i]].steps[j].underQuestions[k].title,
+              type: file[Object.keys(file)[i]].steps[j].underQuestions[k].type,
+              description: file[Object.keys(file)[i]].steps[j].underQuestions[k].description,
+              source: file[Object.keys(file)[i]].steps[j].underQuestions[k].source,
+              question: file[Object.keys(file)[i]].steps[j].underQuestions[k].question
+            });
+          }
           step.push({
             language: Object.keys(file)[i],
             step_id: allSteps[j].id,
@@ -202,7 +213,8 @@ router.get('/getStep', async (request, response) => {
               description: file[Object.keys(file)[i]].steps[j].description,
               question: file[Object.keys(file)[i]].steps[j].question,
               source: file[Object.keys(file)[i]].steps[j].source,
-              delay: file[Object.keys(file)[i]].steps[j].delay
+              delay: file[Object.keys(file)[i]].steps[j].delay,
+              underQuestions: underQuestionsArray
             }
           });
         }
@@ -219,9 +231,14 @@ router.get('/getStep', async (request, response) => {
   }
 });
 
+function updateUnderSteps(file, underQuestions, language) {
+
+}
+
 router.post('/updateStep', async (request, response) => {
   try {
-    const { stocked_title, step_id, language, delay = 0, title, type, description, question, source, is_unique = false } = request.body;
+    const { stocked_title, step_id, language, delay = 0, title, type, description,
+      question, source, is_unique = false, underQuestions = [] } = request.body;
     if (!stocked_title || !step_id || !language) {
       return response.status(400).json({ message: 'Missing parameters.' });
     }
@@ -247,12 +264,27 @@ router.post('/updateStep', async (request, response) => {
       if (!file) {
         return response.status(404).json({ message: 'Data not found.' });
       }
-      if (language != Object.keys(file)[0] && language != Object.keys(file)[1]) {
-        return response.status(404).json({ message: 'Language not found.' });
-      }
       let step;
+      let j = 0
       for (j in allSteps) {
         if (allSteps[j].id == step_id) {
+          for (i in underQuestions) {
+            if (underQuestions[i].title) {
+              file[language].steps[j].underQuestions[underQuestions[i].id].title = underQuestions[i].title;
+            }
+            if (underQuestions[i].description) {
+              file[language].steps[j].underQuestions[underQuestions[i].id].description = underQuestions[i].description;
+            }
+            if (underQuestions[i].source) {
+              file[language].steps[j].underQuestions[underQuestions[i].id].source = underQuestions[i].source;
+            }
+            if (underQuestions[i].type) {
+              file[language].steps[j].underQuestions[underQuestions[i].id].type = underQuestions[i].type;
+            }
+            if (underQuestions[i].question) {
+              file[language].steps[j].underQuestions[underQuestions[i].id].question = underQuestions[i].auestion;
+            }
+          }
           if (title) {
             file[language].steps[j].title = title;
           }
