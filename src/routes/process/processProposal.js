@@ -1,6 +1,6 @@
 const { Router } = require('express');
-const User = require('../persistence/users');
-const ProcessProposal = require('../persistence/processProposal');
+const User = require('../../persistence/users/users');
+const ProcessProposal = require('../../persistence/process/processProposal');
 const router = new Router();
 
 router.post('/add', async (request, response) => {

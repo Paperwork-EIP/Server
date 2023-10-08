@@ -1,6 +1,6 @@
 const { Router } = require('express');
-const Process = require('../persistence/process');
-const Step = require('../persistence/step');
+const Process = require('../../persistence/process/process');
+const Step = require('../../persistence/process/step');
 const router = new Router();
   
 router.post('/add', async (request, response) => {

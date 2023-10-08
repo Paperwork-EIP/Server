@@ -1,10 +1,10 @@
 const { Router } = require('express');
-const UserProcess = require('../persistence/userProcess');
-const User = require('../persistence/users');
-const Process = require('../persistence/process');
-const Step = require('../persistence/step');
-const UserStep = require('../persistence/userStep');
-const UserUnderStep = require('../persistence/userUnderStep');
+const UserProcess = require('../../persistence/userProcess/userProcess');
+const User = require('../../persistence/users/users');
+const Process = require('../../persistence/process/process');
+const Step = require('../../persistence/process/step');
+const UserStep = require('../../persistence/userProcess/userStep');
+const UserUnderStep = require('../../persistence/userProcess/userUnderStep');
 const router = new Router();
 
 router.post('/add', async (request, response) => {
@@ -165,7 +165,7 @@ router.get('/getUserSteps', async (request, response) => {
         }
         let file;
         try {
-            file = require('../data/' + process.title + '.json');
+            file = require('../../data/' + process.title + '.json');
             if (!file) {
                 return response.status(404).json({ message: 'Data not found.' });
             }
@@ -239,7 +239,7 @@ router.get('/getUserStepsById', async (request, response) => {
         }
         let file;
         try {
-            file = require('../data/' + process.title + '.json');
+            file = require('../../data/' + process.title + '.json');
             if (!file) {
                 return response.status(404).json({ message: 'Data not found.' });
             }
@@ -308,7 +308,7 @@ router.get('/getUserProcesses', async (request, response) => {
             }
             let file;
             try {
-                file = require('../data/' + process.title + '.json');
+                file = require('../../data/' + process.title + '.json');
                 if (!file) {
                     return response.status(404).json({ message: 'Data not found.' });
                 }

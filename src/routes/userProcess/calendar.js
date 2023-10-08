@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const fs = require('fs');
 const moment = require('moment');
-const UserProcess = require('../persistence/userProcess');
-const Process = require('../persistence/process');
-const User = require('../persistence/users');
-const UserStep = require('../persistence/userStep');
-const Step = require('../persistence/step');
-const Calendar = require("../persistence/calendar");
+const UserProcess = require('../../persistence/userProcess/userProcess');
+const Process = require('../../persistence/process/process');
+const User = require('../../persistence/users/users');
+const UserStep = require('../../persistence/userProcess/userStep');
+const Step = require('../../persistence/process/step');
+const Calendar = require("../../persistence/userProcess/calendar");
 const router = new Router();
 
 moment().format(); 

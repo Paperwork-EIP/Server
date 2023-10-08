@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const User = require('../../persistence/users');
-const Settings = require('../../persistence/userSettings');
-const TOKEN = require('../../persistence/tokens');
+const User = require('../../../persistence/users/users');
+const Settings = require('../../../persistence/users/userSettings');
+const TOKEN = require('../../../persistence/users/tokens');
 const jwt = require('jsonwebtoken');
 const router = new Router();
 const AWS = require('aws-sdk');

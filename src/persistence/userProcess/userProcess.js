@@ -1,6 +1,6 @@
-const db = require('./db');
+const db = require('../db');
 const sql = require('sql-template-strings');
-const Process = require('./process');
+const Process = require('../process/process');
 
 module.exports = {
     async create(user_id, process_id, process_title) {

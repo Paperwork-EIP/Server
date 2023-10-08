@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = new Router();
 const axios = require('axios');
-const USER = require('../../persistence/users');
-const TOKEN = require('../../persistence/tokens');
+const USER = require('../../../persistence/users/users');
+const TOKEN = require('../../../persistence/users/tokens');
 const jwt = require('jsonwebtoken');
 const {URLSearchParams} = require('url');
 
@@ -87,16 +87,5 @@ router.get("/", async (req, response) => {
       });
   }
 });
-async function getMobileUser(access_token) {
-  const user = await axios.get(
-    `https://graph.facebook.com/v13.0/me?fields=email,first_name,last_name`,
-    {
-        headers: {
-            Authorization: `Bearer ${access_token}`,
-        },
-    }
-  );
-  return user;
-  }
 
 module.exports = router;

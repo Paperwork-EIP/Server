@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const Process = require('../persistence/process');
-const Step = require('../persistence/step');
-const UserProcess = require('../persistence/userProcess');
+const Process = require('../../persistence/process/process');
+const Step = require('../../persistence/process/step');
+const UserProcess = require('../../persistence/userProcess/userProcess');
 const router = new Router();
 const path = require('path');
 const fs = require('fs');

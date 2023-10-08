@@ -1,4 +1,4 @@
-const db = require('./db');
+const db = require('../db');
 
 module.exports = {
   async set(email, service, token) {

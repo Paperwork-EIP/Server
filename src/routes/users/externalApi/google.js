@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = new Router();
 const axios = require('axios');
-const USER = require('../../persistence/users');
-const TOKEN = require('../../persistence/tokens');
+const USER = require('../../../persistence/users/users');
+const TOKEN = require('../../../persistence/users/tokens');
 const jwt = require('jsonwebtoken');
 const {URLSearchParams} = require('url');
 

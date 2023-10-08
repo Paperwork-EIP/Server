@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const Process = require('../persistence/process');
-const Step = require('../persistence/step');
+const Process = require('../../persistence/process/process');
+const Step = require('../../persistence/process/step');
 const router = new Router();
 
 const getData = async (title) => {
     try {
-      return require(`../data/${title}.json`);
+      return require(`../../data/${title}.json`);
     } catch (error) {
       return null;
     }
