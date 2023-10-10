@@ -1,6 +1,6 @@
-const db = require('../../src/persistence/db');
-const Calendar = require('../../src/persistence/calendar');
-const init_db = require('../../src/persistence/init-db');
+const db = require('../../../src/persistence/db');
+const Calendar = require('../../../src/persistence/userProcess/calendar');
+const init_db = require('../../../src/persistence/init-db');
 
 describe('Calendar Peristence Tests', () => {
     beforeAll(async () => {

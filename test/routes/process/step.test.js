@@ -1,9 +1,9 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const Process = require("../../src/persistence/process");
-const { start, stop } = require("../../index");
-const Step = require("../../src/persistence/step");
+const router = require("../../../src/routes/users/index");
+const Process = require("../../../src/persistence/process/process");
+const { start, stop } = require("../../../index");
+const Step = require("../../../src/persistence/process/step");
 
 describe("Steps tests", () => {
     const port = 3005;
@@ -113,7 +113,7 @@ describe("Steps tests", () => {
             });
             test("[ADD] Data not found : should not create a step with a 404 status code(file empty)", async () => {
                 Process.get = jest.fn().mockReturnValue({id: 1, title: "Visa"});
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
                 const response = await request(server).post("/step/add").send({
                     is_unique: true,
                     delay: null,

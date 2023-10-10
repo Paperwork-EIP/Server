@@ -1,11 +1,11 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerQuestions = require("../../src/process/questions");
-const Process = require("../../src/persistence/process");
-const Step = require("../../src/persistence/step");
-const db = require('../../src/persistence/db');
-const { start, stop } = require("../../index");
+const router = require("../../../src/routes/index");
+const routerQuestions = require("../../../src/routes/process/questions");
+const Process = require("../../../src/persistence/process/process");
+const Step = require("../../../src/persistence/process/step");
+const db = require('../../../src/persistence/db');
+const { start, stop } = require("../../../index");
 
 describe("Questions tests", () => {
     const port = 3004;
@@ -135,7 +135,7 @@ describe("Questions tests", () => {
             test("[GET] Data not found : should not get questions with a 404 status code", async () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Step.getByProcess = jest.fn().mockReturnValue({id:1});
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
 
                 const response = await request(server).get("/processQuestions/get").query({
                     title: "gggdhddhdjjdjdjk",

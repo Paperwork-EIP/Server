@@ -1,8 +1,8 @@
 const rewire = require("rewire");
-const db = require('../../src/persistence/db');
-const Process = require("../../src/persistence/process");
-const userProcess = require("../../src/persistence/userProcess");
-const init_db = require('../../src/persistence/init-db');
+const db = require('../../../src/persistence/db');
+const Process = require("../../../src/persistence/process/process");
+const userProcess = require("../../../src/persistence/userProcess/userProcess");
+const init_db = require('../../../src/persistence/init-db');
 
 beforeAll(async () => {
     await init_db.initAll();
@@ -16,7 +16,7 @@ describe("User Process Persistence Tests", () => {
     const user_process_id = 11231231;
     const process_id = 1234234;
     const process_title = "testtesttesttesttesttest";
-    const moduleUserProcess = rewire("../../src/persistence/userProcess");
+    const moduleUserProcess = rewire("../../../src/persistence/userProcess/userProcess");
 
     it("[userProcess.js] should have a user process component", async () => {
         expect(userProcess).not.toBeNull();

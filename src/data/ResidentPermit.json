@@ -69,14 +69,16 @@
                 "type": "Appointment",
                 "description": "You will need to book an appointment at the prefecture or sub-prefecture in your place of residence. You can do this online or by phone.",
                 "question": "Did you book an appointment at the prefecture or sub-prefecture in your place of residence ?",
-                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens"
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
             },
             {
                 "title": "Get your resident permit",
                 "type": "Appointment",
                 "description": "You will need to go to the prefecture or sub-prefecture in your place of residence to get your resident permit.",
                 "question": "Did you go to the prefecture or sub-prefecture in your place of residence to get your resident permit ?",
-                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour"
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
             }
         ]
     },
@@ -150,14 +152,16 @@
                 "type": "Appointment",
                 "description": "Vous devrez prendre rendez-vous auprès de la préfecture ou sous-préfecture de votre lieu de résidence. Vous pouvez le faire en ligne ou par téléphone.",
                 "question": "Vous avez pris rendez-vous à la préfecture ou sous-préfecture de votre lieu de résidence ?",
-                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens"
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
             },
             {
                 "title": "Récupérez votre titre de séjour",
                 "type": "Appointment",
                 "description": "Vous devrez récupérer votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence.",
                 "question": "Vous avez récupéré votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence ?",
-                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour"
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
             }
         ]
     }

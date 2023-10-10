@@ -1,10 +1,10 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerProposal = require("../../src/process/processProposal");
-const Users = require("../../src/persistence/users");
-const ProcessProposal = require("../../src/persistence/processProposal");
-const { start, stop } = require("../../index");
+const router = require("../../../src/routes/index");
+const routerProposal = require("../../../src/routes/process/processProposal");
+const Users = require("../../../src/persistence/users/users");
+const ProcessProposal = require("../../../src/persistence/process/processProposal");
+const { start, stop } = require("../../../index");
 
 describe("Process proposal tests", () => {
     const port = 3010;

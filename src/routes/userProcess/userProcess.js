@@ -229,13 +229,13 @@ router.get('/getUserStepsById', async (request, response) => {
         if (!user_process) {
             return response.status(404).json({ message: 'User process not found.' });
         }
-        const process = await Process.getById(user_process.process_id);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
         const user = await User.getById(user_process.user_id);
         if (!user) {
             return response.status(404).json({ message: 'User not found.' });
+        }
+        const process = await Process.getById(user_process.process_id);
+        if (!process) {
+            return response.status(404).json({ message: 'Process not found.' });
         }
         let file;
         try {
@@ -254,7 +254,7 @@ router.get('/getUserStepsById', async (request, response) => {
             let k = [];
             if (UserUnderSteps.length > 0) {
                 for (let j in UserUnderSteps) {
-                    if (UserUnderSteps[j].step_id === UserSteps[i].step_id) {
+                    if (UserUnderSteps[j].step_id === UserSteps[i].step_id && data.steps[i].underQuestions[j]) {
                         k.push({
                             id: UserUnderSteps[j].id,
                             title: data.steps[i].underQuestions[j].title,

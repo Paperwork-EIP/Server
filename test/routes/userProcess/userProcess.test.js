@@ -1,15 +1,15 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerUserProcess = require("../../src/process/userProcess");
-const { start, stop } = require("../../index");
-const Users = require("../../src/persistence/users");
-const Step = require("../../src/persistence/step");
-const Process = require("../../src/persistence/process");
-const UserProcess = require("../../src/persistence/userProcess");
-const UserStep = require("../../src/persistence/userStep");
-const UserUnderStep = require("../../src/persistence/userUnderStep");
-const visa = require("../../src/data/Visa.json");
+const router = require("../../../src/routes/users/index");
+const routerUserProcess = require("../../../src/routes/userProcess/userProcess");
+const { start, stop } = require("../../../index");
+const Users = require("../../../src/persistence/users/users");
+const Step = require("../../../src/persistence/process/step");
+const Process = require("../../../src/persistence/process/process");
+const UserProcess = require("../../../src/persistence/userProcess/userProcess");
+const UserStep = require("../../../src/persistence/userProcess/userStep");
+const UserUnderStep = require("../../../src/persistence/userProcess/userUnderStep");
+const visa = require("../../../src/data/Visa.json");
 const fs = require('fs');
 
 describe("User process", () => {
@@ -792,7 +792,7 @@ describe("User process", () => {
             test("[GET USER STEPS] data not found : should not get a user step with a 404 status code(file empty)", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
                 const response = await request(server).get("/userProcess/getUserSteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
@@ -864,7 +864,7 @@ describe("User process", () => {
                 Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
 
                 const response = await request(server).get("/userProcess/getUserStepsById").query({
@@ -952,7 +952,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({id: 1, language: 'english'});
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({title: 'Visa'});
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
 
                 const response = await request(server).get("/userProcess/getUserProcesses").query({
                     user_token: "123"

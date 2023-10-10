@@ -15,7 +15,7 @@ router.post('/add', async (request, response) => {
         }
         let file;
         try {
-            file = require('../data/' + process.title + '.json');
+            file = require('../../data/' + process.title + '.json');
             if (!file) {
                 return response.status(404).json({ message: 'Data not found.' });
             }

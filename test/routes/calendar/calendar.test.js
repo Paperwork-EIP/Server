@@ -1,14 +1,14 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerCalendar = require("../../src/process/calendar");
-const UserProcess = require("../../src/persistence/userProcess");
-const Process = require("../../src/persistence/process");
-const Step = require("../../src/persistence/step");
-const Users = require("../../src/persistence/users");
-const Calendar = require("../../src/persistence/calendar");
-const UserStep = require("../../src/persistence/userStep");
-const { start, stop } = require("../../index");
+const router = require("../../../src/routes/index");
+const routerCalendar = require("../../../src/routes/calendar/calendar");
+const UserProcess = require("../../../src/persistence/userProcess/userProcess");
+const Process = require("../../../src/persistence/process/process");
+const Step = require("../../../src/persistence/process/step");
+const Users = require("../../../src/persistence/users/users");
+const Calendar = require("../../../src/persistence/userProcess/calendar");
+const UserStep = require("../../../src/persistence/userProcess/userStep");
+const { start, stop } = require("../../../index");
 const moment = require("moment");
 
 describe("Calendar tests", () => {
@@ -474,7 +474,7 @@ describe("Calendar tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: "english" });
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 

@@ -1,9 +1,9 @@
-const db = require('../../src/persistence/db');
+const db = require('../../../src/persistence/db');
 const sql = require('sql-template-strings');
 const bcrypt = require('bcryptjs');
-const User = require('../../src/persistence/users');
-const init_db = require('../../src/persistence/init-db');
-const { getById } = require('../../src/persistence/process');
+const User = require('../../../src/persistence/users/users');
+const init_db = require('../../../src/persistence/init-db');
+const { getById } = require('../../../src/persistence/process/process');
 
 beforeAll(async () => {
     await init_db.initAll();

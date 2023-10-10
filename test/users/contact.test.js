@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/api/contact");
+const router = require("../../src/routes/users/contact");
 const { start, stop } = require('../../index');
 const AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });

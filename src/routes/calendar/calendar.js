@@ -73,7 +73,7 @@ async function getMeeting(processes, language) {
         }
         let file;
         try {
-            file = require('../data/' + process.title + '.json');
+            file = require('../../data/' + process.title + '.json');
             if (!file) {
                 return 'Data not found.';
             }

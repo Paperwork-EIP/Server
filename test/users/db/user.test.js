@@ -1,10 +1,10 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/api/db/user");
-const { start, stop } = require('../../index');
-const User = require('../../src/persistence/users');
-const Settings = require('../../src/persistence/userSettings');
-const init_db = require('../../src/persistence/init-db');
+const router = require("../../../src/routes/users/db/user");
+const { start, stop } = require('../../../index');
+const User = require('../../../src/persistence/users/users');
+const Settings = require('../../../src/persistence/users/userSettings');
+const init_db = require('../../../src/persistence/init-db');
 
 describe("User connection tests", () => {
     const port = 3002;

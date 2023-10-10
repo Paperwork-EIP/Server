@@ -1,6 +1,6 @@
-const ProcessProposal = require('../../src/persistence/processProposal');
-const db = require('../../src/persistence/db');
-const init_db = require('../../src/persistence/init-db');
+const ProcessProposal = require('../../../src/persistence/process/processProposal');
+const db = require('../../../src/persistence/db');
+const init_db = require('../../../src/persistence/init-db');
 
 describe('Process Proposal Persistence Tests', () => {
     beforeAll(async () => {

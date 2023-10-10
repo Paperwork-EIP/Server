@@ -1,6 +1,6 @@
-const db = require('../../src/persistence/db');
-const Tokens = require('../../src/persistence/tokens');
-const init_db = require('../../src/persistence/init-db');
+const db = require('../../../src/persistence/db');
+const Tokens = require('../../../src/persistence/users/tokens');
+const init_db = require('../../../src/persistence/init-db');
 
 beforeAll(async () => {
     await init_db.initAll();

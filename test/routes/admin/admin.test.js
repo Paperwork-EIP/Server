@@ -1,11 +1,11 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerAdmin = require("../../src/process/admin");
-const Process = require('../../src/persistence/process');
-const Step = require('../../src/persistence/step');
-const UserProcess = require('../../src/persistence/userProcess');
-const { start, stop } = require("../../index");
+const router = require("../../../src/routes/index");
+const routerAdmin = require("../../../src/routes/admin/admin");
+const Process = require('../../../src/persistence/process/process');
+const Step = require('../../../src/persistence/process/step');
+const UserProcess = require('../../../src/persistence/userProcess/userProcess');
+const { start, stop } = require("../../../index");
 const fs = require('fs');
 
 const title = "test";

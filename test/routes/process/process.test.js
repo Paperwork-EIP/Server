@@ -1,10 +1,10 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../src/process/index");
-const routerProcess = require("../../src/process/process");
-const Process = require("../../src/persistence/process");
-const { start, stop } = require("../../index");
-const Step = require("../../src/persistence/step");
+const router = require("../../../src/routes/index");
+const routerProcess = require("../../../src/routes/process/process");
+const Process = require("../../../src/persistence/process/process");
+const { start, stop } = require("../../../index");
+const Step = require("../../../src/persistence/process/step");
 
 describe("Process tests", () => {
     const port = 3003;
@@ -181,7 +181,7 @@ describe("Process tests", () => {
             });
             test("[GET ALL] data not found : should not get all the processes with a 404 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Visa' }]);
-                jest.mock('../../src/data/Visa.json', () => null);
+                jest.mock('../../../src/data/Visa.json', () => null);
                 const response = await request(server).get("/process/getAll?language=english").query({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();

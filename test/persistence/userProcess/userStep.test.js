@@ -1,7 +1,7 @@
-const db = require('../../src/persistence/db');
-const Step = require('../../src/persistence/step');
-const UserStep = require('../../src/persistence/userStep');
-const init_db = require('../../src/persistence/init-db');
+const db = require('../../../src/persistence/db');
+const Step = require('../../../src/persistence/process/step');
+const UserStep = require('../../../src/persistence/userProcess/userStep');
+const init_db = require('../../../src/persistence/init-db');
 
 beforeAll(async () => {
     await init_db.initAll();

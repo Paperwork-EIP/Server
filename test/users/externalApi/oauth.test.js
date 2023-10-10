@@ -1,6 +1,6 @@
 const request = require("supertest");
-const router = require("../../src/api/externalApi/oauth");
-const { start, stop } = require('../../index');
+const router = require("../../../src/routes/users/externalApi/oauth");
+const { start, stop } = require('../../../index');
 
 describe("OAuth connections tests", () => {
     const port = 3001;
