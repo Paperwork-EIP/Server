@@ -42,13 +42,15 @@ async function getLoginTokens(code) {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        })
+    })
+
     return tokens.data
 }
 
 router.get("/login", async (req, response) => {
     try {
         const { code } = req.query;
+
         if (!code) {
             return response.status(409).json({
                 message: "Missing code param.",

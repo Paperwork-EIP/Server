@@ -5,103 +5,90 @@ const Process = require('../../persistence/process/process');
 const Step = require('../../persistence/process/step');
 const UserStep = require('../../persistence/userProcess/userStep');
 const UserUnderStep = require('../../persistence/userProcess/userUnderStep');
+const Tools = require('../../tools');
 const router = new Router();
 
 router.post('/add', async (request, response) => {
     try {
         const { user_token, process_title, questions } = request.body;
-        if (!user_token || !process_title || !questions) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_token || !process_title || !questions)
+            return response.status(400).json({ message: Tools.errorMessages });
         const user = await User.findToken(user_token);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
-        if (await UserProcess.getByTitleAndUserID(user.id, process_title)) {
-            return response.status(409).json({ message: 'User process already exist.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
+        if (await UserProcess.getByTitleAndUserID(user.id, process_title))
+            return response.status(409).json({ message: Tools.errorMessages.userProcessAlreadyExist });
         const process = await Process.get(process_title);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
+        if (!process)
+            return response.status(404).json({ message: Tools.errorMessages.processNotFound });
         const user_process = await UserProcess.create(user.id, process.id, process.title);
         for (let i in questions) {
-            if (!await Step.getById(questions[i].step_id)) {
-                return response.status(404).json({ message: 'Step not found.' });
-            }
+            if (!await Step.getById(questions[i].step_id))
+                return response.status(404).json({ message: Tools.errorMessages.stepNotFound });
             await UserStep.create(user_process.id, questions[i].step_id, questions[i].response);
             if (questions[i].underQuestions && questions[i].underQuestions.length > 0) {
-                for (let j in questions[i].underQuestions) {
+                for (let j in questions[i].underQuestions)
                     await UserUnderStep.add(user_process.id, questions[i].step_id, questions[i].underQuestions[j].response);
-                }
                 let underStepNotDone = await UserUnderStep.getAllNotDoneByStepId(user_process.id, questions[i].step_id);
                 let underStep = await UserUnderStep.getAllByStepId(user_process.id, questions[i].step_id); 
-                if (underStepNotDone.length === 0 && underStep.length > 0) {
+                if (underStepNotDone.length === 0 && underStep.length > 0)
                     await UserStep.update(user_process.id, questions[i].step_id, true);
-                } else if (underStepNotDone.length > 0 && underStep.length > 0) {
+                else if (underStepNotDone.length > 0 && underStep.length > 0)
                     await UserStep.update(user_process.id, questions[i].step_id, false);
-                }
             }
         }
         const notDone = await UserStep.getNotDone(user_process.id);
-        if (notDone.length === 0) {
+        if (notDone.length === 0)
             await UserProcess.update(user_process.id, process.id, true);
-        } else {
+        else
             await UserProcess.update(user_process.id, process.id, false);
-        }
         return response.status(200).json({
             message: 'User process created!',
             response: user_process.id
         });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
 
 router.post('/update', async (request, response) => {
     try {
         const { user_token, process_title, questions } = request.body;
-        if (!user_token || !process_title || !questions) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_token || !process_title || !questions)
+            return response.status(400).json({ message: Tools.errorMessages.missingParameters });
         const user = await User.findToken(user_token);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
         const process = await Process.get(process_title);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
+        if (!process)
+            return response.status(404).json({ message: Tools.errorMessages.processNotFound });
         const user_process = await UserProcess.get(user.id, process.id);
-        if (!user_process) {
+        if (!user_process)
             return response.status(404).json({ message: 'User process not found.' });
-        }
         let res = [];
         for (let i in questions) {
-            if (!await Step.getById(questions[i].step_id)) {
+            if (!await Step.getById(questions[i].step_id))
                 return response.status(404).json({ message: 'Step not found.' });
-            }
             if (questions[i].underQuestions && questions[i].underQuestions.length > 0) {
-                for (let j in questions[i].underQuestions) {
+                for (let j in questions[i].underQuestions)
                     await UserUnderStep.update(user_process.id, questions[i].step_id, questions[i].underQuestions[j].id, questions[i].underQuestions[j].response);
-                }
             }
             let underStepNotDone = await UserUnderStep.getAllNotDoneByStepId(user_process.id, questions[i].step_id);
             let underStep = await UserUnderStep.getAllByStepId(user_process.id, questions[i].step_id); 
-            if (questions[i].underQuestions && questions[i].underQuestions.length > 0 && underStepNotDone.length === 0 && underStep.length > 0) {
+            if (questions[i].underQuestions && questions[i].underQuestions.length > 0 && underStepNotDone.length === 0 && underStep.length > 0)
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, true));
-            } else if (underStepNotDone.length > 0 && underStep.length > 0) {
+            else if (underStepNotDone.length > 0 && underStep.length > 0)
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, false));
-            } else {
+            else
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, questions[i].response));
-            }
         }
         const notDone = await UserStep.getNotDone(user_process.id);
         let done = false;
-        if (notDone.length === 0) {
+        if (notDone.length === 0)
             done = true;
-        }
         await UserProcess.update(user_process.id, process.id, done);
         return response.status(200).json({
             message: 'User process updated!',
@@ -109,24 +96,22 @@ router.post('/update', async (request, response) => {
         });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
 
 router.get('/delete', async (request, response) => {
     try {
         const { user_token, process_title } = request.query;
-        if (!user_token || !process_title) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_token || !process_title)
+            return response.status(400).json({ message: Tools.errorMessages.missingParameters });
         const user = await User.findToken(user_token);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
         const process = await Process.get(process_title);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
+        if (!process)
+            return response.status(404).json({ message: Tools.errorMessages.processNotFound });
         const user_process = await UserProcess.get(user.id, process.id);
         await UserUnderStep.deleteAll(user_process.id);
         await UserStep.deleteAll(user_process.id);
@@ -137,65 +122,34 @@ router.get('/delete', async (request, response) => {
         });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
-
-async function getPercentage(user_process_id) {
-    const res = await UserStep.getAll(user_process_id);
-    const notDone = await UserStep.getNotDone(user_process_id);
-    const x = (res.length - notDone.length) / res.length * 100;
-    const pourcentage = Math.round(x);
-    return pourcentage;
-}
 
 router.get('/getUserSteps', async (request, response) => {
     try {
         const { user_token, process_title } = request.query;
-        if (!user_token || !process_title) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_token || !process_title)
+            return response.status(400).json({ message: Tools.errorMessages.missingParameters });
         const user = await User.findToken(user_token);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
         const process = await Process.get(process_title);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
-        let file;
-        try {
-            file = require('../../data/' + process.title + '.json');
-            if (!file) {
-                return response.status(404).json({ message: 'Data not found.' });
-            }
-        } catch (error) {
-            return response.status(404).json({ message: 'Data not found.' });
-        }
+        if (!process)
+            return response.status(404).json({ message: Tools.errorMessages.processNotFound });
+        const file = await Tools.getData(process.title);
+        if (!file)
+            return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
         const user_process = await UserProcess.get(user.id, process.id);
-        if (!user_process) {
-            return response.status(404).json({ message: 'User process not found.' });
-        }
+        if (!user_process)
+            return response.status(404).json({ message: Tools.errorMessages.userProcessNotFound });
         const data = file[user.language];
         const UserSteps = await UserStep.getAll(user_process.id);
         let res = [];
         for (let i in UserSteps) {
             let UserUnderSteps = await UserUnderStep.getAllByStepId(user_process.id, UserSteps[i].step_id);
-            let k = [];
-            if (UserUnderSteps.length > 0) {
-                for (let j in UserUnderSteps) {
-                    if (UserUnderSteps[j].step_id === UserSteps[i].step_id) {
-                        k.push({
-                            id: UserUnderSteps[j].id,
-                            title: data.steps[i].underQuestions[j].title,
-                            description: data.steps[i].underQuestions[j].description,
-                            type: data.steps[i].underQuestions[j].type,
-                            source: data.steps[i].underQuestions[j].source,
-                            is_done: UserUnderSteps[j].is_done,
-                        });
-                    }
-                }
-            }
+            let k = Tools.getUnderSteps(i, data, UserSteps, UserUnderSteps);
             res.push({
                 step_id: UserSteps[i].step_id,
                 title: data.steps[i].title,
@@ -206,7 +160,7 @@ router.get('/getUserSteps', async (request, response) => {
                 under_steps: k
             });
         }
-        const pourcentage = await getPercentage(user_process.id);
+        const pourcentage = await Tools.getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
             id: user_process.id,
@@ -216,56 +170,33 @@ router.get('/getUserSteps', async (request, response) => {
         });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
 router.get('/getUserStepsById', async (request, response) => {
     try {
         const { user_process_id } = request.query;
-        if (!user_process_id) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_process_id)
+            return response.status(400).json({ message: Tools.errorMessages.missingParameters });
         const user_process = await UserProcess.getById(user_process_id);
-        if (!user_process) {
-            return response.status(404).json({ message: 'User process not found.' });
-        }
+        if (!user_process)
+            return response.status(404).json({ message: Tools.errorMessages.userProcessNotFound });
         const user = await User.getById(user_process.user_id);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
         const process = await Process.getById(user_process.process_id);
-        if (!process) {
-            return response.status(404).json({ message: 'Process not found.' });
-        }
-        let file;
-        try {
-            file = require('../../data/' + process.title + '.json');
-            if (!file) {
-                return response.status(404).json({ message: 'Data not found.' });
-            }
-        } catch (error) {
-            return response.status(404).json({ message: 'Data not found.' });
-        }
+        if (!process)
+            return response.status(404).json({ message: Tools.errorMessages.processNotFound });
+        const file = await Tools.getData(process.title);
+        if (!file)
+            return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
         const data = file[user.language];
         const UserSteps = await UserStep.getAll(user_process.id);
         let res = [];
         for (let i in UserSteps) {
             let UserUnderSteps = await UserUnderStep.getAllByStepId(user_process.id, UserSteps[i].step_id);
-            let k = [];
-            if (UserUnderSteps.length > 0) {
-                for (let j in UserUnderSteps) {
-                    if (UserUnderSteps[j].step_id === UserSteps[i].step_id && data.steps[i].underQuestions[j]) {
-                        k.push({
-                            id: UserUnderSteps[j].id,
-                            title: data.steps[i].underQuestions[j].title,
-                            description: data.steps[i].underQuestions[j].description,
-                            type: data.steps[i].underQuestions[j].type,
-                            source: data.steps[i].underQuestions[j].source,
-                            is_done: UserUnderSteps[j].is_done,
-                        });
-                    }
-                }
-            }
+            let k = Tools.getUnderSteps(i, data, UserSteps, UserUnderSteps);
             res.push({
                 step_id: UserSteps[i].step_id,
                 title: data.steps[i].title,
@@ -276,7 +207,7 @@ router.get('/getUserStepsById', async (request, response) => {
                 under_steps: k
             });
         }
-        const pourcentage = await getPercentage(user_process.id);
+        const pourcentage = await Tools.getPercentage(user_process.id);
         return response.status(200).json({
             message: 'User process steps',
             id: user_process.id,
@@ -286,37 +217,29 @@ router.get('/getUserStepsById', async (request, response) => {
         });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
 router.get('/getUserProcesses', async (request, response) => {
     try {
         const { user_token } = request.query;
-        if (!user_token) {
-            return response.status(400).json({ message: 'Missing parameters.' });
-        }
+
+        if (!user_token)
+            return response.status(400).json({ message: Tools.errorMessages });
         const user = await User.findToken(user_token);
-        if (!user) {
-            return response.status(404).json({ message: 'User not found.' });
-        }
+        if (!user)
+            return response.status(404).json({ message: Tools.errorMessages.userNotFound });
         const userProcesses = await UserProcess.getAll(user.id);
         let res = [];
         for (let i in userProcesses) {
             let process = await Process.getById(userProcesses[i].process_id);
-            if (!process) {
-                return response.status(404).json({ message: 'Process not found.' });
-            }
-            let file;
-            try {
-                file = require('../../data/' + process.title + '.json');
-                if (!file) {
-                    return response.status(404).json({ message: 'Data not found.' });
-                }
-            } catch (error) {
-                return response.status(404).json({ message: 'Data not found.' });
-            }
+            if (!process)
+                return response.status(404).json({ message: Tools.errorMessages.processNotFound });
+            const file = await Tools.getData(process.title);
+            if (!file)
+                return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
             let data = file[user.language];
-            const percentage = await getPercentage(userProcesses[i].id);
+            const percentage = await Tools.getPercentage(userProcesses[i].id);
             res.push({
                 pourcentage: percentage,
                 userProcess: {
@@ -335,7 +258,7 @@ router.get('/getUserProcesses', async (request, response) => {
             response: res
         });
     } catch (error) {
-        return response.status(500).json({ message: 'System error.' });
+        return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
 

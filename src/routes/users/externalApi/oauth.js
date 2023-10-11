@@ -5,4 +5,5 @@ const google = require('./google');
 
 router.use('/google', google);
 router.use('/facebook', facebook);
+
 module.exports = router;

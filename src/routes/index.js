@@ -6,7 +6,7 @@ const step = require('./process/step.js');
 const questions = require('./process/questions.js');
 const userProcess = require('./userProcess/userProcess.js');
 const calendar = require('./calendar/calendar.js');
-const proseccProposal = require('./process/processProposal.js');
+const proseccProposal = require('./processProposal/processProposal.js');
 const admin = require('./admin/admin.js');
 
 router.use('/process', process);

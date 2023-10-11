@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken');
 const {URLSearchParams} = require('url');
 
 function get_code() {
-    const rootUrl = "https://graph.facebook.com/oauth/authorize";
+  const rootUrl = "https://graph.facebook.com/oauth/authorize";
+
   return `${rootUrl}?${new URLSearchParams([
     ['state', "paperwork"],
     ['client_id', process.env.messenger_clientID],
@@ -20,29 +21,30 @@ function get_code() {
 }
 
 router.get("/url", (request, response) => {
-    return response.send(get_code());
-  });
+  return response.send(get_code());
+});
 
 async function getAccessToken(code) {
   const url = "https://graph.facebook.com/v13.0/oauth/access_token";
-  const tokens = await axios
-      .post(url, new URLSearchParams([
-        ['code', code],
-        ['client_id', process.env.messenger_clientID],
-        ['client_secret', process.env.messenger_secret],
-        ['redirect_uri', process.env.messenger_redirect_uri],
-        ['grant_type', "authorization_code"]
-      ]).toString(), {
-      headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-      },
-      })
+  const tokens = await axios.post(url, new URLSearchParams([
+    ['code', code],
+    ['client_id', process.env.messenger_clientID],
+    ['client_secret', process.env.messenger_secret],
+    ['redirect_uri', process.env.messenger_redirect_uri],
+    ['grant_type', "authorization_code"]
+  ]).toString(), {
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+    },
+  })
+
   return tokens.data
 }
 
 router.get("/", async (req, response) => {
   try {
       const { code } = req.query;
+
       if (!code) {
           return response.status(409).json({
               message: "Missing code param.",

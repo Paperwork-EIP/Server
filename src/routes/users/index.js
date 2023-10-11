@@ -8,4 +8,5 @@ const contact = require('./contact.js');
 router.use('/user', users);
 router.use('/oauth', oauth);
 router.use('/contact', contact);
+
 module.exports = router;

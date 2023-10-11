@@ -7,9 +7,9 @@ const ses = new AWS.SES();
 router.get('/sendEmail', async (request, response) => {
     try {
         const { email, content, name } = request.query;
-        if (!email || !content || !name) {
+
+        if (!email || !content || !name)
             return response.status(400).json({ message: 'Missing parameters.' });
-        }
         const params = {
             Destination: {
                 ToAddresses: ['emma.rulliere@epitech.eu']
