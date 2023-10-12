@@ -50,5 +50,12 @@ module.exports = {
         } catch (error) {
           return null;
         }
+    },
+    checkStepContent(step) {
+        if (!step.underQuestions)
+            step.underQuestions = [];
+        if (!step.title || !step.type || !step.description || !step.question || !step.source)
+            return false;
+        return true;
     }
 }
