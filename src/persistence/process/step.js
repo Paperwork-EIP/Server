@@ -30,6 +30,16 @@ module.exports = {
             throw error;
         }
     },
+    async delete(step_id) {
+        try {
+            const { rows } = await db.query(sql`
+            DELETE FROM step where id=${step_id};`);
+            return rows[0];         
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
     async deleteAll(process_id) {
         try {
             const { rows } = await db.query(sql`
