@@ -6,7 +6,7 @@ const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
-router.get('/getAll', async (reuest, response) => {
+router.get('/getall', async (reuest, response) => {
     const { stocked_title, language, step_id } = reuest.query;
 
     if (!stocked_title || !language)

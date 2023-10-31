@@ -24,7 +24,7 @@ function getGoogleAuthURL() {
       ]).toString()}`;
 }
 
-router.get("/urlLogin", (request, response) => {
+router.get("/urllogin", (request, response) => {
     return response.send(getGoogleAuthURL());
 });
 

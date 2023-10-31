@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/index");
+const router = require("../../../src/routes/router");
 const routerCalendar = require("../../../src/routes/calendar/calendar");
 const UserProcess = require("../../../src/persistence/userProcess/userProcess");
 const Process = require("../../../src/persistence/process/process");
@@ -68,7 +68,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 UserStep.getAll = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "hbjhbj"
                 });
 
@@ -83,7 +83,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
                 UserStep.getAll = jest.fn().mockReturnValue([{ step_id: 1, appoinment: (new Date (moment("2023-04-25 20:20:00", "YYYY-MM-DD HH:mm:ss").toDate())), user_process_id: 1 }]);
 
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     token: "hbjhbj",
                     date: "2023-04-25"
                 });
@@ -380,12 +380,12 @@ describe("Calendar tests", () => {
                 }
             });
             test("[GET ALL] token missing : should not get all meeting from calendar table with a 400 status code", async () => {
-                const response = await request(server).get("/calendar/getAll").query({});
+                const response = await request(server).get("/calendar/getall").query({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("[GET ALL] token empty : should not get all meeting from calendar table with a 400 status code", async () => {
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: ""
                 });
                 expect(response.statusCode).toBe(400);
@@ -393,7 +393,7 @@ describe("Calendar tests", () => {
             });
             test("[GET ALL] user not found : should not set a meeting in calendar table with a 404 status code", async () => {
                 Users.find = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -405,7 +405,7 @@ describe("Calendar tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -419,7 +419,7 @@ describe("Calendar tests", () => {
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -432,7 +432,7 @@ describe("Calendar tests", () => {
                 UserProcess.getAll = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -447,7 +447,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 UserStep.getAll = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -462,7 +462,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -478,7 +478,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getAll").query({
+                const response = await request(server).get("/calendar/getall").query({
                     token: "123"
                 });
 
@@ -489,7 +489,7 @@ describe("Calendar tests", () => {
             test("[GET ALL] should return 500 status code if an error occurs", async () => {
                 try {
                     sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
-                    const response = await request(server).get("/calendar/getAll").query({
+                    const response = await request(server).get("/calendar/getall").query({
                         token: "123"
                     });
                 } catch(error) {
@@ -497,7 +497,7 @@ describe("Calendar tests", () => {
                 }
             });
             test("[GET BT PERIOD] token missing should return 400", async () => {
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     token: "",
                     date: "2020-01-01"
                 });
@@ -507,7 +507,7 @@ describe("Calendar tests", () => {
                 expect(response._body.appoinment).not.toBeNull();
             });
             test("[GET BT PERIOD] token missing should return 400", async () => {
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     date: "2020-01-01",
                 });
 
@@ -516,7 +516,7 @@ describe("Calendar tests", () => {
                 expect(response._body.appoinment).not.toBeNull();
             });
             test("[GET BT PERIOD] User not found should return 404", async () => {
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     date: "2020-01-01",
                     token: "123"
                 });
@@ -529,7 +529,7 @@ describe("Calendar tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 UserProcess.getAll = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     date: "2020-01-01",
                     token: "123"
                 });
@@ -544,7 +544,7 @@ describe("Calendar tests", () => {
                 Process.getById = jest.fn().mockReturnValue({ title: 'Visa' });
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     date: "2020-01-01",
                     token: "123"
                 });
@@ -560,7 +560,7 @@ describe("Calendar tests", () => {
                 UserStep.getAllAppoinment = jest.fn().mockReturnValue([{ step_id: 1, appoinment: 1, user_process_id: 1 }]);
                 Step.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/calendar/getByPeriod").query({
+                const response = await request(server).get("/calendar/getbyperiod").query({
                     date: "2020-01-01",
                     token: "123"
                 });
@@ -573,7 +573,7 @@ describe("Calendar tests", () => {
                 let response;
                 try {
                     sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
-                    response = await request(server).get("/calendar/getByPeriod").query({
+                    response = await request(server).get("/calendar/getbyperiod").query({
                         date: "2020-01-01",
                         token: "123"
                     });

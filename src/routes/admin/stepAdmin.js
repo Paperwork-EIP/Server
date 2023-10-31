@@ -73,7 +73,7 @@ router.get('/get', async (request, response) => {
     }
 });
   
-router.get('/getAll', async (reuest, response) => {
+router.get('/getall', async (reuest, response) => {
     const { stocked_title, language } = reuest.query;
 
     if (!stocked_title || !language)

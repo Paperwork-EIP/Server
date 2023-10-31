@@ -50,7 +50,7 @@ router.get('/delete', async (request, response) => {
   }
 });
 
-router.get('/getAll', async (request, response) => {
+router.get('/getall', async (request, response) => {
   try {
       const { language } = request.query;
 

@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/index");
+const router = require("../../../src/routes/router");
 const routerProcess = require("../../../src/routes/process/process");
 const Process = require("../../../src/persistence/process/process");
 const { start, stop } = require("../../../index");
@@ -69,7 +69,7 @@ describe("Process tests", () => {
             test("[GET ALL] should get all process with a 200 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Visa' }]);
             
-                const response = await request(server).get("/process/getAll?language=english").query({});
+                const response = await request(server).get("/process/getall?language=english").query({});
                 
                 expect(response.statusCode).toBe(200);
                 expect(response.response).not.toBeNull();
@@ -162,9 +162,9 @@ describe("Process tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("[GET ALL] wrong type of request : should be a GET request", async () => {
-                const response_post = await request(server).post("/process/getAll").query({});
-                const response_put = await request(server).put("/process/getAll").query({});
-                const response_delete = await request(server).delete("/process/getAll").query({});
+                const response_post = await request(server).post("/process/getall").query({});
+                const response_put = await request(server).put("/process/getall").query({});
+                const response_delete = await request(server).delete("/process/getall").query({});
 
                 expect(response_post.statusCode).toBe(404);
                 expect(response_post.message).not.toBeNull();
@@ -175,26 +175,26 @@ describe("Process tests", () => {
             });
             test("[GET ALL] data not found : should not get all the processes with a 404 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Viscscsa' }]);
-                const response = await request(server).get("/process/getAll?language=english").query({});
+                const response = await request(server).get("/process/getall?language=english").query({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
             test("[GET ALL] data not found : should not get all the processes with a 404 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'Visa' }]);
                 jest.mock('../../../src/data/Visa.json', () => null);
-                const response = await request(server).get("/process/getAll?language=english").query({});
+                const response = await request(server).get("/process/getall?language=english").query({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
             test("[GET ALL] missing language : should not get all the processes with a 400 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue({ id: 1, title: 'ddenjkfrsf' });
-                const response = await request(server).get("/process/getAll").query({});
+                const response = await request(server).get("/process/getall").query({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("[GET ALL] empty language : should not get all the processes with a 400 status code", async () => {
                 Process.getAll = jest.fn().mockReturnValue([{ id: 1, title: 'ddenjkfrsf' }]);
-                const response = await request(server).get("/process/getAll?language=").query({});
+                const response = await request(server).get("/process/getall?language=").query({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
@@ -204,7 +204,7 @@ describe("Process tests", () => {
                 try {
                     sinon.stub(Process, 'getAll').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/process/getAll").query({
+                    response = await request(server).get("/process/getall").query({
                         language: "english"
                     });
                 } catch (error) {

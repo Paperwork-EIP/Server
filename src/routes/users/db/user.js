@@ -120,7 +120,7 @@ router.get('/getbytoken', async (request, response) => {
   }
 });
 
-router.get('/getSettings', async (request, response) => {
+router.get('/getsettings', async (request, response) => {
   try{
     const { token } = request.query;
 
@@ -157,7 +157,7 @@ router.get('/delete', async (request, response) => {
   }
 });
 
-router.post('/modifyDatas', async (request, response) => {
+router.post('/modifydatas', async (request, response) => {
   try{
     const { token, new_email, language,
             username, firstname, name, age,
@@ -188,7 +188,7 @@ router.post('/modifyDatas', async (request, response) => {
   }
 });
 
-router.get('/modifySettings', async (request, response) => {
+router.get('/modifysettings', async (request, response) => {
   try{
     const { token, night_mode } = request.query;
 
@@ -208,7 +208,7 @@ router.get('/modifySettings', async (request, response) => {
   }
 });
 
-router.get('/sendVerificationEmail', async (request, response) => {
+router.get('/sendverificationemail', async (request, response) => {
   try{
     const { token } = request.query;
 
@@ -246,7 +246,7 @@ router.get('/sendVerificationEmail', async (request, response) => {
   }
 });
 
-router.get('/verifyEmail', async (request, response) => {
+router.get('/verifyemail', async (request, response) => {
   try{
     const { token } = request.query;
 
@@ -266,7 +266,7 @@ router.get('/verifyEmail', async (request, response) => {
   }
 });
 
-router.get('/sendResetPasswordEmail', async (request, response) => {
+router.get('/sendresetpasswordemail', async (request, response) => {
   try{
     const { email } = request.query;
 
@@ -304,7 +304,7 @@ router.get('/sendResetPasswordEmail', async (request, response) => {
   }
 });
 
-router.get('/resetPassword', async (request, response) => {
+router.get('/resetpassword', async (request, response) => {
   try{
     const { token, password } = request.query;
 
@@ -322,7 +322,7 @@ router.get('/resetPassword', async (request, response) => {
   }
 });
 
-router.post("/mobileLogin", async (req, response) => {
+router.post("/mobilelogin", async (req, response) => {
   try {
     const { id, email, access_token, oauth } = req.body;
 

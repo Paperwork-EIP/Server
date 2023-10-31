@@ -155,7 +155,7 @@ router.get('/get', async (request, response) => {
   }
 });
 
-router.get('/getLanguage', async (request, response) => {
+router.get('/getlanguage', async (request, response) => {
   try {
     const { stocked_title } = request.query;
 

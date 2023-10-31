@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/users/index");
+const router = require("../../../src/routes/users/userRouter");
 const routerUserProcess = require("../../../src/routes/userProcess/userProcess");
 const { start, stop } = require("../../../index");
 const Users = require("../../../src/persistence/users/users");
@@ -63,7 +63,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: process_title,
                     user_token: user_token,
                     questions: [
@@ -98,7 +98,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: process_title,
                     user_token: user_token,
                     questions: [
@@ -130,7 +130,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: process_title,
                     user_token: user_token,
                     questions: [
@@ -157,7 +157,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: user_token,
                     process_title: process_title,
                     questions:
@@ -189,7 +189,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ something: 'something' }]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: user_token,
                     process_title: process_title,
                     questions:
@@ -220,7 +220,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([]);
                 UserProcess.update = jest.fn().mockReturnValue({something: 'not null' });
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: user_token,
                     process_title: process_title,
                     questions:
@@ -243,7 +243,7 @@ describe("User process", () => {
                 Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                 UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
 
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: user_token,
                     process_title: process_title
                 });
@@ -259,7 +259,7 @@ describe("User process", () => {
                 UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
 
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: user_token,
                     process_title: process_title
                 });
@@ -276,7 +276,7 @@ describe("User process", () => {
                 UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 1,
                 });
 
@@ -292,7 +292,7 @@ describe("User process", () => {
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
                 // UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }])
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: user_token
                 });
 
@@ -303,7 +303,7 @@ describe("User process", () => {
         });
         describe("[INVALID USER PROCESS TESTS]", () => {
             test("[ADD] user email missing : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: "Test",
                     questions: []
                 });
@@ -312,7 +312,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] user email empty : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     user_token: "",
                     process_title: "Test",
                     questions: []
@@ -322,7 +322,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] process title missing : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     user_token: "test@test.com",
                     questions: []
                 });
@@ -331,7 +331,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] process title empty : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     user_token: "test@test.com",
                     process_title: "",
                     questions: []
@@ -341,7 +341,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] questions missing : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     user_token: "test@test.com",
                     process_title: "Test"
                 });
@@ -350,7 +350,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] questions empty : should not add a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     user_token: "test@test.com",
                     process_title: "Test",
                     questions: null
@@ -362,7 +362,7 @@ describe("User process", () => {
             test("[ADD] user not found : should not add a user process with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_token: "l",
                     questions: [
@@ -381,7 +381,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({ something: 'not null' });
                 Process.get = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: "t",
                     user_token: "swedfgtyhujikujyhnbgfvdce",
                     questions: [
@@ -403,7 +403,7 @@ describe("User process", () => {
                 UserProcess.create = jest.fn().mockReturnValue({ id: 1 });
                 Step.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: "test",
                     user_token: "emaimvaafg",
                     questions:
@@ -421,7 +421,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({ something: 'not null' });
                 UserProcess.getByTitleAndUserID = jest.fn().mockReturnValue({ something: 'not null' });
 
-                const response = await request(server).post("/userProcess/add").send({
+                const response = await request(server).post("/userprocess/add").send({
                     process_title: "test",
                     user_token: "emaimvaafg",
                     questions:
@@ -444,7 +444,7 @@ describe("User process", () => {
                     UserProcess.get = jest.fn().mockReturnValue(null);
                     sinon.stub(UserProcess, 'create').throws(new Error('db query failed'));
 
-                    response = await request(server).post("/userProcess/add").send({
+                    response = await request(server).post("/userprocess/add").send({
                         process_title: process_title,
                         user_token: user_token,
                         questions: [
@@ -459,7 +459,7 @@ describe("User process", () => {
                 }
             });
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     process_title: "Test",
                     questions:
                         [{
@@ -472,7 +472,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] user email empty : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: "",
                     process_title: "Test",
                     questions:
@@ -486,7 +486,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] process title missing : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: "test@test.com",
                     questions:
                         [{
@@ -499,7 +499,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] process title empty : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: "test@test.com",
                     process_title: "",
                     questions:
@@ -513,7 +513,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] step empty : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: "test@test.com",
                     process_title: "Test",
                     questions: null
@@ -523,7 +523,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[UPDATE] step missing : should not update a user process with a 400 status code", async () => {
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     user_token: "test@test.com",
                     process_title: "Test"
                 });
@@ -534,7 +534,7 @@ describe("User process", () => {
             test("[UPDATE] user not found : should not update a user process with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_token: "h",
                     questions:
@@ -552,7 +552,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({ something: 'not null' });
                 Process.get = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     process_title: "t",
                     user_token: "qqqqqqqq",
                     questions:
@@ -571,7 +571,7 @@ describe("User process", () => {
                 Process.get = jest.fn().mockReturnValue({ something: 'not null' });
                 UserProcess.get = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     process_title: "hhhhhhhhhhhhhhhhhhhhhhhhhhhtiiiiiiiiiiiiiitllllleeeeee",
                     user_token: "wwwwwwww",
                     questions:
@@ -591,7 +591,7 @@ describe("User process", () => {
                 UserProcess.get = jest.fn().mockReturnValue({ something: 'not null' });
                 Step.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/userProcess/update").send({
+                const response = await request(server).post("/userprocess/update").send({
                     process_title: 1,
                     user_token: "emaimvaafg",
                     questions:
@@ -615,7 +615,7 @@ describe("User process", () => {
                     Step.getById = jest.fn().mockReturnValue({ something: 'not null' });
                     sinon.stub(UserStep, 'update').throws(new Error('db query failed'));
 
-                    response = await request(server).post("/userProcess/update").send({
+                    response = await request(server).post("/userprocess/update").send({
                         user_token: user_token,
                         process_title: process_title,
                         questions:
@@ -629,7 +629,7 @@ describe("User process", () => {
                 }
             });
             test("[DELETE] user email empty : should not delete a user process with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "",
                     process_title: "Test"
                 });
@@ -638,7 +638,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] user email missing : should not delete a user process with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     process_title: "Test"
                 });
 
@@ -648,7 +648,7 @@ describe("User process", () => {
             test("[DELETE] user email not found : should not delete a user process with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "asdasda",
                     process_title: "Test"
                 });
@@ -657,7 +657,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User not found.');
             });
             test("[DELETE] process title empty : should not delete a user process with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "test@test.com",
                     process_title: ""
                 });
@@ -666,7 +666,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] process title missing : should not delete a user process with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "test@test.com"
                 });
 
@@ -676,7 +676,7 @@ describe("User process", () => {
             test("[DELETE] process not found : should not delete a user process with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 Process.get = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "uuuuuudnelfeklfmlemfklmel",
                     process_title: "t",
                 });
@@ -686,7 +686,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] user not found : should not delete a user process with a 404 status code", async () => {
-                const response = await request(server).get("/userProcess/delete").query({
+                const response = await request(server).get("/userprocess/delete").query({
                     user_token: "234",
                     process_title: "Test"
                 });
@@ -705,7 +705,7 @@ describe("User process", () => {
                     UserStep.create = jest.fn().mockReturnValue({ something: 'something' });
                     sinon.stub(UserProcess, 'delete').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/userProcess/delete").query({
+                    response = await request(server).get("/userprocess/delete").query({
                         user_token: user_token,
                         process_title: process_title
                     });
@@ -715,7 +715,7 @@ describe("User process", () => {
                 }
             });
             test("[DELETE] user not found : should not delete a user process with a 404 status code", async () => {
-                const response = await request(server).post("/userProcess/delete").send({
+                const response = await request(server).post("/userprocess/delete").send({
                     user_token: " ",
                     process_title: "Test"
                 });
@@ -724,7 +724,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER STEPS] email empty : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "",
                     process_title: "Test"
                 });
@@ -733,7 +733,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER STEPS] email missing : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     process_title: "Test"
                 });
 
@@ -742,7 +742,7 @@ describe("User process", () => {
             });
             test("[GET USER STEPS] user not found : should not get a user step with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "234",
                     process_title: "Test"
                 });
@@ -751,7 +751,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User not found.');
             });
             test("[GET USER STEPS] process title empty : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "test@test.com",
                     process_title: ""
                 });
@@ -760,7 +760,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER STEPS] process title missing : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "test@test.com"
                 });
 
@@ -770,7 +770,7 @@ describe("User process", () => {
             test("[GET USER STEPS] process not found : should not get a user step with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ somthing: 'not null' });
                 Process.get = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
@@ -782,7 +782,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserProcess.get = jest.fn().mockReturnValue(null);
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
@@ -793,7 +793,7 @@ describe("User process", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 jest.mock('../../../src/data/Visa.json', () => null);
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
@@ -803,7 +803,7 @@ describe("User process", () => {
             test("[GET USER STEPS] data not found : should not get a user step with a 404 status code(file don't exist)", async () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visacdscsd' });
-                const response = await request(server).get("/userProcess/getUserSteps").query({
+                const response = await request(server).get("/userprocess/getusersteps").query({
                     user_token: "ghjkdhicudhsnklvnsdvnds",
                     process_title: "hahaha"
                 });
@@ -816,7 +816,7 @@ describe("User process", () => {
                 try {
                     Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                     sinon.stub(Process, 'get').throws(new Error('db query failed'));
-                    response = await request(server).get("/userProcess/getUserSteps").query({
+                    response = await request(server).get("/userprocess/getusersteps").query({
                         user_token: "ghjkdhicudhsnklvnsdvnds",
                         process_title: "hahaha"
                     });
@@ -825,7 +825,7 @@ describe("User process", () => {
                 }
             });
             test("[GET USER STEP BY ID] user process id empty : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: null
                 });
 
@@ -833,7 +833,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER STEP BY ID] user process id missing : should not get a user step with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserStepsById").query({});
+                const response = await request(server).get("/userprocess/getuserstepsById").query({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
@@ -841,7 +841,7 @@ describe("User process", () => {
             test("[GET USER STEPS BY ID] user process not found : should not get a user step with a 404 status code", async () => {
                 UserProcess.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 4567865,
                 });
 
@@ -854,7 +854,7 @@ describe("User process", () => {
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserStep.getAll = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 4567865,
                 });
 
@@ -867,7 +867,7 @@ describe("User process", () => {
                 jest.mock('../../../src/data/Visa.json', () => null);
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 4567865,
                 });
 
@@ -880,7 +880,7 @@ describe("User process", () => {
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visagggg' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 4567865,
                 });
 
@@ -892,7 +892,7 @@ describe("User process", () => {
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                const response = await request(server).get("/userprocess/getuserstepsById").query({
                     user_process_id: 4567865,
                 });
 
@@ -905,7 +905,7 @@ describe("User process", () => {
                 try {
                     sinon.stub(UserProcess, 'getById').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/userProcess/getUserStepsById").query({
+                    response = await request(server).get("/userprocess/getuserstepsById").query({
                         user_process_id: 4567865,
                     });
                 } catch (error) {
@@ -913,7 +913,7 @@ describe("User process", () => {
                 }
             });
             test("[GET USER PROCESSES] email empty : should not get a user processes with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: ""
                 });
 
@@ -921,7 +921,7 @@ describe("User process", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[GET USER PROCESSES] email missing : should not get a user processes with a 400 status code", async () => {
-                const response = await request(server).get("/userProcess/getUserProcesses").query({});
+                const response = await request(server).get("/userprocess/getuserprocesses").query({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.response).not.toBeNull();
@@ -929,7 +929,7 @@ describe("User process", () => {
             test("[GET USER PROCESSES] user not found : should not get a user processes with a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: "123"
                 });
 
@@ -941,7 +941,7 @@ describe("User process", () => {
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: "123"
                 });
 
@@ -954,7 +954,7 @@ describe("User process", () => {
                 Process.getById = jest.fn().mockReturnValue({title: 'Visa'});
                 jest.mock('../../../src/data/Visa.json', () => null);
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: "123"
                 });
 
@@ -966,7 +966,7 @@ describe("User process", () => {
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({title: 'Visxsxsa'});
 
-                const response = await request(server).get("/userProcess/getUserProcesses").query({
+                const response = await request(server).get("/userprocess/getuserprocesses").query({
                     user_token: "123"
                 });
 
@@ -979,7 +979,7 @@ describe("User process", () => {
                 try {
                     sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/userProcess/getUserProcesses").query({
+                    response = await request(server).get("/userprocess/getuserprocesses").query({
                         user_token: "123"
                     });
                 } catch (error) {

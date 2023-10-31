@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
 const ses = new AWS.SES();
 
-router.get('/sendEmail', async (request, response) => {
+router.get('/sendemail', async (request, response) => {
     try {
         const { email, content, name } = request.query;
 

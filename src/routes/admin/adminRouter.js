@@ -7,6 +7,6 @@ const adminUnderStep = require('./underStepAdmin');
 
 router.use('/process', adminProcess);
 router.use('/step', adminStep);
-router.use('/underStep', adminUnderStep);
+router.use('/understep', adminUnderStep);
 
 module.exports = router;
