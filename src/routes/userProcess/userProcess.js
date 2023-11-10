@@ -126,7 +126,7 @@ router.get('/delete', async (request, response) => {
     }
 });
 
-router.get('/getusersteps', async (request, response) => {
+router.get('/getUserSteps', async (request, response) => {
     try {
         const { user_token, process_title } = request.query;
 
@@ -173,7 +173,7 @@ router.get('/getusersteps', async (request, response) => {
         return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
-router.get('/getuserstepsbyid', async (request, response) => {
+router.get('/getUserStepsById', async (request, response) => {
     try {
         const { user_process_id } = request.query;
 
@@ -220,7 +220,7 @@ router.get('/getuserstepsbyid', async (request, response) => {
         return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
-router.get('/getuserprocesses', async (request, response) => {
+router.get('/getUserProcesses', async (request, response) => {
     try {
         const { user_token } = request.query;
 

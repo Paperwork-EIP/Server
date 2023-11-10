@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/router");
+const router = require("../../../src/routes/index");
 const routerProposal = require("../../../src/routes/processProposal/processProposal");
 const Users = require("../../../src/persistence/users/users");
 const ProcessProposal = require("../../../src/persistence/processProposal/processProposal");
@@ -44,7 +44,7 @@ describe("Process proposal tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 ProcessProposal.create = jest.fn().mockReturnValue({ something: 'not null' });
 
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
@@ -58,7 +58,7 @@ describe("Process proposal tests", () => {
             test("[GET ALL] should get all the process proposal with a 200 status code", async () => {
                 ProcessProposal.getAll = jest.fn().mockReturnValue({ something: 'not null' });
 
-                const response = await request(server).get("/processproposal/getall").send({});
+                const response = await request(server).get("/processProposal/getAll").send({});
 
                 expect(response.statusCode).toBe(200);
                 expect(response._body.message).toEqual('Proposals found.');
@@ -67,7 +67,7 @@ describe("Process proposal tests", () => {
                 ProcessProposal.get = jest.fn().mockReturnValue({ id: 1 });
                 ProcessProposal.delete = jest.fn().mockReturnValue({ id: 1 });
 
-                const response = await request(server).get("/processproposal/delete").query({
+                const response = await request(server).get("/processProposal/delete").query({
                     id: 1
                 });
 
@@ -78,7 +78,7 @@ describe("Process proposal tests", () => {
         });
         describe("[INVALID TESTS]", () => {
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "TestDescription",
                     content: "TestContent",
@@ -89,7 +89,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "TestDescription",
                     content: "TestContent"
@@ -99,7 +99,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "TestDescription",
                     content: "",
@@ -110,7 +110,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "TestDescription",
                     user_token: "hsjskskskskssllslslssll"
@@ -120,7 +120,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     description: "",
                     content: "TestContent",
@@ -131,7 +131,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitle",
                     content: "TestContent",
                     user_token: "hsjskskskskssllslslssll"
@@ -141,7 +141,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "",
                     description: "TestDescription",
                     content: "TestContent",
@@ -152,7 +152,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[ADD] should not add a process proposal with a 400 status code", async () => {
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     description: "TestDescription",
                     content: "TestContent",
                     user_token: "hsjskskskskssllslslssll"
@@ -164,7 +164,7 @@ describe("Process proposal tests", () => {
             test("[ADD] user not found : should return a 404 status code", async () => {
                 Users.findToken = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
@@ -181,7 +181,7 @@ describe("Process proposal tests", () => {
                     Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                     sinon.stub(ProcessProposal, 'create').throws(new Error('db query failed'));
 
-                    response = await request(server).post("/processproposal/add").send({
+                    response = await request(server).post("/processProposal/add").send({
                         title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                         description: "TestDescription",
                         content: "TestContent",
@@ -196,7 +196,7 @@ describe("Process proposal tests", () => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1 });
                 ProcessProposal.create = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/processproposal/add").send({
+                const response = await request(server).post("/processProposal/add").send({
                     title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                     description: "TestDescription",
                     content: "TestContent",
@@ -211,7 +211,7 @@ describe("Process proposal tests", () => {
                 try {
                     sinon.stub(Users, 'findToken').throws(new Error('db query failed'));
 
-                    response = await request(server).post("/processproposal/add").send({
+                    response = await request(server).post("/processProposal/add").send({
                         title: "TestTitlehhhhhhhhhhhhhhhhhhh",
                         description: "TestDescription",
                         content: "TestContent",
@@ -228,13 +228,13 @@ describe("Process proposal tests", () => {
                 try {
                     sinon.stub(ProcessProposal, 'getAll').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/processproposal/getall").send({});
+                    response = await request(server).get("/processProposal/getAll").send({});
                 } catch (error) {
                     expect(response.statusCode).toBe(500);
                 }
             });
             test("[DELETE] should not delete a process proposal with a 400 status code", async () => {
-                const response = await request(server).get("/processproposal/delete").query({
+                const response = await request(server).get("/processProposal/delete").query({
                     id: null
                 });
                 expect(response.statusCode).toBe(400);
@@ -242,7 +242,7 @@ describe("Process proposal tests", () => {
                 expect(response.response).not.toBeNull();
             });
             test("[DELETE] should not delete a process proposal with a 400 status code", async () => {
-                const response = await request(server).get("/processproposal/delete").query({
+                const response = await request(server).get("/processProposal/delete").query({
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
@@ -251,7 +251,7 @@ describe("Process proposal tests", () => {
             test("[DELETE] should not delete a process proposal with a 404 status code", async () => {
                 ProcessProposal.get = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/processproposal/delete").query({
+                const response = await request(server).get("/processProposal/delete").query({
                     id: 4294967
                 });
                 expect(response.statusCode).toBe(400);
@@ -265,7 +265,7 @@ describe("Process proposal tests", () => {
                     ProcessProposal.get = jest.fn().mockReturnValue({ id: 1 });
                     sinon.stub(ProcessProposal, 'delete').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/processproposal/delete").query({
+                    response = await request(server).get("/processProposal/delete").query({
                         id: 4294967
                     });
                 } catch (error) {

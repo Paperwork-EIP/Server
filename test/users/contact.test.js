@@ -34,13 +34,13 @@ describe("Contact tests", () => {
 
     describe("[INTEGRATION TESTS]", () => {
         describe("[sendEmail] valide test", () => {
-            test("should receive a valid response for route '/sendemail'", async () => {
+            test("should receive a valid response for route '/sendEmail'", async () => {
                 const payload = {
                     email: "test",
                     content: "test",
                     name: "test"
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(200);
             });
@@ -52,7 +52,7 @@ describe("Contact tests", () => {
                     content: "test",
                     name: "test"
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -61,7 +61,7 @@ describe("Contact tests", () => {
                     content: "test",
                     name: "test"
                 };
-                const response = await request(server).get("/contact/sendemail").send(payload);
+                const response = await request(server).get("/contact/sendEmail").send(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -71,7 +71,7 @@ describe("Contact tests", () => {
                     content: "",
                     name: "test"
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -80,7 +80,7 @@ describe("Contact tests", () => {
                     email: "test",
                     name: "test"
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -90,7 +90,7 @@ describe("Contact tests", () => {
                     content: "test",
                     name: ""
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -100,7 +100,7 @@ describe("Contact tests", () => {
                     content: "test",
                     name: ""
                 };
-                const response = await request(server).get("/contact/sendemail").query(payload);
+                const response = await request(server).get("/contact/sendEmail").query(payload);
 
                 expect(response.status).toBe(400);
             });
@@ -112,7 +112,7 @@ describe("Contact tests", () => {
                         content: "test",
                         name: "test"
                     };
-                    const response = await request(server).get("/contact/sendemail").query(payload);
+                    const response = await request(server).get("/contact/sendEmail").query(payload);
                 } catch (error) {
                     expect(response.status).toBe(500);
                 }

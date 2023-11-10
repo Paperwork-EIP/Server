@@ -23,9 +23,9 @@ describe("OAuth connections tests", () => {
                 expect(router).toBeDefined();
             });
             describe("--- OAUTH GOOGLE ---", () => {
-                test("'/urllogin' should exist", async () => {
+                test("'/urlLogin' should exist", async () => {
                     const payload = {};
-                    const response = await request(server).get('/oauth/google/urllogin').send(payload);
+                    const response = await request(server).get('/oauth/google/urlLogin').send(payload);
 
                     expect(response.notFound).toEqual(false);
                     expect(response.status).toBe(200);
@@ -54,9 +54,9 @@ describe("OAuth connections tests", () => {
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID OAUTH TESTS]", () => {
             describe("--- OAUTH GOOGLE ---", () => {
-                test("should receive a valid response for route '/urllogin'", async () => {
+                test("should receive a valid response for route '/urlLogin'", async () => {
                     const payload = {};
-                    const response = await request(server).get("/oauth/google/urllogin").send(payload);
+                    const response = await request(server).get("/oauth/google/urlLogin").send(payload);
 
                     expect(response).not.toBeNull();
                     expect(response.status).toEqual(200);

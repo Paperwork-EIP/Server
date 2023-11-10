@@ -16,7 +16,6 @@ describe("User connection tests", () => {
     });
 
     beforeAll(async () => {
-        await init_db.initAll();
         server = await start(port);
     });
     afterAll(() => {
@@ -310,7 +309,7 @@ describe("User connection tests", () => {
                 User.findUsername = jest.fn().mockReturnValue(null);
                 User.modifyDatas = jest.fn().mockReturnValue({ id: 1 });
 
-                const response = await request(server).post("/user/modifydatas").send({
+                const response = await request(server).post("/user/modifyDatas").send({
                     token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
@@ -323,7 +322,7 @@ describe("User connection tests", () => {
         });
         describe("[INVALID MODIFY DATAS TESTS]", () => {
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).post("/user/modifydatas").send({
+                const response = await request(server).post("/user/modifyDatas").send({
                     token: "",
                 });
 
@@ -331,13 +330,13 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 400 status code", async () => {
-                const response = await request(server).post("/user/modifydatas").send({});
+                const response = await request(server).post("/user/modifyDatas").send({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify datas with a 404 status code", async () => {
-                const response = await request(server).post("/user/modifydatas").send({
+                const response = await request(server).post("/user/modifyDatas").send({
                     token: " "
                 });
 
@@ -347,7 +346,7 @@ describe("User connection tests", () => {
             test("should modify datas with a 409 status code (email already used)", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1 });
                 User.find = jest.fn().mockReturnValue({id: 1});
-                response = await request(server).post("/user/modifydatas").send({
+                response = await request(server).post("/user/modifyDatas").send({
                     token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
@@ -360,7 +359,7 @@ describe("User connection tests", () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1 });
                 User.find = jest.fn().mockReturnValue(null);
                 User.findUsername = jest.fn().mockReturnValue({id: 1});
-                response = await request(server).post("/user/modifydatas").send({
+                response = await request(server).post("/user/modifyDatas").send({
                     token: "emailcbdbcjnsnicwsnwsjcbdycbdd",
                     username: "usernamenvhksdjksdasdbjhasg",
                     new_email: "emailnvhksdjksdasdbjhasg",
@@ -374,7 +373,7 @@ describe("User connection tests", () => {
             test("should modify settings with a 200 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ email: "emaillllllllllllllllllllllllllllllll", id: 1 });
                 Settings.modifySettings = jest.fn().mockReturnValue({ id: 1 });
-                const response = await request(server).get("/user/modifysettings").query({
+                const response = await request(server).get("/user/modifySettings").query({
                     token: "emaiiiiiljbcsjcjsdncdsncksdnv",
                     night_mode: true,
                 });
@@ -385,7 +384,7 @@ describe("User connection tests", () => {
         });
         describe("[INVALID MODIFY SETTINGS TESTS]", () => {
             test("should modify settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifysettings").query({
+                const response = await request(server).get("/user/modifySettings").query({
                     token: "",
                 });
 
@@ -393,13 +392,13 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
             test("should modify settings with a 400 status code", async () => {
-                const response = await request(server).get("/user/modifysettings").query({});
+                const response = await request(server).get("/user/modifySettings").query({});
 
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should modify settings with a 404 status code", async () => {
-                const response = await request(server).get("/user/modifysettings").query({
+                const response = await request(server).get("/user/modifySettings").query({
                     token: " "
                 });
 
@@ -441,7 +440,7 @@ describe("User connection tests", () => {
             test("should send verification email with a 200 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1, email: "emma.rulliere@epitech.eu" });
 
-                const response = await request(server).get("/user/sendverificationemail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                const response = await request(server).get("/user/sendVerificationEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
 
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
@@ -449,24 +448,24 @@ describe("User connection tests", () => {
         });
         describe("[INVALID SEND VERIFICATION EMAIL TESTS]", () => {
             test("should send verification email with a 400 status code", async () => {
-                const response = await request(server).get("/user/sendverificationemail?token=").send({});
+                const response = await request(server).get("/user/sendVerificationEmail?token=").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should send verification email with a 400 status code", async () => {
-                const response = await request(server).get("/user/sendverificationemail").send({});
+                const response = await request(server).get("/user/sendVerificationEmail").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should send verification email with a 404 status code", async () => {
-                const response = await request(server).get("/user/sendverificationemail?token=lalalalallllll").send({});
+                const response = await request(server).get("/user/sendVerificationEmail?token=lalalalallllll").send({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
             test("should send verification email with a 409 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
 
-                const response = await request(server).get("/user/sendverificationemail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                const response = await request(server).get("/user/sendVerificationEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
                 expect(response.statusCode).toBe(409);
                 expect(response.message).not.toBeNull();
             });
@@ -476,31 +475,31 @@ describe("User connection tests", () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1 });
                 User.setEmailVerified = jest.fn().mockReturnValue({ id: 1 });
 
-                const response = await request(server).get("/user/verifyemail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                const response = await request(server).get("/user/verifyEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
             });
         });
         describe("[INVALID VERIFY EMAIL TESTS]", () => {
             test("should verify email with a 400 status code", async () => {
-                const response = await request(server).get("/user/verifyemail?token=").send({});
+                const response = await request(server).get("/user/verifyEmail?token=").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should verify email with a 400 status code", async () => {
-                const response = await request(server).get("/user/verifyemail").send({});
+                const response = await request(server).get("/user/verifyEmail").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should verify email with a 404 status code", async () => {
-                const response = await request(server).get("/user/verifyemail?token=lalalalallllll").send({});
+                const response = await request(server).get("/user/verifyEmail?token=lalalalallllll").send({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
             test("should verify email with a 409 status code", async () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
 
-                const response = await request(server).get("/user/verifyemail?token=hyxjnscjksdcnhsdvcnsd").send({});
+                const response = await request(server).get("/user/verifyEmail?token=hyxjnscjksdcnhsdvcnsd").send({});
                 expect(response.statusCode).toBe(409);
                 expect(response.message).not.toBeNull();
             });
@@ -510,24 +509,24 @@ describe("User connection tests", () => {
                 User.find = jest.fn().mockReturnValue({ email: "emma.rulliere@epitech.eu" });
                 User.setToken = jest.fn().mockReturnValue({ id: 1 });
 
-                const response = await request(server).get("/user/sendresetpasswordemail?email=emma.rulliere@epitech.eu").send({});
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=emma.rulliere@epitech.eu").send({});
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
             });
         });
         describe("[INVALID SEND RESET PASSWORD EMAIL TESTS]", () => {
             test("should send reset password email with a 400 status code", async () => {
-                const response = await request(server).get("/user/sendresetpasswordemail?email=").send({});
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should send reset password email with a 400 status code", async () => {
-                const response = await request(server).get("/user/sendresetpasswordemail").send({});
+                const response = await request(server).get("/user/sendResetPasswordEmail").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should send reset password email with a 404 status code", async () => {
-                const response = await request(server).get("/user/sendresetpasswordemail?email=tesssst").send({});
+                const response = await request(server).get("/user/sendResetPasswordEmail?email=tesssst").send({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
@@ -537,39 +536,39 @@ describe("User connection tests", () => {
                 User.findToken = jest.fn().mockReturnValue({ id: 1 });
                 User.setPassword = jest.fn().mockReturnValue({ id: 1 });
 
-                const response = await request(server).get("/user/resetpassword?token=hyxjnscjksdcnhsdvcnsd&password=test").send({});
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd&password=test").send({});
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
             });
         });
         describe("[INVALID RESET PASSWORD TESTS]", () => {
             test("should reset password with a 400 status code, token empty", async () => {
-                const response = await request(server).get("/user/resetpassword?token=&password=lalala").send({});
+                const response = await request(server).get("/user/resetPassword?token=&password=lalala").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should reset password with a 400 status code, missing token", async () => {
-                const response = await request(server).get("/user/resetpassword?password=lalaal").send({});
+                const response = await request(server).get("/user/resetPassword?password=lalaal").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should reset password with a 400 status code, no arguments", async () => {
-                const response = await request(server).get("/user/resetpassword").send({});
+                const response = await request(server).get("/user/resetPassword").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should reset password with a 400 status code, password missing", async () => {
-                const response = await request(server).get("/user/resetpassword?token=hyxjnscjksdcnhsdvcnsd").send({});
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should reset password with a 400 status code, password empty", async () => {
-                const response = await request(server).get("/user/resetpassword?token=hyxjnscjksdcnhsdvcnsd&password=").send({});
+                const response = await request(server).get("/user/resetPassword?token=hyxjnscjksdcnhsdvcnsd&password=").send({});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should reset password with a 404 status code", async () => {
-                const response = await request(server).get("/user/resetpassword?token=njbhbhbb&password=test").send({});
+                const response = await request(server).get("/user/resetPassword?token=lalalalallllll&password=test").send({});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });
@@ -667,7 +666,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).post("/user/modifydatas").send({
+                response = await request(server).post("/user/modifyDatas").send({
                     token: 'email'
                 });
             } catch (error) {
@@ -681,7 +680,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/modifysettings").query({
+                response = await request(server).get("/user/modifySettings").query({
                     token: 'email'
                 });
             } catch (error) {
@@ -709,7 +708,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/sendverificationemail").query({
+                response = await request(server).get("/user/sendVerificationEmail").query({
                     token: 'email'
                 });
             } catch (error) {
@@ -724,7 +723,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'setEmailVerified').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/verifyemail").query({
+                response = await request(server).get("/user/verifyEmail").query({
                     token: 'email',
                     email: 'email'
                 });
@@ -739,7 +738,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'find').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/sendresetpasswordemail").query({
+                response = await request(server).get("/user/sendResetPasswordEmail").query({
                     email: 'email'
                 });
             } catch (error) {
@@ -753,7 +752,7 @@ describe("User connection tests", () => {
             try {
                 sinon.stub(User, 'findToken').throws(new Error('db query failed'));
 
-                response = await request(server).get("/user/resetpassword").query({
+                response = await request(server).get("/user/resetPassword").query({
                     token: 'email',
                     password: 'password'
                 });

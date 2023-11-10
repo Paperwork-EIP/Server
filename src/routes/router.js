@@ -13,10 +13,10 @@ const admin = require('./admin/adminRouter');
 router.use('/user', users);
 router.use('/process', process);
 router.use('/step', step);
-router.use('/processquestions', questions);
-router.use('/userprocess', userProcess);
+router.use('/processQuestions', questions);
+router.use('/userProcess', userProcess);
 router.use('/calendar', calendar);
-router.use('/processproposal', proseccProposal);
+router.use('/processProposal', proseccProposal);
 router.use('/admin', admin);
 
 module.exports = router;

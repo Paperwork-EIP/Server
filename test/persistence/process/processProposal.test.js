@@ -1,4 +1,4 @@
-const ProcessProposal = require('../../../src/persistence/processProposal/processProposal');
+const ProcessProposal = require('../../../src/persistence/process/processProposal');
 const db = require('../../../src/persistence/db');
 const init_db = require('../../../src/persistence/init-db');
 

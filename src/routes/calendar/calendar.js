@@ -85,7 +85,7 @@ async function getMeeting(processes, language) {
     return value;
 }
 
-router.get("/getall", async (request, response) => {
+router.get("/getAll", async (request, response) => {
     try {
         const { token } = request.query;
 
@@ -108,7 +108,7 @@ router.get("/getall", async (request, response) => {
     }
 });
 
-router.get("/getbyperiod", async (request, response) => {
+router.get("/getByPeriod", async (request, response) => {
     try {
         const { token, date } = request.query;
         let year, month, day, value = [];

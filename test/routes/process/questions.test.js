@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/router");
+const router = require("../../../src/routes/index");
 const routerQuestions = require("../../../src/routes/process/questions");
 const Process = require("../../../src/persistence/process/process");
 const Step = require("../../../src/persistence/process/step");
@@ -42,7 +42,7 @@ describe("Questions tests", () => {
             try {
                 db.query = jest.fn().mockResolvedValue(() => { throw new Error });
 
-                response = await request(server).get("/processquestions/get").query({
+                response = await request(server).get("/processQuestions/get").query({
                     title: "TestQuestions"
                 });
             } catch (error) {
@@ -69,7 +69,7 @@ describe("Questions tests", () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
                 Step.getByProcess = jest.fn().mockReturnValue(data);
 
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: "TestQuestions",
                     language: "english"
                 });
@@ -80,19 +80,19 @@ describe("Questions tests", () => {
         });
         describe("[INVALID TESTS]", () => {
             test("[GET] title missing : should not get questions with a 400 status code", async () => {
-                const response = await request(server).get("/processquestions/get").query({});
+                const response = await request(server).get("/processQuestions/get").query({});
                 expect(response.statusCode).toBe(400);
                 expect(response._body.message).toEqual('Missing parameters.');
             });
             test("[GET] empty title : should not get questions with a 400 status code", async () => {
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: ""
                 });
                 expect(response.statusCode).toBe(400);
                 expect(response._body.message).toEqual('Missing parameters.');
             });
             test("[GET] empty language : should not get questions with a 400 status code", async () => {
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     language: ""
                 });
                 expect(response.statusCode).toBe(400);
@@ -101,7 +101,7 @@ describe("Questions tests", () => {
             test("[GET] process not found : should not get questions with a 404 status code", async () => {
                 Process.get = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: "teeeeeeeessssst",
                     language: "english"
                 });
@@ -112,7 +112,7 @@ describe("Questions tests", () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Step.getByProcess = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: "gggdhddhdjjdjdjk",
                     language: "english"
                 });
@@ -124,7 +124,7 @@ describe("Questions tests", () => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'cdcsdVisa' });
                 Step.getByProcess = jest.fn().mockReturnValue({id:1});
 
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: "gggdhddhdjjdjdjk",
                     language: "english"
                 });
@@ -137,7 +137,7 @@ describe("Questions tests", () => {
                 Step.getByProcess = jest.fn().mockReturnValue({id:1});
                 jest.mock('../../../src/data/Visa.json', () => null);
 
-                const response = await request(server).get("/processquestions/get").query({
+                const response = await request(server).get("/processQuestions/get").query({
                     title: "gggdhddhdjjdjdjk",
                     language: "english"
                 });
@@ -151,7 +151,7 @@ describe("Questions tests", () => {
                 try {
                     sinon.stub(Process, 'get').throws(new Error('db query failed'));
 
-                    response = await request(server).get("/processquestions/get").query({
+                    response = await request(server).get("/processQuestions/get").query({
                         title: "teeeeeeeessssst",
                         language: "english"
                     });

@@ -23,7 +23,7 @@ router.post('/add', async (request, response) => {
         return response.status(500).json({ message: Tools.errorMessages.systemError });
     }
 });
-router.get('/getall', async (request, response) => {
+router.get('/getAll', async (request, response) => {
     try {
         const result = await ProcessProposal.getAll();
 
