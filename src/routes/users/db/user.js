@@ -110,7 +110,6 @@ router.get('/getbytoken', async(request, response) => {
         if (!token)
             return response.status(400).json({ message: 'Missing parameter token.' });
         const find = await User.findToken(token);
-        console.log(find);
         if (find)
             return response.status(200).json(find);
         else
