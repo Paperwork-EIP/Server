@@ -16,10 +16,11 @@ module.exports = {
         invalidDateFormat: 'Invalid date format.',
         userStepNotFound: 'User step not found.',
         errWritingFile: 'Error writing file.',
+        languageAlreadyExists: 'Language already exists.',
     },
     getUnderSteps(i, data, UserSteps, UserUnderSteps) {
         let k = [];
-    
+
         if (UserUnderSteps.length > 0) {
             for (let j in UserUnderSteps) {
                 if (UserUnderSteps[j].step_id === UserSteps[i].step_id) {
@@ -41,14 +42,14 @@ module.exports = {
         const notDone = await UserStep.getNotDone(user_process_id);
         const x = (res.length - notDone.length) / res.length * 100;
         const pourcentage = Math.round(x);
-    
+
         return pourcentage;
     },
     async getData(title) {
         try {
-          return require(`./data/${title}.json`);
+            return require(`./data/${title}.json`);
         } catch (error) {
-          return null;
+            return null;
         }
     },
     checkStepContent(step) {
