@@ -3,7 +3,7 @@ const Step = require('../../../src/persistence/process/step');
 const UserStep = require('../../../src/persistence/userProcess/userStep');
 const init_db = require('../../../src/persistence/init-db');
 
-beforeAll(async () => {
+beforeAll(async() => {
     await init_db.initAll();
 });
 afterEach(() => {
@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 describe("User Step Persistence Tests", () => {
-    it('[CREATE] should create a new user step', async () => {
+    it('[CREATE] should create a new user step', async() => {
         const user_process_id = 1;
         const step_id = 1;
         const is_done = true;
@@ -45,7 +45,7 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
-    it('[CREATE] should return null if no step found', async () => {
+    it('[CREATE] should return null if no step found', async() => {
         const user_process_id = 1;
         const step_id = 1;
         const is_done = true;
@@ -55,7 +55,7 @@ describe("User Step Persistence Tests", () => {
 
         expect(response).toBeNull();
     });
-    it('[CREATE] should return null if no step delay', async () => {
+    it('[CREATE] should return null if no step delay', async() => {
         const user_process_id = 1;
         const step_id = 1;
         const is_done = true;
@@ -89,11 +89,11 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
-    it('[CREATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(Step, 'getById').mockResolvedValue(() => { new Error });
+    it('[CREATE] should throw an error if an error occurs', async() => {
+        jest.spyOn(Step, 'getById').mockResolvedValue(() => { throw new Error });
         await expect(UserStep.create()).rejects.toThrow();
     });
-    it('[UPDATE] should update the user step id', async () => {
+    it('[UPDATE] should update the user step id', async() => {
         const user_process_id = 1;
         const step_id = 2;
         const is_done = true;
@@ -127,7 +127,7 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
-    it('[UPDATE] should update the user process id', async () => {
+    it('[UPDATE] should update the user process id', async() => {
         const user_process_id = 2;
         const step_id = 1;
         const is_done = true;
@@ -161,7 +161,7 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
-    it('[UPDATE] should update the is done', async () => {
+    it('[UPDATE] should update the is done', async() => {
         const user_process_id = 1;
         const step_id = 1;
         const is_done = false;
@@ -195,11 +195,11 @@ describe("User Step Persistence Tests", () => {
         expect(response).toEqual(expectedResponse);
         expect(db.query).toHaveBeenCalled();
     });
-    it('[UPDATE] should throw an error if an error occurs', async () => {
+    it('[UPDATE] should throw an error if an error occurs', async() => {
         jest.spyOn(db, 'query').mockReturnValue(() => { new Error });
         await expect(UserStep.update()).rejects.toThrow();
     });
-    it('[DELETE ALL] should delete all user steps for a given user process id', async () => {
+    it('[DELETE ALL] should delete all user steps for a given user process id', async() => {
         const userProcessId = 1;
         const expectedResponse = {
             id: 1,
@@ -216,7 +216,7 @@ describe("User Step Persistence Tests", () => {
         expect(response).toBeTruthy();
         expect(response).toEqual(expectedResponse);
     });
-    it('[DELETE ALL] should throw an error if something goes wrong', async () => {
+    it('[DELETE ALL] should throw an error if something goes wrong', async() => {
         const user_process_id = 1;
         const expectedErrorMessage = 'Something went wrong';
 
@@ -229,7 +229,7 @@ describe("User Step Persistence Tests", () => {
         }
         expect(db.query).toHaveBeenCalled();
     });
-    it('[GET BY ID] should return the user step with the given id', async () => {
+    it('[GET BY ID] should return the user step with the given id', async() => {
         const userStepId = 1;
         const expectedResponse = {
             id: 1,
@@ -245,7 +245,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET BY STEP ID] should return the user step with the given user process and step id', async () => {
+    it('[GET BY STEP ID] should return the user step with the given user process and step id', async() => {
         const userStepId = 1;
         const stepId = 1;
         const expectedResponse = {
@@ -262,7 +262,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET ALL] should return the user step with the given user process id', async () => {
+    it('[GET ALL] should return the user step with the given user process id', async() => {
         const userProcessId = 1;
         const expectedResponse = {
             id: 1,
@@ -278,7 +278,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET ALL APPOINMENT] should return the user step with the given user process id', async () => {
+    it('[GET ALL APPOINMENT] should return the user step with the given user process id', async() => {
         const userProcessId = 1;
         const expectedResponse = {
             id: 1,
@@ -294,7 +294,7 @@ describe("User Step Persistence Tests", () => {
         expect(db.query).toHaveBeenCalled();
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET NOT DONE] should return the user step with the given user process id', async () => {
+    it('[GET NOT DONE] should return the user step with the given user process id', async() => {
         const userProcessId = 1;
         const expectedResponse = {
             id: 1,

@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sinon = require("sinon");
-const router = require("../../../src/routes/users/index");
+const router = require("../../../src/routes/users/userRouter");
 const Process = require("../../../src/persistence/process/process");
 const { start, stop } = require("../../../index");
 const Step = require("../../../src/persistence/process/step");

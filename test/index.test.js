@@ -1,6 +1,6 @@
 const router = require("../index");
 const bodyParser = require('body-parser');
-const route = require('../src/routes/users/index');
+const route = require('../src/routes/router');
 const { start, stop } = require("../index");
 
 describe("Index tests", () => {

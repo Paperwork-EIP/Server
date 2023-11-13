@@ -4,7 +4,7 @@ const Process = require("../../../src/persistence/process/process");
 const userProcess = require("../../../src/persistence/userProcess/userProcess");
 const init_db = require('../../../src/persistence/init-db');
 
-beforeAll(async () => {
+beforeAll(async() => {
     await init_db.initAll();
 });
 afterEach(() => {
@@ -18,10 +18,10 @@ describe("User Process Persistence Tests", () => {
     const process_title = "testtesttesttesttesttest";
     const moduleUserProcess = rewire("../../../src/persistence/userProcess/userProcess");
 
-    it("[userProcess.js] should have a user process component", async () => {
+    it("[userProcess.js] should have a user process component", async() => {
         expect(userProcess).not.toBeNull();
     });
-    it("[CREATE] should be called", async () => {
+    it("[CREATE] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -34,7 +34,7 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(create).not.toBeNull();
     });
-    it("[CREATE] should define current date", async () => {
+    it("[CREATE] should define current date", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -47,11 +47,11 @@ describe("User Process Persistence Tests", () => {
         expect(date).not.toBeNull();
         expect(checkDate).toBe(Date());
     });
-    it('[CREATE] should throw an error if an error occurs', async () => {
+    it('[CREATE] should throw an error if an error occurs', async() => {
         jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.create()).rejects.toThrow();
     });
-    it("[UPDATE] should be called", async () => {
+    it("[UPDATE] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -66,7 +66,7 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(update).not.toBeNull();
     });
-    it("[UPDATE] should define process delay", async () => {
+    it("[UPDATE] should define process delay", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -89,9 +89,9 @@ describe("User Process Persistence Tests", () => {
         expect(Process.getById).toBeCalledWith(process_id);
         expect(currentDate).toBeDefined();
         expect(expire_date).toBeDefined();
-        expect(response).toEqual({ id: 1, user_id: user_id, process_id: process_id }); 
+        expect(response).toEqual({ id: 1, user_id: user_id, process_id: process_id });
     });
-    it('[UPDATE] should return null if no process found', async () => {
+    it('[UPDATE] should return null if no process found', async() => {
         const result = null;
 
         db.query = jest.fn().mockReturnValue({ rows: [result] });
@@ -101,7 +101,7 @@ describe("User Process Persistence Tests", () => {
 
         expect(response).toBeNull();
     });
-    it('[UPDATE] should return null if invalid process delay', async () => {
+    it('[UPDATE] should return null if invalid process delay', async() => {
         const result = null;
 
         db.query = jest.fn().mockReturnValue({ rows: [result] });
@@ -111,11 +111,11 @@ describe("User Process Persistence Tests", () => {
 
         expect(response).toBeNull();
     });
-    it('[UPDATE] should throw an error if an error occurs', async () => {
-        jest.spyOn(Process, 'getById').mockResolvedValue(() => { new Error });
+    it('[UPDATE] should throw an error if an error occurs', async() => {
+        jest.spyOn(db, 'query').mockResolvedValueOnce(() => { throw new Error() });
         await expect(userProcess.update()).rejects.toThrow();
     });
-    it("[DELETE] should be called", async () => {
+    it("[DELETE] should be called", async() => {
         const spy = jest.spyOn(userProcess, "delete");
         const result = {
             id: 1,
@@ -129,11 +129,11 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(deleteFn).not.toBeNull();
     });
-    it('[DELETE] should throw an error if an error occurs', async () => {
+    it('[DELETE] should throw an error if an error occurs', async() => {
         jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.delete()).rejects.toThrow();
     });
-    it("[DELETE ALL] should be called", async () => {
+    it("[DELETE ALL] should be called", async() => {
         const spy = jest.spyOn(userProcess, "deleteAll");
         const result = {
             id: 1,
@@ -147,11 +147,11 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(deleteFn).not.toBeNull();
     });
-    it('[DELETE] should throw an error if an error occurs', async () => {
+    it('[DELETE] should throw an error if an error occurs', async() => {
         jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
         await expect(userProcess.deleteAll()).rejects.toThrow();
     });
-    it("[GET] should be called", async () => {
+    it("[GET] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -164,7 +164,7 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(get).not.toBeNull();
     });
-    it("[GET BY ID] should be called", async () => {
+    it("[GET BY ID] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -177,7 +177,7 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(getById).not.toBeNull();
     });
-    it("[GET ALL] should be called", async () => {
+    it("[GET ALL] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
@@ -190,7 +190,7 @@ describe("User Process Persistence Tests", () => {
         expect(spy).toHaveBeenCalled();
         expect(getAll).not.toBeNull();
     });
-    it("[getByTitleAndUserID] should be called", async () => {
+    it("[getByTitleAndUserID] should be called", async() => {
         const result = {
             id: 1,
             user_id: user_id
