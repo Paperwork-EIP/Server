@@ -5,6 +5,7 @@ const routerAdmin = require("../../../src/routes/admin/adminRouter");
 const Process = require('../../../src/persistence/process/process');
 const Step = require('../../../src/persistence/process/step');
 const UserProcess = require('../../../src/persistence/userProcess/userProcess');
+const Tools = require('../../../src/tools');
 const { start, stop } = require("../../../index");
 const fs = require('fs');
 
@@ -332,10 +333,69 @@ describe("Admin tests", () => {
                 expect(response._body.message).toEqual("Process not found.");
                 expect(response._body.response).not.toBeNull();
             });
+            test("[GET] data not found : should not get a process with a 404 status code", async() => {
+                Tools.getData = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/process/get").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+                expect(response._body.response).not.toBeNull();
+            });
             test("[GET] system error : should not get a process with a 500 status code", async() => {
                 Process.get = jest.fn().mockRejectedValue(new Error("System error."));
 
                 const response = await request(server).get("/admin/process/get").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual("System error.");
+            });
+            test("[GET LANGUAGE] empty title : should not get a process with a 400 status code", async() => {
+                const response = await request(server).get("/admin/process/getLanguage").query({
+                    stocked_title: ""
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+                expect(response._body.response).not.toBeNull();
+            });
+            test("[GET LANGUAGE] no title : should not get a process with a 400 status code", async() => {
+                const response = await request(server).get("/admin/process/getLanguage").query({});
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+                expect(response._body.response).not.toBeNull();
+            });
+            test("[GET LANGUAGE] process not found : should not get a process with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/process/getLanguage").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+                expect(response._body.response).not.toBeNull();
+            });
+            test("[GET LANGUAGE] data not found : should not get a process with a 404 status code", async() => {
+                Tools.getData = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/process/getLanguage").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+                expect(response._body.response).not.toBeNull();
+            });
+            test("[GET LANGUAGE] system error : should not get a process with a 500 status code", async() => {
+                Process.get = jest.fn().mockRejectedValue(new Error("System error."));
+
+                const response = await request(server).get("/admin/process/getLanguage").query({
                     stocked_title: title
                 });
 

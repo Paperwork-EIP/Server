@@ -5,6 +5,7 @@ const routerAdmin = require("../../../src/routes/admin/adminRouter");
 const Process = require('../../../src/persistence/process/process');
 const Step = require('../../../src/persistence/process/step');
 const UserProcess = require('../../../src/persistence/userProcess/userProcess');
+const Tools = require('../../../src/tools');
 const { start, stop } = require("../../../index");
 const fs = require('fs');
 
@@ -143,7 +144,7 @@ describe("Admin tests", () => {
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual("Target step not found.");
+                expect(response._body.message).toEqual("Step not found.");
                 expect(response._body.response).not.toBeNull();
             });
             test("[GET STEP] system error : should not get a step with a 500 status code", async() => {
@@ -291,6 +292,87 @@ describe("Admin tests", () => {
                     question: "questionTest",
                     source: "sourceTest",
                     language: "français"
+                });
+
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual("System error.");
+            });
+            test("[GET ALL] empty title : should not get all steps with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: "",
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[GET ALL] empty language : should not get all steps with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: ""
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[GET ALL] no title : should not get all steps with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/getAll").query({
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[GET ALL] no language : should not get all steps with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[GET ALL] process not found : should not get all steps with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+            });
+            test("[GET ALL] data not found : should not get all steps with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getByProcess = jest.fn().mockReturnValue({ id: 1 });
+                Tools.getData = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Data not found.");
+            });
+            test("[GET ALL] step not found : should not get all steps with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getByProcess = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Step not found.");
+            });
+            test("[GET ALL] system error : should not get all steps with a 500 status code", async() => {
+                Process.get = jest.fn().mockRejectedValue(new Error("System error."));
+
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: "english"
                 });
 
                 expect(response.statusCode).toBe(500);

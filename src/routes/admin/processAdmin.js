@@ -215,7 +215,6 @@ router.get('/getLanguage', async(request, response) => {
             return response.status(404).json({ message: Tools.errorMessages.languageNotFound });
         if (Object.keys(data).length === 0)
             return response.status(404).json({ message: Tools.errorMessages.languageNotFound });
-        console.log(Object.keys(data));
         return response.status(200).json({
             message: 'Languages found!',
             languages: Object.keys(data)
