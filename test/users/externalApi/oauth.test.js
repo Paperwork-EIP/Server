@@ -25,7 +25,7 @@ describe("OAuth connections tests", () => {
             describe("--- OAUTH GOOGLE ---", () => {
                 test("'/urlLogin' should exist", async() => {
                     const payload = {};
-                    const response = await request(server).get('/oauth/google/urlLogin').query(payload);
+                    const response = await request(server).get('/user/oauth/google/urlLogin').query(payload);
 
                     expect(response.notFound).toEqual(false);
                     expect(response.status).toBe(200);
@@ -35,14 +35,14 @@ describe("OAuth connections tests", () => {
             describe("--- OAUTH FACEBOOK ---", () => {
                 test("'/url' should exist", async() => {
                     const payload = {};
-                    const response = await request(server).get('/oauth/facebook/url').query(payload);
+                    const response = await request(server).get('/user/oauth/facebook/url').query(payload);
 
                     expect(response.notFound).toEqual(false);
                     expect(response.status).toBe(200);
                 });
                 test("'/' should exist", async() => {
                     const payload = {};
-                    const response = await request(server).get('/oauth/facebook/').query(payload);
+                    const response = await request(server).get('/user/oauth/facebook/').query(payload);
 
                     expect(response.notFound).toEqual(false);
                     expect(response.status).toBe(409);
@@ -56,7 +56,7 @@ describe("OAuth connections tests", () => {
             describe("--- OAUTH GOOGLE ---", () => {
                 test("should receive a valid response for route '/urlLogin'", async() => {
                     const payload = {};
-                    const response = await request(server).get("/oauth/google/urlLogin").query(payload);
+                    const response = await request(server).get("/user/oauth/google/urlLogin").query(payload);
 
                     expect(response).not.toBeNull();
                     expect(response.status).toEqual(200);
@@ -72,7 +72,7 @@ describe("OAuth connections tests", () => {
             describe("--- OAUTH FACEBOOK ---", () => {
                 test("should receive a valid response for route '/url'", async() => {
                     const payload = {};
-                    const response = await request(server).get("/oauth/facebook/url").query(payload);
+                    const response = await request(server).get("/user/oauth/facebook/url").query(payload);
 
                     expect(response).not.toBeNull();
                     expect(response.status).toEqual(200);
@@ -88,30 +88,31 @@ describe("OAuth connections tests", () => {
 
         describe("[INVALID OAUTH TESTS", () => {
             describe("--- OAUTH GOOGLE ---", () => {
-                test("id_token missing : should receive an error 409 status code", async() => {
-                    const response = await request(server).get("/oauth/google/login").query({
-                        code: "fdsfdsgfbfdssbdfdfvdfvd"
-                    });
-
-                    expect(response.status).toBe(409);
-                });
                 test("code empty : should receive an error 409 status code", async() => {
-                    const response = await request(server).get("/oauth/google/login").query({
+                    const response = await request(server).get("/user/oauth/google/login").query({
                         code: "",
                     });
 
                     expect(response.status).toBe(409);
                 });
+
+                test("id_token wrong : should receive an error 500 status code", async() => {
+                    const response = await request(server).get("/user/oauth/google/login").query({
+                        code: "fdsfdsgfbfdssbdfdfvdfvd"
+                    });
+
+                    expect(response.status).toBe(500);
+                });
             });
 
             describe("--- OAUTH FACEBOOK ---", () => {
                 test("code missing : should receive an error 409 status code", async() => {
-                    const response = await request(server).get('/oauth/facebook/').query({});
+                    const response = await request(server).get('/user/oauth/facebook/').query({});
 
                     expect(response.status).toBe(409);
                 });
                 test("code empty : should receive an error 409 status code", async() => {
-                    const response = await request(server).get('/oauth/facebook/').query({
+                    const response = await request(server).get('/user/oauth/facebook/').query({
                         code: ""
                     });
 

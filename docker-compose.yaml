@@ -60,7 +60,7 @@ services:
         PORT: 8181
       ports:
         - "8181:8181"
-      command: "sh -c 'cd /app && npm install && npm run test:coverage -- stepAdmin.test.js'"
+      command: "sh -c 'cd /app && npm install && npm run test:coverage'"
       volumes:
         - ./:/app
         - kms:/usr/share/data

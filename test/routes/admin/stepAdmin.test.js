@@ -41,7 +41,7 @@ const delay = "test delay";
 jest.mock('fs');
 
 describe("Admin tests", () => {
-    const port = 3030;
+    const port = 3032;
     let server;
 
     beforeEach(() => {
@@ -81,9 +81,117 @@ describe("Admin tests", () => {
 
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID ADMIN STEP TESTS]", () => {
+            test("[GET ALL] should get all steps with a 200 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getByProcess = jest.fn().mockReturnValue([{ id: 1 }]);
+                Tools.getData = jest.fn().mockReturnValue({
+                    english: {
+                        title: "test.",
+                        description: "blablabla",
+                        source: "styler",
+                        steps: [{
+                            id: 1,
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    }
+                });
+
+                const response = await request(server).get("/admin/step/getAll").query({
+                    stocked_title: title,
+                    language: "english"
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Steps found!");
+                expect(response._body.response).not.toBeNull();
+            });
         });
 
         describe("[INVALID ADMIN STEP TESTS]", () => {
+            test("[ADD] no stocked_title : should not add a step with a 400 status code", async() => {
+                const response = await request(server).post("/admin/step/add").send({
+                    newStep: {
+                        title: "titleTest",
+                        type: "documentTest",
+                        description: "descriptionTest",
+                        question: "questionTest",
+                        source: "sourceTest"
+                    },
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[ADD] no newStep : should not add a step with a 400 status code", async() => {
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "test"
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[ADD] empty stocked_title : should not add a step with a 400 status code", async() => {
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "",
+                    newStep: {
+                        title: "titleTest",
+                        type: "documentTest",
+                        description: "descriptionTest",
+                        question: "questionTest",
+                        source: "sourceTest"
+                    },
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[ADD] empty newStep : should not add a step with a 400 status code", async() => {
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "test",
+                    newStep: null
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[ADD] process not found : should not add a step with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "test",
+                    newStep: {
+                        title: "titleTest",
+                        type: "documentTest",
+                        description: "descriptionTest",
+                        question: "questionTest",
+                        source: "sourceTest"
+                    },
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+            });
+            test("[ADD] system error : should not add a step with a 500 status code", async() => {
+                Process.get = jest.fn().mockRejectedValue(new Error("System error."));
+
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "test",
+                    newStep: {
+                        title: "titleTest",
+                        type: "documentTest",
+                        description: "descriptionTest",
+                        question: "questionTest",
+                        source: "sourceTest"
+                    },
+                });
+
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual("System error.");
+            });
             test("[GET STEP] no step id : should not get a step with a 400 status code", async() => {
                 const response = await request(server).get("/admin/step/get").query({
                     stocked_title: title
@@ -256,7 +364,8 @@ describe("Admin tests", () => {
                     description: "descriptionTest",
                     question: "questionTest",
                     source: "sourceTest",
-                    language: "français"
+                    language: "français",
+                    newStep: "newStepTestLol"
                 });
 
                 expect(response.statusCode).toBe(404);
@@ -274,11 +383,12 @@ describe("Admin tests", () => {
                     description: "descriptionTest",
                     question: "questionTest",
                     source: "sourceTest",
-                    language: "français"
+                    language: "français",
+                    newStep: "newStepTestLol"
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual("Target step not found.");
+                expect(response._body.message).toEqual("Step not found.");
             });
             test("[UPDATE STEP] system error : should not update a step with a 500 status code", async() => {
                 Process.get = jest.fn().mockRejectedValue(new Error("System error."));
@@ -291,7 +401,8 @@ describe("Admin tests", () => {
                     description: "descriptionTest",
                     question: "questionTest",
                     source: "sourceTest",
-                    language: "français"
+                    language: "français",
+                    newStep: "teststepnew"
                 });
 
                 expect(response.statusCode).toBe(500);
@@ -365,7 +476,7 @@ describe("Admin tests", () => {
                 });
 
                 expect(response.statusCode).toBe(404);
-                expect(response._body.message).toEqual("Step not found.");
+                expect(response._body.message).toEqual("Steps not found.");
             });
             test("[GET ALL] system error : should not get all steps with a 500 status code", async() => {
                 Process.get = jest.fn().mockRejectedValue(new Error("System error."));
@@ -373,6 +484,87 @@ describe("Admin tests", () => {
                 const response = await request(server).get("/admin/step/getAll").query({
                     stocked_title: title,
                     language: "english"
+                });
+
+                expect(response.statusCode).toBe(500);
+                expect(response._body.message).toEqual("System error.");
+            });
+            test("[DELETE] no step id : should not delete a step with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/delete").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[DELETE] no stocked_title : should not delete a step with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[DELETE] empty stocked_title : should not delete a step with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1,
+                    stocked_title: ""
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[DELETE] empty step id : should not delete a step with a 400 status code", async() => {
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: "",
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[DELETE] process not found : should not delete a step with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1,
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Process not found.");
+            });
+            test("[DELETE] step not found : should not delete a step with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1,
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Step not found.");
+            });
+            test("[DELETE] steps not found : should not delete a step with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ id: 1 });
+                Step.getByProcess = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1,
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Steps not found.");
+            });
+            test("[DELETE] system error : should not delete a step with a 500 status code", async() => {
+                Process.get = jest.fn().mockRejectedValue(new Error("System error."));
+
+                const response = await request(server).get("/admin/step/delete").query({
+                    step_id: 1,
+                    stocked_title: title
                 });
 
                 expect(response.statusCode).toBe(500);

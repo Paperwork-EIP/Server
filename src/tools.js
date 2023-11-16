@@ -17,6 +17,8 @@ module.exports = {
         userStepNotFound: 'User step not found.',
         errWritingFile: 'Error writing file.',
         languageAlreadyExists: 'Language already exists.',
+        processAlreadyExists: 'Process already exists.',
+        languageNotFound: 'Language not found.',
     },
     getUnderSteps(i, data, UserSteps, UserUnderSteps) {
         let k = [];

@@ -70,14 +70,13 @@ router.post('/addLanguage', async(request, response) => {
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
-        const filePath = path.join(__dirname, '../../data', `${title}.json`);
-        let steps = [];
         let file = await Tools.getData(stocked_title);
         if (!file)
             return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
         if (file[language])
             return response.status(409).json({ message: Tools.errorMessages.languageAlreadyExists });
-        await addLanguageProcessFile(stocked_title, language, title, description, source);
+        else
+            await addLanguageProcessFile(stocked_title, language, title, description, source);
         return response.status(200).json({ message: 'Language added!' });
     } catch (err) {
         console.error(err);
@@ -172,29 +171,23 @@ router.get('/get', async(request, response) => {
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
         const filePath = path.join(__dirname, '../../data', `${stocked_title}.json`);
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                console.log('error', err);
-                return response.status(500).json({ message: 'Error reading file.' });
-            }
-            const file = JSON.parse(data);
-            let process = [];
-            for (let i in Object.keys(file)) {
-                process.push({
-                    language: Object.keys(file)[i],
-                    content: {
-                        title: file[Object.keys(file)[i]].title,
-                        description: file[Object.keys(file)[i]].description,
-                        source: file[Object.keys(file)[i]].source
-                    }
-                });
-            }
-            return response.status(200).json({
-                message: 'Process found!',
-                stocked_title: stocked_title,
-                process: process
+        const file = Tools.getData(stocked_title);
+        let process = [];
+        for (let i in Object.keys(file)) {
+            process.push({
+                language: Object.keys(file)[i],
+                content: {
+                    title: file[Object.keys(file)[i]].title,
+                    description: file[Object.keys(file)[i]].description,
+                    source: file[Object.keys(file)[i]].source
+                }
             });
-        })
+        }
+        return response.status(200).json({
+            message: 'Process found!',
+            stocked_title: stocked_title,
+            process: process
+        });
     } catch (error) {
         console.error(error);
         return response.status(500).json({ message: Tools.errorMessages.systemError });

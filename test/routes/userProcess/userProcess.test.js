@@ -431,6 +431,7 @@ describe("User process", () => {
                     });
                 } catch (error) {
                     expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
                 }
             });
             test("[UPDATE] user email missing : should not update a user process with a 400 status code", async() => {

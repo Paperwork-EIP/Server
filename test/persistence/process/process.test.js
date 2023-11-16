@@ -3,13 +3,13 @@ const Process = require('../../../src/persistence/process/process');
 const init_db = require('../../../src/persistence/init-db');
 
 describe('Process Persistence Tests', () => {
-    beforeAll(async () => {
+    beforeAll(async() => {
         await init_db.initAll();
     });
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    it('[CREATE] should create a process', async () => {
+    it('[CREATE] should create a process', async() => {
         const title = 'Random Test That Title Is Unique';
         const description = 'This is a test process';
         const delay = 5;
@@ -22,7 +22,7 @@ describe('Process Persistence Tests', () => {
             title: expect.stringMatching(title),
         });
     });
-    it('[CREATE] should create a process without delay', async () => {
+    it('[CREATE] should create a process without delay', async() => {
         const title = 'Random Test That Title Is Unique 3';
         const description = 'This is a test process';
 
@@ -34,10 +34,10 @@ describe('Process Persistence Tests', () => {
             title: expect.stringMatching(title),
         });
     });
-    it('[CREATE] should throw an error if the process fails to create', async () => {
+    it('[CREATE] should throw an error if the process fails to create', async() => {
         await expect(Process.create()).rejects.toThrow();
     });
-    it('[DELETE] should delete the process with the given id', async () => {
+    it('[DELETE] should delete the process with the given id', async() => {
         const title = 'Random Test That Title Is Unique 43545';
         const description = 'This is a test process';
 
@@ -47,7 +47,7 @@ describe('Process Persistence Tests', () => {
         expect(create_response).not.toBeNull();
         expect(response).not.toBeNull();
     });
-    it('[DELETE] should throw an error if invalid id', async () => {
+    it('[DELETE] should throw an error if invalid id', async() => {
         const id = 645675471;
 
         try {
@@ -57,7 +57,7 @@ describe('Process Persistence Tests', () => {
             expect(error).toEqual('Error');
         }
     });
-    it('[DELETE] should throw an error if an error occurs', async () => {
+    it('[DELETE] should throw an error if an error occurs', async() => {
         try {
             jest.spyOn(db, 'query').mockResolvedValue(() => { new Error });
             await expect(Process.delete()).rejects.toThrow();
@@ -65,7 +65,7 @@ describe('Process Persistence Tests', () => {
             console.log(error);
         }
     });
-    it('[GET] should return the process with the given title', async () => {
+    it('[GET] should return the process with the given title', async() => {
         const title = 'Random Test That Title Is Unique 3454';
         const expectedResponse = {
             id: expect.any(Number),
@@ -79,9 +79,9 @@ describe('Process Persistence Tests', () => {
 
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET BY ID] should return the process with the given id', async () => {
+    it('[GET BY ID] should return the process with the given id', async() => {
         const title = 'Random Test That Title Is Unique 345345';
-        
+
         await Process.create(title);
         const process = await Process.get(title);
 
@@ -96,16 +96,51 @@ describe('Process Persistence Tests', () => {
 
         expect(response).toEqual(expectedResponse);
     });
-    it('[GET ALL] should return an array of objects with title', async () => {
+    it('[GET ALL] should return an array of objects with title', async() => {
         const title = 'Random Test That Title Is Unique 38678345njkbh';
-        
+
         const created_process = await Process.create(title);
-    
+
         const response = await Process.getAll();
-        
+
         await Process.delete(created_process.id);
 
         expect(response).toBeInstanceOf(Array);
         expect(response[0]).toHaveProperty('title');
+    });
+    it('[UPDATE] should update the process with the given id', async() => {
+        const title = 'Random Test That Title Is Unique 345345';
+        const new_title = 'Random Test That Title Is Unique 345345';
+        const description = 'This is a test process';
+        const delay = 5;
+
+        const created_process = await Process.create(title);
+        const response = await Process.update(created_process.id, new_title, description, delay);
+        await Process.delete(created_process.id);
+
+        expect(response).toEqual({
+            id: expect.any(Number),
+            title: expect.stringMatching(new_title),
+        });
+    });
+    it('[UPDATE] should throw an error if invalid id', async() => {
+        jest.spyOn(db, 'query').mockRejectedValue(new Error());
+
+        try {
+            await Process.update(1, "0010");
+        } catch (error) {
+            expect(error).not.toBeNull();
+            expect(error).toEqual(error);
+        }
+    });
+    it('[UPDATE] should throw an error if invalid id (delay null)', async() => {
+        jest.spyOn(db, 'query').mockRejectedValue(new Error());
+
+        try {
+            await Process.update(1);
+        } catch (error) {
+            expect(error).not.toBeNull();
+            expect(error).toEqual(error);
+        }
     });
 });
