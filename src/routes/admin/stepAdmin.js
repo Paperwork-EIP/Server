@@ -126,9 +126,11 @@ router.post('/add', async(request, response) => {
             const jsonData = JSON.stringify(file, null, 2);
             let res = await Step.create(delay, find.id, is_unique);
             fs.writeFile(filePath, jsonData, function(err, result) {
-                if (err) async() => {
-                    await Step.delete(res.id);
-                    return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
+                if (err) {
+                    async() => {
+                        await Step.delete(res.id);
+                        return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
+                    }
                 }
                 return response.status(200).json({
                     message: 'Step added!',
