@@ -1,4 +1,4 @@
-UserStep = require('./persistence/userProcess/userStep');
+const UserStep = require('./persistence/userProcess/userStep');
 
 module.exports = {
     errorMessages: {

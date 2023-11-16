@@ -6,6 +6,48 @@ const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
+function getUnderStepData(file, i, j) {
+    let underQuestionsArray = [];
+    for (let k in file[Object.keys(file)[i]].steps[j].underQuestions) {
+        underQuestionsArray.push({
+            id: k,
+            title: file[Object.keys(file)[i]].steps[j].underQuestions[k].title,
+            type: file[Object.keys(file)[i]].steps[j].underQuestions[k].type,
+            description: file[Object.keys(file)[i]].steps[j].underQuestions[k].description,
+            source: file[Object.keys(file)[i]].steps[j].underQuestions[k].source,
+            question: file[Object.keys(file)[i]].steps[j].underQuestions[k].question
+        });
+    }
+    return underQuestionsArray;
+};
+
+async function getStepData(stocked_title, step_id, allSteps) {
+    let file = await Tools.getData(stocked_title);
+    let step = [];
+    for (let i in Object.keys(file)) {
+        for (let j in allSteps) {
+            if (allSteps[j].id == step_id) {
+                let underQuestionsArray = getUnderStepData(file, i, j);
+                step.push({
+                    language: Object.keys(file)[i],
+                    step_id: allSteps[j].id,
+                    number: j,
+                    content: {
+                        title: file[Object.keys(file)[i]].steps[j].title,
+                        type: file[Object.keys(file)[i]].steps[j].type,
+                        description: file[Object.keys(file)[i]].steps[j].description,
+                        question: file[Object.keys(file)[i]].steps[j].question,
+                        source: file[Object.keys(file)[i]].steps[j].source,
+                        delay: file[Object.keys(file)[i]].steps[j].delay,
+                        underQuestions: underQuestionsArray
+                    }
+                });
+            }
+        }
+    }
+    return step;
+};
+
 router.get('/get', async(request, response) => {
     try {
         const { stocked_title, step_id } = request.query;
@@ -21,47 +63,7 @@ router.get('/get', async(request, response) => {
         const allSteps = await Step.getByProcess(find.id);
         if (!allSteps)
             return response.status(404).json({ message: Tools.errorMessages.stepsNotFound });
-        const filePath = path.join(__dirname, '../../data', `${stocked_title}.json`);
-        let file;
-        try {
-            file = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            if (!file)
-                return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
-        } catch (error) {
-            return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
-        }
-        let step = [];
-        for (i in Object.keys(file)) {
-            for (let j in allSteps) {
-                if (allSteps[j].id == step_id) {
-                    let underQuestionsArray = [];
-                    for (let k in file[Object.keys(file)[i]].steps[j].underQuestions) {
-                        underQuestionsArray.push({
-                            id: k,
-                            title: file[Object.keys(file)[i]].steps[j].underQuestions[k].title,
-                            type: file[Object.keys(file)[i]].steps[j].underQuestions[k].type,
-                            description: file[Object.keys(file)[i]].steps[j].underQuestions[k].description,
-                            source: file[Object.keys(file)[i]].steps[j].underQuestions[k].source,
-                            question: file[Object.keys(file)[i]].steps[j].underQuestions[k].question
-                        });
-                    }
-                    step.push({
-                        language: Object.keys(file)[i],
-                        step_id: allSteps[j].id,
-                        number: j,
-                        content: {
-                            title: file[Object.keys(file)[i]].steps[j].title,
-                            type: file[Object.keys(file)[i]].steps[j].type,
-                            description: file[Object.keys(file)[i]].steps[j].description,
-                            question: file[Object.keys(file)[i]].steps[j].question,
-                            source: file[Object.keys(file)[i]].steps[j].source,
-                            delay: file[Object.keys(file)[i]].steps[j].delay,
-                            underQuestions: underQuestionsArray
-                        }
-                    });
-                }
-            }
-        }
+        let step = await getStepData(stocked_title, step_id, allSteps);
         return response.status(200).json({
             message: 'Steps found!',
             stocked_title: stocked_title,
