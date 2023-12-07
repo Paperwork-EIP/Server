@@ -1,0 +1,82 @@
+{
+    "english": {
+        "title": "Obtaining a Vital Card in France",
+        "description": "This process outlines the steps to obtain a Carte Vitale (Vital Card) in France for non-European foreigners without a social security number.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "Residence Permit",
+                "type": "Information",
+                "description": "Ensure you have a valid long-stay visa or residence permit for France.",
+                "question": "Do you have a valid long-stay visa or residence permit?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "Health Insurance",
+                "type": "Information",
+                "description": "Acquire health insurance coverage, which may be required before accessing the French public health system.",
+                "question": "Do you have health insurance coverage?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Apply for a Social Security Number",
+                "type": "Procedure",
+                "description": "Apply for a social security number (Numéro de Sécurité Sociale or NISS) at the local Social Security office (CPAM). Provide necessary documents.",
+                "question": "Have you applied for a social security number?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Submit Necessary Documents",
+                "type": "Procedure",
+                "description": "Submit required documents to the CPAM to establish eligibility for the French social security system.",
+                "question": "Have you submitted the necessary documents?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "Passport",
+                        "type": "Document",
+                        "description": "A copy of your valid passport, with a minimum validity of three months beyond your planned date of departure.",
+                        "question": "Have you included a copy of your valid passport?"
+                    },
+                    {
+                        "title": "Visa or Residence Permit",
+                        "type": "Document",
+                        "description": "A copy of your long-stay visa or residence permit for France.",
+                        "question": "Have you included a copy of your long-stay visa or residence permit?"
+                    },
+                    {
+                        "title": "Proof of Address",
+                        "type": "Document",
+                        "description": "Proof of your address in France, such as a utility bill or rental agreement.",
+                        "question": "Have you included proof of your address in France?"
+                    },
+                    {
+                        "title": "Proof of Health Insurance",
+                        "type": "Document",
+                        "description": "Documentation proving that you have health insurance coverage in France.",
+                        "question": "Have you included proof of your health insurance coverage?"
+                    }
+                ]
+            },
+            {
+                "title": "Apply for the Carte Vitale",
+                "type": "Procedure",
+                "description": "Apply for the Carte Vitale, the health insurance card, through the CPAM office. Provide additional documents as needed.",
+                "question": "Have you applied for the Carte Vitale?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Receive the Carte Vitale",
+                "type": "Collect",
+                "description": "Once processed, the Carte Vitale will be sent to you by mail. Use this card for accessing the French healthcare system.",
+                "question": "Have you received your Carte Vitale?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    }
+}

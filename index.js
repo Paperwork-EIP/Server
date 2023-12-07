@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
-const route = require('./src/api/index');
-const Process = require('./src/process/index');
+const Process = require('./src/routes/router');
 require('dotenv').config();
 
 let corsOptions = {
@@ -30,7 +29,7 @@ module.exports = {
     if (!port) {
       return null;
     }
-    app.use(route, Process);
+    app.use(Process);
     server = app.listen(port, () => {
       console.log(`App started on port ${port}`);
     });

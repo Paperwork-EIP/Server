@@ -11,7 +11,8 @@
                 "type": "Information",
                 "description": "Identify the category of long-term visa that suits your purpose of travel to France. This could include a work visa, student visa, family reunion visa, or other relevant visa category.",
                 "question": "Do you know wich type of visa you need?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
             },
             {
                 "title": "Prepare the necessary documents.",
@@ -76,14 +77,16 @@
                 "type": "Appointment",
                 "description": "You will need to submit your application in person at the French embassy or consulate in your country of residence. You will need to pay the visa fee when you submit your application. Remember to bring all the necessary documents with you to your appointment.",
                 "question": "Have you submitted your application?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
             },
             {
                 "title": "Collect your visa.",
                 "type": "Collect",
                 "description": "You will need to collect your visa from the French embassy or consulate in your country of residence. You will need to present your passport and visa fee receipt when you collect your visa.",
                 "question": "Have you collected your visa yet?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
             }
         ]
     },
@@ -99,7 +102,8 @@
                 "type": "Information",
                 "description": "Identifiez la catégorie de visa de long séjour qui correspond à votre objectif de voyage en France. Cela pourrait inclure un visa de travail, un visa d'étudiant, un visa de regroupement familial ou une autre catégorie de visa pertinente.",
                 "question": "Savez-vous de quel type de visa vous avez besoin?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
             },
             {
                 "title": "Préparez les documents nécessaires.",
@@ -163,14 +167,16 @@
                 "type": "Rendez-vous",
                 "description": "Vous devrez soumettre votre demande en personne à l'ambassade ou au consulat français de votre pays de résidence. Vous devrez payer les frais de visa lorsque vous soumettez votre demande. N'oubliez pas d'apporter tous les documents nécessaires avec vous à votre rendez-vous.",
                 "question": "Avez-vous soumis votre demande?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
             },
             {
                 "title": "Récupérez votre visa.",
                 "type": "Collecte",
                 "description": "Vous devrez récupérer votre visa auprès de l'ambassade ou du consulat français de votre pays de résidence. Vous devrez présenter votre passeport et le reçu des frais de visa lorsque vous récupérerez votre visa.",
                 "question": "Avez-vous déjà récupéré votre visa?",
-                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status"
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
             }
         ]
     }
