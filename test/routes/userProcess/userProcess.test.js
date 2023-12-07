@@ -235,7 +235,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process deleted!');
             });
             test("[GET USER STEPS] should return user steps with a 200 status code", async() => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'français' });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'french' });
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserProcess.get = jest.fn().mockReturnValue({ id: 1 });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -254,7 +254,7 @@ describe("User process", () => {
             test("[GET USER STEPS BY ID] should return user steps with a 200 status code", async() => {
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
-                Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'français' });
+                Users.getById = jest.fn().mockReturnValue({ id: 1, language: 'french' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
                 UserUnderStep.getAllByStepId = jest.fn().mockReturnValue([{ id: 1, step_id: 1 }]);
                 UserStep.getNotDone = jest.fn().mockReturnValue([{ id: 1 }]);
@@ -268,7 +268,7 @@ describe("User process", () => {
                 expect(response._body.message).toEqual('User process steps');
             });
             test("[GET USER PROCESSES] should return user steps with a 200 status code", async() => {
-                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'français' });
+                Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'french' });
                 UserProcess.getAll = jest.fn().mockReturnValue([{ id: 1, process_id: 1 }]);
                 Process.getById = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 UserStep.getAll = jest.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -280,7 +280,7 @@ describe("User process", () => {
                 });
 
                 expect(response.statusCode).toBe(200);
-                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.français.title, description: visa.français.description, source: visa.français.source, stocked_title: 'Visa' } }]);
+                expect(response._body.response).toEqual([{ pourcentage: 67, userProcess: { id: 1, process_id: 1, title: visa.french.title, description: visa.french.description, source: visa.french.source, stocked_title: 'Visa' } }]);
                 expect(response._body.message).toEqual('User processes');
             });
         });

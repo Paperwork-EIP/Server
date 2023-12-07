@@ -80,7 +80,7 @@
             }
         ]
     },
-    "français": {
+    "french": {
         "title": "Titre de séjour",
         "description": "Un titre de séjour français est un document qui permet aux citoyens non européens de vivre et de travailler en France pendant une période prolongée. Le permis est délivré par le gouvernement français et est valable un an, renouvelable annuellement.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F39",
@@ -161,7 +161,7 @@
             }
         ]
     },
-    "deutsch": {
+    "german": {
         "title": "Aufenthaltstitel",
         "description": "Ein französischer Aufenthaltstitel, auch bekannt als Titre de Séjour, ist ein Dokument, das es Nicht-EU-Bürgern ermöglicht, für eine längere Zeit in Frankreich zu leben und zu arbeiten. Der Aufenthaltstitel wird von der französischen Regierung ausgestellt und ist ein Jahr gültig, jährlich verlängerbar.",
         "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
@@ -323,7 +323,7 @@
             }
         ]
     },
-    "indonesia": {
+    "indonesian": {
         "title": "Izin Tinggal",
         "description": "Izin tinggal di Prancis, juga dikenal sebagai titre de séjour, adalah dokumen yang memungkinkan warga negara non-UE untuk tinggal dan bekerja di Prancis untuk jangka waktu yang diperpanjang. Izin ini diterbitkan oleh pemerintah Prancis dan berlaku selama satu tahun, dapat diperpanjang setiap tahunnya.",
         "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
@@ -404,7 +404,7 @@
             }
         ]
     },
-    "espagnol": {
+    "spanish": {
         "title": "Permiso de Residencia",
         "description": "Un permiso de residencia en Francia, también conocido como titre de séjour, es un documento que permite a ciudadanos no pertenecientes a la Unión Europea vivir y trabajar en Francia por un período prolongado. El permiso es emitido por el gobierno francés y es válido por un año, renovable anualmente.",
         "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",

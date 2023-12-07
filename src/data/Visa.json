@@ -88,7 +88,7 @@
             }
         ]
     },
-    "français": {
+    "french": {
         "title": "Visa de long séjour.",
         "description": "Un visa de long séjour pour la France, également connu sous le nom de \"visa de long séjour\", est un type de visa qui permet aux personnes de séjourner en France pendant une période prolongée au-delà de la durée typique du visa touristique à court terme.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
@@ -176,7 +176,7 @@
             }
         ]
     },
-    "deutsh": {
+    "german": {
         "title": "Langzeitvisum.",
         "description": "Ein Langzeitvisum für Frankreich, auch bekannt als \"visa de long séjour,\" ist eine Art von Visum, das es Einzelpersonen ermöglicht, sich für einen längeren Zeitraum in Frankreich aufzuhalten, über die übliche Dauer eines kurzfristigen Touristenvisums hinaus.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
@@ -354,7 +354,7 @@
             }
         ]
     },
-    "indonesia": {
+    "indonesian": {
         "title": "Visa Jangka Panjang.",
         "description": "Visa jangka panjang untuk Prancis, juga dikenal sebagai \"visa de long séjour,\" adalah jenis visa yang memungkinkan individu tinggal di Prancis untuk jangka waktu yang lebih lama daripada durasi visa turis singkat yang biasanya.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
@@ -443,7 +443,7 @@
             }
         ]
     },
-    "espagnol": {
+    "spanish": {
         "title": "Visa de larga duración.",
         "description": "Una visa de larga duración para Francia, también conocida como \"visa de larga estadía,\" es un tipo de visa que permite a las personas permanecer en Francia por un período extendido más allá de la duración típica de una visa de turista a corto plazo.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
