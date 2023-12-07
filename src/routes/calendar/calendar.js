@@ -17,7 +17,7 @@ router.post("/set", async (request, response) => {
         const { date, user_process_id, step_id } = request.body;
         const formats = [
             moment.ISO_8601,
-            "MM/DD/YYYY  :)  HH*mm*ss"
+            "MM/DD/YYYY HH:mm:ss"
         ];
 
         if (!date || !user_process_id || !step_id)

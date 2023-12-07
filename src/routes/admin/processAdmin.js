@@ -170,7 +170,7 @@ router.get('/get', async(request, response) => {
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
-        const file = Tools.getData(stocked_title);
+        const file = await Tools.getData(stocked_title);
         let process = [];
         for (let i in Object.keys(file)) {
             process.push({
