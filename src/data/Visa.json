@@ -1,11 +1,9 @@
 {
-    "english":
-    {
+    "english": {
         "title": "Long-term visa.",
         "description": "A long-term visa for France, also known as a \"visa de long séjour,\" is a type of visa that allows individuals to stay in France for an extended period beyond the typical short-term tourist visa duration.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
-        "steps":
-        [
+        "steps": [
             {
                 "title": "Determine the type of visa you need.",
                 "type": "Information",
@@ -21,55 +19,55 @@
                 "question": "Do you have a complete file for your visa application?",
                 "source": "https://france-visas.gouv.fr/en/web/france-visas",
                 "underQuestions": [
-                  {
-                    "title": "Passport",
-                    "type": "Document",
-                    "description": "You will need a valid passport, it must be valid for at least three months beyond your planned date of departure.",
-                    "question": "Do you have a valid passport?",
-                    "source": "https://en.wikipedia.org/wiki/Passport"
-                  },
-                  {
-                    "title": "Visa application form",
-                    "type": "Document",
-                    "description": "You will need to complete a visa application form. You can download the form from the website https://france-visas.gouv.fr/en/web/france-visas/forms.",
-                    "question": "Do you have a complete visa application form?",
-                    "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
-                  },
-                  {
-                      "title": "Photos",
-                      "type": "Document",
-                      "description": "You will need to provide two passport photos. The photos must be recent, in color, and measure 3.5 cm x 4.5 cm. The photos must be taken against a white background.",
-                      "question": "Do you have two recent passport photos?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Proof of accommodation",
-                      "type": "Document",
-                      "description": "You will need to provide proof of accommodation. This could include a hotel reservation, a rental agreement, or a letter of invitation from your host in France.",
-                      "question": "Do you have proof of accommodation?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Proof of financial means",
-                      "type": "Document",
-                      "description": "You will need to provide proof of financial means. This could include bank statements, pay slips, or other relevant documents.",
-                      "question": "Do you have proof of financial means?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Proof of travel insurance",
-                      "type": "Document",
-                      "description": "You will need to provide proof of travel insurance. The insurance must cover the entire duration of your stay in France.",
-                      "question": "Do you have proof of travel insurance?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Purpose-specific documents",
-                      "type": "Document",
-                      "description": "Work visa: Employment contract, letter from the employer, work permit, and proof of professional qualifications.\nStudent visa: Acceptance letter from a recognized educational institution, proof of payment of tuition fees, and academic transcripts.\nFamily reunion visa: Proof of family relationship, such as marriage or birth certificates, and a letter of invitation from the family member residing in France.",
-                      "question": "Do you have purpose-specific documents? (Work visa, student visa, family reunion visa, or other relevant visa category)",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  }
+                    {
+                        "title": "Passport",
+                        "type": "Document",
+                        "description": "You will need a valid passport, it must be valid for at least three months beyond your planned date of departure.",
+                        "question": "Do you have a valid passport?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Visa application form",
+                        "type": "Document",
+                        "description": "You will need to complete a visa application form. You can download the form from the website https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "Do you have a complete visa application form?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Photos",
+                        "type": "Document",
+                        "description": "You will need to provide two passport photos. The photos must be recent, in color, and measure 3.5 cm x 4.5 cm. The photos must be taken against a white background.",
+                        "question": "Do you have two recent passport photos?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of accommodation",
+                        "type": "Document",
+                        "description": "You will need to provide proof of accommodation. This could include a hotel reservation, a rental agreement, or a letter of invitation from your host in France.",
+                        "question": "Do you have proof of accommodation?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of financial means",
+                        "type": "Document",
+                        "description": "You will need to provide proof of financial means. This could include bank statements, pay slips, or other relevant documents.",
+                        "question": "Do you have proof of financial means?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Proof of travel insurance",
+                        "type": "Document",
+                        "description": "You will need to provide proof of travel insurance. The insurance must cover the entire duration of your stay in France.",
+                        "question": "Do you have proof of travel insurance?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Purpose-specific documents",
+                        "type": "Document",
+                        "description": "Work visa: Employment contract, letter from the employer, work permit, and proof of professional qualifications.\nStudent visa: Acceptance letter from a recognized educational institution, proof of payment of tuition fees, and academic transcripts.\nFamily reunion visa: Proof of family relationship, such as marriage or birth certificates, and a letter of invitation from the family member residing in France.",
+                        "question": "Do you have purpose-specific documents? (Work visa, student visa, family reunion visa, or other relevant visa category)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
                 ]
             },
             {
@@ -90,13 +88,11 @@
             }
         ]
     },
-    "français":
-    {
+    "français": {
         "title": "Visa de long séjour.",
         "description": "Un visa de long séjour pour la France, également connu sous le nom de \"visa de long séjour\", est un type de visa qui permet aux personnes de séjourner en France pendant une période prolongée au-delà de la durée typique du visa touristique à court terme.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
-        "steps":
-        [
+        "steps": [
             {
                 "title": "Déterminez le type de visa dont vous avez besoin.",
                 "type": "Information",
@@ -112,54 +108,54 @@
                 "question": "Avez-vous un dossier complet avec les documents nécessaires à votre demande de visa ?",
                 "source": "https://france-visas.gouv.fr/en/web/france-visas",
                 "underQuestions": [
-                  {
-                    "title": "Passport",
-                    "type": "Document",
-                    "description": "Vous aurez besoin d'un passeport valide, il doit être valide pendant au moins trois mois après la date prévue de votre départ.",
-                    "question": "Avez-vous un passeport valide?",
-                    "source": "https://en.wikipedia.org/wiki/Passport"
-                  },
-                  {
-                    "title": "Formulaire de demande de visa",
-                    "type": "Document",
-                    "description": "Vous devrez remplir un formulaire de demande de visa. Vous pouvez télécharger le formulaire sur le site Web https://france-visas.gouv.fr/en/web/france-visas/forms.",
-                    "question": "Avez-vous un formulaire de demande de visa complet?",
-                    "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
-                  },
-                  {
-                      "title": "Photos",
-                      "description": "Vous devrez fournir deux photos d'identité. Les photos doivent être récentes, en couleur et mesurer 3,5 cm x 4,5 cm. Les photos doivent être prises sur un fond blanc.",
-                      "question": "Avez-vous deux photos d'identité récentes?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Preuve d'hébergement",
-                      "type": "Document",
-                      "description": "Vous devrez fournir une preuve d'hébergement. Cela pourrait inclure une réservation d'hôtel, un contrat de location ou une lettre d'invitation de votre hôte en France.",
-                      "question": "Avez-vous une preuve d'hébergement?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Preuve de moyens financiers",
-                      "type": "Document",
-                      "description": "Vous devrez fournir une preuve de moyens financiers. Cela pourrait inclure des relevés bancaires, des fiches de paie ou d'autres documents pertinents.",
-                      "question": "Avez-vous une preuve de moyens financiers?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Preuve d'assurance voyage",
-                      "type": "Document",
-                      "description": "Vous devrez fournir une preuve d'assurance voyage. L'assurance doit couvrir toute la durée de votre séjour en France.",
-                      "question": "Avez-vous une preuve d'assurance voyage?",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  },
-                  {
-                      "title": "Documents spécifiques au type de visa",
-                      "type": "Document",
-                      "description": "Visa de travail: contrat de travail, lettre de l'employeur, permis de travail et preuve de qualifications professionnelles.\nVisa d'étudiant: lettre d'acceptation d'un établissement d'enseignement reconnu, preuve de paiement des frais de scolarité et relevés de notes.\nVisa de regroupement familial: preuve de lien familial, tels que certificats de mariage ou de naissance, et lettre d'invitation du membre de la famille résidant en France.",
-                      "question": "Avez-vous les documents spécifiques au type de visa? (Visa de travail, visa d'étudiant, visa de regroupement familial ou autre catégorie de visa pertinente)",
-                      "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
-                  }
+                    {
+                        "title": "Passport",
+                        "type": "Document",
+                        "description": "Vous aurez besoin d'un passeport valide, il doit être valide pendant au moins trois mois après la date prévue de votre départ.",
+                        "question": "Avez-vous un passeport valide?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Formulaire de demande de visa",
+                        "type": "Document",
+                        "description": "Vous devrez remplir un formulaire de demande de visa. Vous pouvez télécharger le formulaire sur le site Web https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "Avez-vous un formulaire de demande de visa complet?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Photos",
+                        "description": "Vous devrez fournir deux photos d'identité. Les photos doivent être récentes, en couleur et mesurer 3,5 cm x 4,5 cm. Les photos doivent être prises sur un fond blanc.",
+                        "question": "Avez-vous deux photos d'identité récentes?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve d'hébergement",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve d'hébergement. Cela pourrait inclure une réservation d'hôtel, un contrat de location ou une lettre d'invitation de votre hôte en France.",
+                        "question": "Avez-vous une preuve d'hébergement?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve de moyens financiers",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve de moyens financiers. Cela pourrait inclure des relevés bancaires, des fiches de paie ou d'autres documents pertinents.",
+                        "question": "Avez-vous une preuve de moyens financiers?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Preuve d'assurance voyage",
+                        "type": "Document",
+                        "description": "Vous devrez fournir une preuve d'assurance voyage. L'assurance doit couvrir toute la durée de votre séjour en France.",
+                        "question": "Avez-vous une preuve d'assurance voyage?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Documents spécifiques au type de visa",
+                        "type": "Document",
+                        "description": "Visa de travail: contrat de travail, lettre de l'employeur, permis de travail et preuve de qualifications professionnelles.\nVisa d'étudiant: lettre d'acceptation d'un établissement d'enseignement reconnu, preuve de paiement des frais de scolarité et relevés de notes.\nVisa de regroupement familial: preuve de lien familial, tels que certificats de mariage ou de naissance, et lettre d'invitation du membre de la famille résidant en France.",
+                        "question": "Avez-vous les documents spécifiques au type de visa? (Visa de travail, visa d'étudiant, visa de regroupement familial ou autre catégorie de visa pertinente)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
                 ]
             },
             {
@@ -175,6 +171,362 @@
                 "type": "Collecte",
                 "description": "Vous devrez récupérer votre visa auprès de l'ambassade ou du consulat français de votre pays de résidence. Vous devrez présenter votre passeport et le reçu des frais de visa lorsque vous récupérerez votre visa.",
                 "question": "Avez-vous déjà récupéré votre visa?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
+            }
+        ]
+    },
+    "deutsh": {
+        "title": "Langzeitvisum.",
+        "description": "Ein Langzeitvisum für Frankreich, auch bekannt als \"visa de long séjour,\" ist eine Art von Visum, das es Einzelpersonen ermöglicht, sich für einen längeren Zeitraum in Frankreich aufzuhalten, über die übliche Dauer eines kurzfristigen Touristenvisums hinaus.",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "steps": [
+            {
+                "title": "Bestimmen Sie den benötigten Visumtyp.",
+                "type": "Information",
+                "description": "Identifizieren Sie die Kategorie des Langzeitvisums, die Ihrem Reisezweck nach Frankreich entspricht. Dies könnte ein Arbeitsvisum, Studentenvisum, Familienzusammenführungsvisum oder eine andere relevante Visumkategorie umfassen.",
+                "question": "Wissen Sie, welchen Visumtyp Sie benötigen?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
+            },
+            {
+                "title": "Bereiten Sie die erforderlichen Dokumente vor.",
+                "type": "Dokument",
+                "description": "Sie benötigen eine Akte mit etwa zehn ausgefüllten Dokumenten für Ihren Visumantrag.",
+                "question": "Haben Sie eine vollständige Akte für Ihren Visumantrag?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": [
+                    {
+                        "title": "Reisepass",
+                        "type": "Dokument",
+                        "description": "Sie benötigen einen gültigen Reisepass, der mindestens drei Monate über Ihr geplantes Abreisedatum hinaus gültig ist.",
+                        "question": "Haben Sie einen gültigen Reisepass?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Visumantragsformular",
+                        "type": "Dokument",
+                        "description": "Sie müssen ein Visumantragsformular ausfüllen. Sie können das Formular von der Website https://france-visas.gouv.fr/en/web/france-visas/forms herunterladen.",
+                        "question": "Haben Sie ein vollständiges Visumantragsformular?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Fotos",
+                        "type": "Dokument",
+                        "description": "Sie müssen zwei Passfotos bereitstellen. Die Fotos müssen aktuell sein, farbig und 3,5 cm x 4,5 cm messen. Die Fotos müssen vor einem weißen Hintergrund aufgenommen werden.",
+                        "question": "Haben Sie zwei aktuelle Passfotos?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Nachweis der Unterkunft",
+                        "type": "Dokument",
+                        "description": "Sie müssen einen Nachweis der Unterkunft erbringen. Dies könnte eine Hotelreservierung, ein Mietvertrag oder ein Einladungsschreiben von Ihrem Gastgeber in Frankreich umfassen.",
+                        "question": "Haben Sie einen Nachweis der Unterkunft?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Nachweis finanzieller Mittel",
+                        "type": "Dokument",
+                        "description": "Sie müssen einen Nachweis finanzieller Mittel erbringen. Dies könnte Kontoauszüge, Gehaltsabrechnungen oder andere relevante Dokumente umfassen.",
+                        "question": "Haben Sie einen Nachweis finanzieller Mittel?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Nachweis einer Reiseversicherung",
+                        "type": "Dokument",
+                        "description": "Sie müssen einen Nachweis einer Reiseversicherung erbringen. Die Versicherung muss die gesamte Dauer Ihres Aufenthalts in Frankreich abdecken.",
+                        "question": "Haben Sie einen Nachweis einer Reiseversicherung?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Zweckspezifische Dokumente",
+                        "type": "Dokument",
+                        "description": "Arbeitsvisum: Arbeitsvertrag, Schreiben des Arbeitgebers, Arbeitserlaubnis und Nachweis beruflicher Qualifikationen.\nStudentenvisum: Annahmebescheid einer anerkannten Bildungseinrichtung, Nachweis der Zahlung der Studiengebühren und akademische Zeugnisse.\nFamilienzusammenführungsvisum: Nachweis der familiären Beziehung, wie Heirats- oder Geburtsurkunden, und ein Einladungsschreiben des in Frankreich ansässigen Familienmitglieds.",
+                        "question": "Haben Sie zweckspezifische Dokumente? (Arbeitsvisum, Studentenvisum, Familienzusammenführungsvisum oder andere relevante Visumkategorie)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Vereinbaren Sie einen Termin.",
+                "type": "Termin",
+                "description": "Sie müssen Ihren Antrag persönlich bei der französischen Botschaft oder dem Konsulat in Ihrem Wohnsitzland einreichen. Sie müssen die Visumgebühr bei Einreichung Ihres Antrags bezahlen. Vergessen Sie nicht, alle erforderlichen Dokumente zu Ihrem Termin mitzubringen.",
+                "question": "Haben Sie Ihren Antrag eingereicht?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
+            },
+            {
+                "title": "Holen Sie Ihr Visum ab.",
+                "type": "Abholen",
+                "description": "Sie müssen Ihr Visum bei der französischen Botschaft oder dem Konsulat in Ihrem Wohnsitzland abholen. Sie müssen Ihren Reisepass und den Beleg für die Visumgebühr vorlegen, wenn Sie Ihr Visum abholen.",
+                "question": "Haben Sie Ihr Visum bereits abgeholt?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
+            }
+        ]
+    },
+    "korean": {
+        "title": "장기 비자.",
+        "description": "프랑스의 장기 비자 또는 \"visa de long séjour\"는 일반적인 단기 관광 비자 기간을 초과하여 프랑스에 머무를 수 있는 비자 유형입니다.",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "steps": [
+            {
+                "title": "필요한 비자 유형 확인.",
+                "type": "정보",
+                "description": "프랑스로의 여행 목적에 맞는 장기 비자 카테고리를 확인하세요. 이는 근로 비자, 학생 비자, 가족 재결합 비자 또는 기타 관련 비자 카테고리를 포함할 수 있습니다.",
+                "question": "필요한 비자 유형을 아시나요?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
+            },
+            {
+                "title": "필요한 문서 준비.",
+                "type": "문서",
+                "description": "비자 신청을 위해 약 열 가지의 완료된 문서가 필요합니다.",
+                "question": "비자 신청을 위한 완전한 문서가 있나요?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": [
+                    {
+                        "title": "여권",
+                        "type": "문서",
+                        "description": "유효한 여권이 필요합니다. 출국 예정일로부터 최소 세 개월 이상 유효해야 합니다.",
+                        "question": "유효한 여권이 있나요?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "비자 신청 양식",
+                        "type": "문서",
+                        "description": "비자 신청 양식을 작성해야 합니다. 양식은 웹 사이트 https://france-visas.gouv.fr/en/web/france-visas/forms에서 다운로드할 수 있습니다.",
+                        "question": "비자 신청 양식이 완료되었나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "사진",
+                        "type": "문서",
+                        "description": "여권용 사진 두 장을 제공해야 합니다. 사진은 최근 것이어야 하며 컬러이어야 하며 크기는 3.5cm x 4.5cm여야 합니다. 사진은 흰 배경에 찍힌 것이어야 합니다.",
+                        "question": "최근 여권용 사진 두 장이 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "숙박 증명",
+                        "type": "문서",
+                        "description": "숙박을 증명해야 합니다. 이는 호텔 예약, 임대 계약 또는 프랑스에 거주하는 호스트의 초청서 등을 포함할 수 있습니다.",
+                        "question": "숙박을 증명하는 자료가 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "재정적 수단 증명",
+                        "type": "문서",
+                        "description": "재정적 수단을 증명해야 합니다. 은행 명세서, 급여 명세서 또는 기타 관련 문서 등을 포함할 수 있습니다.",
+                        "question": "재정적 수단을 증명하는 자료가 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "여행 보험 증명",
+                        "type": "문서",
+                        "description": "여행 보험을 증명해야 합니다. 보험은 프랑스 체류 전체 기간을 커버해야 합니다.",
+                        "question": "여행 보험을 증명하는 자료가 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "목적별 문서",
+                        "type": "문서",
+                        "description": "근로 비자: 고용 계약, 사업주의 편지, 근로 허가 및 전문 자격 증명서.\n학생 비자: 인정받은 교육 기관으로부터의 수락 편지, 수업료 지불 증명 및 학적 성적표.\n가족 재결합 비자: 결혼 또는 출생 증명서와 프랑스에 거주하는 가족 구성원의 초청 편지 등을 포함할 수 있습니다.",
+                        "question": "목적별 문서가 있나요? (근로 비자, 학생 비자, 가족 재결합 비자 또는 기타 관련 비자 카테고리)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "면접 일정 잡기.",
+                "type": "면접",
+                "description": "비자 신청은 귀하의 거주 국가에있는 프랑스 대사관이나 영사관에서 직접 제출해야 합니다. 비자 수수료는 신청을 제출할 때 지불해야 합니다. 면접에 필요한 모든 문서를 면접에 참고로 가져가세요.",
+                "question": "비자 신청을 제출했나요?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
+            },
+            {
+                "title": "비자 수령.",
+                "type": "수령",
+                "description": "프랑스 대사관이나 영사관에서 비자를 수령해야 합니다. 비자를 수령할 때 여권과 비자 수수료 영수증을 제시해야 합니다.",
+                "question": "비자를 이미 수령했나요?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
+            }
+        ]
+    },
+    "indonesia": {
+        "title": "Visa Jangka Panjang.",
+        "description": "Visa jangka panjang untuk Prancis, juga dikenal sebagai \"visa de long séjour,\" adalah jenis visa yang memungkinkan individu tinggal di Prancis untuk jangka waktu yang lebih lama daripada durasi visa turis singkat yang biasanya.",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "steps": [
+            {
+                "title": "Tentukan jenis visa yang Anda butuhkan.",
+                "type": "Informasi",
+                "description": "Identifikasi kategori visa jangka panjang yang sesuai dengan tujuan perjalanan Anda ke Prancis. Ini bisa termasuk visa kerja, visa pelajar, visa reuni keluarga, atau kategori visa relevan lainnya.",
+                "question": "Apakah Anda tahu jenis visa yang Anda butuhkan?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
+            },
+            {
+                "title": "Siapkan dokumen-dokumen yang diperlukan.",
+                "type": "Dokumen",
+                "description": "Anda akan membutuhkan sekitar sepuluh dokumen yang lengkap untuk permohonan visa Anda.",
+                "question": "Apakah Anda memiliki berkas lengkap untuk aplikasi visa Anda?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": [
+                    {
+                        "title": "Paspor",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan paspor yang valid, harus berlaku setidaknya selama tiga bulan setelah tanggal keberangkatan yang direncanakan.",
+                        "question": "Apakah Anda memiliki paspor yang valid?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Formulir aplikasi visa",
+                        "type": "Dokumen",
+                        "description": "Anda perlu mengisi formulir aplikasi visa. Anda dapat mengunduh formulir dari situs web https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "Apakah Anda memiliki formulir aplikasi visa yang lengkap?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Foto",
+                        "type": "Dokumen",
+                        "description": "Anda perlu menyediakan dua foto paspor. Foto harus terbaru, berwarna, dan berukuran 3,5 cm x 4,5 cm. Foto harus diambil dengan latar belakang putih.",
+                        "question": "Apakah Anda memiliki dua foto paspor terbaru?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Bukti akomodasi",
+                        "type": "Dokumen",
+                        "description": "Anda perlu menyediakan bukti akomodasi. Ini bisa mencakup reservasi hotel, perjanjian sewa, atau surat undangan dari tuan rumah Anda di Prancis.",
+                        "question": "Apakah Anda memiliki bukti akomodasi?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Bukti sarana keuangan",
+                        "type": "Dokumen",
+                        "description": "Anda perlu menyediakan bukti sarana keuangan. Ini bisa mencakup rekening bank, slip gaji, atau dokumen relevan lainnya.",
+                        "question": "Apakah Anda memiliki bukti sarana keuangan?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Bukti asuransi perjalanan",
+                        "type": "Dokumen",
+                        "description": "Anda perlu menyediakan bukti asuransi perjalanan. Asuransi harus mencakup seluruh durasi tinggal Anda di Prancis.",
+                        "question": "Apakah Anda memiliki bukti asuransi perjalanan?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Dokumen khusus tujuan",
+                        "type": "Dokumen",
+                        "description": "Visa kerja: Kontrak kerja, surat dari employer, izin kerja, dan bukti kualifikasi profesional.\nVisa pelajar: Surat penerimaan dari lembaga pendidikan yang diakui, bukti pembayaran uang kuliah, dan transkrip akademik.\nVisa reuni keluarga: Bukti hubungan keluarga, seperti surat nikah atau akta kelahiran, dan surat undangan dari anggota keluarga yang tinggal di Prancis.",
+                        "question": "Apakah Anda memiliki dokumen khusus tujuan? (Visa kerja, visa pelajar, visa reuni keluarga, atau kategori visa relevan lainnya)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Jadwalkan janji.",
+                "type": "Janji",
+                "description": "Anda perlu mengajukan aplikasi secara langsung di kedutaan besar atau konsulat Prancis di negara tempat Anda tinggal. Anda harus membayar biaya visa saat mengajukan aplikasi. Jangan lupa membawa semua dokumen yang diperlukan pada saat janji.",
+                "question": "Apakah Anda telah mengajukan aplikasi Anda?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
+            },
+            {
+                "title": "Ambil visa Anda.",
+                "type": "Ambil",
+                "description": "Anda perlu mengambil visa Anda dari kedutaan besar atau konsulat Prancis di negara tempat Anda tinggal. Anda harus menunjukkan paspor dan bukti pembayaran biaya visa saat mengambil visa Anda.",
+                "question": "Apakah Anda sudah mengambil visa Anda?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
+                "underQuestions": []
+            }
+        ]
+    },
+    "espagnol": {
+        "title": "Visa de larga duración.",
+        "description": "Una visa de larga duración para Francia, también conocida como \"visa de larga estadía,\" es un tipo de visa que permite a las personas permanecer en Francia por un período extendido más allá de la duración típica de una visa de turista a corto plazo.",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "steps": [
+            {
+                "title": "Determinar el tipo de visa que necesitas.",
+                "type": "Información",
+                "description": "Identifica la categoría de visa de larga duración que se adapte a tu propósito de viaje a Francia. Esto podría incluir una visa de trabajo, visa de estudiante, visa de reunificación familiar u otra categoría de visa relevante.",
+                "question": "¿Sabes qué tipo de visa necesitas?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": []
+            },
+            {
+                "title": "Preparar los documentos necesarios.",
+                "type": "Documento",
+                "description": "Necesitarás un archivo de alrededor de diez documentos completados para tu solicitud de visa.",
+                "question": "¿Tienes un archivo completo para tu solicitud de visa?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas",
+                "underQuestions": [
+                    {
+                        "title": "Pasaporte",
+                        "type": "Documento",
+                        "description": "Necesitarás un pasaporte válido, debe tener validez durante al menos tres meses más allá de la fecha planeada de tu partida.",
+                        "question": "¿Tienes un pasaporte válido?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Formulario de solicitud de visa",
+                        "type": "Documento",
+                        "description": "Deberás completar un formulario de solicitud de visa. Puedes descargar el formulario desde el sitio web https://france-visas.gouv.fr/en/web/france-visas/forms.",
+                        "question": "¿Tienes un formulario de solicitud de visa completo?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Fotos",
+                        "type": "Documento",
+                        "description": "Deberás proporcionar dos fotos de pasaporte. Las fotos deben ser recientes, a color y medir 3.5 cm x 4.5 cm. Las fotos deben tomarse con un fondo blanco.",
+                        "question": "¿Tienes dos fotos recientes de pasaporte?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Comprobante de alojamiento",
+                        "type": "Documento",
+                        "description": "Deberás proporcionar un comprobante de alojamiento. Esto podría incluir una reserva de hotel, un contrato de alquiler o una carta de invitación de tu anfitrión en Francia.",
+                        "question": "¿Tienes comprobante de alojamiento?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Comprobante de medios financieros",
+                        "type": "Documento",
+                        "description": "Deberás proporcionar un comprobante de medios financieros. Esto podría incluir extractos bancarios, recibos de sueldo u otros documentos relevantes.",
+                        "question": "¿Tienes comprobante de medios financieros?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Comprobante de seguro de viaje",
+                        "type": "Documento",
+                        "description": "Deberás proporcionar un comprobante de seguro de viaje. El seguro debe cubrir toda la duración de tu estancia en Francia.",
+                        "question": "¿Tienes comprobante de seguro de viaje?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Documentos específicos del propósito",
+                        "type": "Documento",
+                        "description": "Visa de trabajo: Contrato de trabajo, carta del empleador, permiso de trabajo y comprobante de cualificaciones profesionales.\nVisa de estudiante: Carta de aceptación de una institución educativa reconocida, comprobante de pago de la matrícula y expedientes académicos.\nVisa de reunificación familiar: Comprobante de relación familiar, como certificados de matrimonio o nacimiento, y una carta de invitación del miembro de la familia que reside en Francia.",
+                        "question": "¿Tienes documentos específicos del propósito? (Visa de trabajo, visa de estudiante, visa de reunificación familiar u otra categoría de visa relevante)",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Programar una cita.",
+                "type": "Cita",
+                "description": "Deberás presentar tu solicitud en persona en la embajada o consulado francés en tu país de residencia. Deberás pagar la tarifa de visa al presentar tu solicitud. Recuerda llevar todos los documentos necesarios contigo a tu cita.",
+                "question": "¿Has presentado tu solicitud?",
+                "source": "https://france-visas.gouv.fr/en/web/france-visas/lieu-de-residence?caller=depotVisas",
+                "underQuestions": []
+            },
+            {
+                "title": "Recoger tu visa.",
+                "type": "Recoger",
+                "description": "Deberás recoger tu visa en la embajada o consulado francés en tu país de residencia. Deberás presentar tu pasaporte y el recibo de la tarifa de visa cuando recojas tu visa.",
+                "question": "¿Ya has recogido tu visa?",
                 "source": "https://france-visas.gouv.fr/en/web/france-visas/track-your-application-status",
                 "underQuestions": []
             }

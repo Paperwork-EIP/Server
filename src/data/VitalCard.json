@@ -39,25 +39,29 @@
                         "title": "Passport",
                         "type": "Document",
                         "description": "A copy of your valid passport, with a minimum validity of three months beyond your planned date of departure.",
-                        "question": "Have you included a copy of your valid passport?"
+                        "question": "Have you included a copy of your valid passport?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
                     },
                     {
                         "title": "Visa or Residence Permit",
                         "type": "Document",
                         "description": "A copy of your long-stay visa or residence permit for France.",
-                        "question": "Have you included a copy of your long-stay visa or residence permit?"
+                        "question": "Have you included a copy of your long-stay visa or residence permit?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
                     },
                     {
                         "title": "Proof of Address",
                         "type": "Document",
                         "description": "Proof of your address in France, such as a utility bill or rental agreement.",
-                        "question": "Have you included proof of your address in France?"
+                        "question": "Have you included proof of your address in France?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
                     },
                     {
                         "title": "Proof of Health Insurance",
                         "type": "Document",
                         "description": "Documentation proving that you have health insurance coverage in France.",
-                        "question": "Have you included proof of your health insurance coverage?"
+                        "question": "Have you included proof of your health insurance coverage?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
                     }
                 ]
             },
@@ -74,6 +78,426 @@
                 "type": "Collect",
                 "description": "Once processed, the Carte Vitale will be sent to you by mail. Use this card for accessing the French healthcare system.",
                 "question": "Have you received your Carte Vitale?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    },
+    "français": {
+        "title": "Obtention d'une Carte Vitale en France",
+        "description": "Ce processus décrit les étapes pour obtenir une Carte Vitale en France pour les étrangers non européens sans numéro de sécurité sociale.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "Permis de séjour",
+                "type": "Information",
+                "description": "Assurez-vous d'avoir un visa de long séjour valide ou un permis de séjour pour la France.",
+                "question": "Possédez-vous un visa de long séjour valide ou un permis de séjour ?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "Assurance santé",
+                "type": "Information",
+                "description": "Obtenez une couverture d'assurance santé, qui peut être requise avant d'accéder au système de santé public français.",
+                "question": "Possédez-vous une couverture d'assurance santé ?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Demande d'un numéro de sécurité sociale",
+                "type": "Procédure",
+                "description": "Demandez un numéro de sécurité sociale (Numéro de Sécurité Sociale ou NISS) au bureau local de la Sécurité Sociale (CPAM). Fournissez les documents nécessaires.",
+                "question": "Avez-vous demandé un numéro de sécurité sociale ?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Soumettre les documents nécessaires",
+                "type": "Procédure",
+                "description": "Soumettez les documents requis à la CPAM pour établir l'éligibilité au système de sécurité sociale français.",
+                "question": "Avez-vous soumis les documents nécessaires ?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "Passeport",
+                        "type": "Document",
+                        "description": "Une copie de votre passeport valide, avec une validité minimale de trois mois au-delà de la date prévue de votre départ.",
+                        "question": "Avez-vous inclus une copie de votre passeport valide ?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Visa ou permis de séjour",
+                        "type": "Document",
+                        "description": "Une copie de votre visa de long séjour ou de votre permis de séjour pour la France.",
+                        "question": "Avez-vous inclus une copie de votre visa de long séjour ou de votre permis de séjour ?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Preuve d'adresse",
+                        "type": "Document",
+                        "description": "Preuve de votre adresse en France, telle qu'une facture de services publics ou un contrat de location.",
+                        "question": "Avez-vous inclus une preuve de votre adresse en France ?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Preuve d'assurance santé",
+                        "type": "Document",
+                        "description": "Documentation prouvant que vous avez une couverture d'assurance santé en France.",
+                        "question": "Avez-vous inclus une preuve de votre couverture d'assurance santé ?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    }
+                ]
+            },
+            {
+                "title": "Demande de la Carte Vitale",
+                "type": "Procédure",
+                "description": "Demandez la Carte Vitale, la carte d'assurance maladie, auprès du bureau de la CPAM. Fournissez des documents supplémentaires si nécessaire.",
+                "question": "Avez-vous demandé la Carte Vitale ?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Réception de la Carte Vitale",
+                "type": "Collecte",
+                "description": "Une fois traitée, la Carte Vitale vous sera envoyée par courrier. Utilisez cette carte pour accéder au système de santé français.",
+                "question": "Avez-vous reçu votre Carte Vitale ?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    },
+    "deutsh": {
+        "title": "Erhalt einer Vital-Karte in Frankreich",
+        "description": "Dieser Prozess beschreibt die Schritte zum Erhalt einer Carte Vitale (Vital-Karte) in Frankreich für nicht-europäische Ausländer ohne Sozialversicherungsnummer.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "Aufenthaltsgenehmigung",
+                "type": "Information",
+                "description": "Stellen Sie sicher, dass Sie ein gültiges Visum für Langzeitaufenthalt oder eine Aufenthaltsgenehmigung für Frankreich haben.",
+                "question": "Haben Sie ein gültiges Visum für Langzeitaufenthalt oder eine Aufenthaltsgenehmigung?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "Krankenversicherung",
+                "type": "Information",
+                "description": "Besorgen Sie sich eine Krankenversicherung, die möglicherweise erforderlich ist, bevor Sie auf das französische öffentliche Gesundheitssystem zugreifen können.",
+                "question": "Haben Sie eine Krankenversicherung?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Beantragen einer Sozialversicherungsnummer",
+                "type": "Verfahren",
+                "description": "Beantragen Sie eine Sozialversicherungsnummer (Numéro de Sécurité Sociale oder NISS) beim örtlichen Sozialversicherungsamt (CPAM). Reichen Sie die erforderlichen Unterlagen ein.",
+                "question": "Haben Sie eine Sozialversicherungsnummer beantragt?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Erforderliche Unterlagen einreichen",
+                "type": "Verfahren",
+                "description": "Reichen Sie erforderliche Unterlagen bei der CPAM ein, um die Berechtigung für das französische Sozialversicherungssystem festzustellen.",
+                "question": "Haben Sie die erforderlichen Unterlagen eingereicht?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "Reisepass",
+                        "type": "Dokument",
+                        "description": "Eine Kopie Ihres gültigen Reisepasses mit einer Mindestgültigkeit von drei Monaten über Ihr geplantes Abreisedatum hinaus.",
+                        "question": "Haben Sie eine Kopie Ihres gültigen Reisepasses beigelegt?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Visum oder Aufenthaltsgenehmigung",
+                        "type": "Dokument",
+                        "description": "Eine Kopie Ihres Langzeitvisums oder Ihrer Aufenthaltsgenehmigung für Frankreich.",
+                        "question": "Haben Sie eine Kopie Ihres Langzeitvisums oder Ihrer Aufenthaltsgenehmigung beigelegt?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Adressnachweis",
+                        "type": "Dokument",
+                        "description": "Nachweis Ihrer Adresse in Frankreich, wie z.B. eine Versorgerrechnung oder ein Mietvertrag.",
+                        "question": "Haben Sie einen Nachweis Ihrer Adresse in Frankreich beigelegt?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Nachweis der Krankenversicherung",
+                        "type": "Dokument",
+                        "description": "Dokumentation, die nachweist, dass Sie Krankenversicherungsschutz in Frankreich haben.",
+                        "question": "Haben Sie einen Nachweis Ihrer Krankenversicherung beigelegt?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    }
+                ]
+            },
+            {
+                "title": "Beantragen der Carte Vitale",
+                "type": "Verfahren",
+                "description": "Beantragen Sie die Carte Vitale, die Krankenversicherungskarte, im CPAM-Büro. Reichen Sie bei Bedarf zusätzliche Dokumente ein.",
+                "question": "Haben Sie die Carte Vitale beantragt?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Erhalt der Carte Vitale",
+                "type": "Sammeln",
+                "description": "Nach Bearbeitung wird Ihnen die Carte Vitale per Post zugesandt. Verwenden Sie diese Karte, um auf das französische Gesundheitssystem zuzugreifen.",
+                "question": "Haben Sie Ihre Carte Vitale erhalten?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    },
+    "korean": {
+        "title": "프랑스에서 카르트 비탈(Vital Card) 획득",
+        "description": "이 프로세스는 프랑스에서 사회 보험 번호가 없는 비유럽 외국인을 위한 Carte Vitale(Vital Card)를 얻는 단계를 설명합니다.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "거주 허가",
+                "type": "정보",
+                "description": "프랑스에서 장기 체류 비자 또는 거주 허가가 유효한지 확인하십시오.",
+                "question": "유효한 장기 체류 비자 또는 거주 허가가 있습니까?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "건강 보험",
+                "type": "정보",
+                "description": "프랑스 공공 의료 시스템에 접근하기 전에 필요한 건강 보험 가입을 확보하십시오.",
+                "question": "건강 보험 가입이 되어 있습니까?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "사회 보험 번호 신청",
+                "type": "절차",
+                "description": "지역 사회 보험 사무소(CPAM)에서 사회 보험 번호(Numéro de Sécurité Sociale 또는 NISS)를 신청하십시오. 필요한 서류를 제출하십시오.",
+                "question": "사회 보험 번호를 신청하셨습니까?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "필요한 서류 제출",
+                "type": "절차",
+                "description": "프랑스 사회 보험 시스템의 자격을 확립하기 위해 CPAM에 필요한 서류를 제출하십시오.",
+                "question": "필요한 서류를 제출하셨습니까?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "여권",
+                        "type": "문서",
+                        "description": "출국 예정일로부터 최소 세 개월 이상 유효한 여권의 사본을 포함했습니까?",
+                        "question": "유효한 여권의 사본을 포함하셨습니까?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "비자 또는 거주 허가",
+                        "type": "문서",
+                        "description": "프랑스의 장기 비자 또는 거주 허가의 사본을 포함했습니까?",
+                        "question": "장기 비자 또는 거주 허가의 사본을 포함하셨습니까?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "주소 증빙",
+                        "type": "문서",
+                        "description": "프랑스에서의 주소를 증명하는 서류(공과금이나 임대 계약서 등)를 포함했습니까?",
+                        "question": "프랑스에서의 주소를 증명하는 서류를 포함하셨습니까?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "건강 보험 증빙",
+                        "type": "문서",
+                        "description": "프랑스에서 건강 보험 가입을 증명하는 서류를 포함했습니까?",
+                        "question": "건강 보험 가입을 증명하는 서류를 포함하셨습니까?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    }
+                ]
+            },
+            {
+                "title": "Carte Vitale 신청",
+                "type": "절차",
+                "description": "CPAM 사무소를 통해 Carte Vitale, 건강 보험 카드를 신청하십시오. 필요시 추가 서류를 제공하십시오.",
+                "question": "Carte Vitale를 신청하셨습니까?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Carte Vitale 수령",
+                "type": "수령",
+                "description": "처리된 후 Carte Vitale는 우편으로 발송됩니다. 이 카드를 사용하여 프랑스 의료 시스템에 접근하십시오.",
+                "question": "Carte Vitale를 수령하셨습니까?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    },
+    "indonesia": {
+        "title": "Mendapatkan Kartu Vital di Prancis",
+        "description": "Proses ini menjelaskan langkah-langkah untuk mendapatkan Carte Vitale (Kartu Vital) di Prancis bagi warga negara non-Eropa yang tidak memiliki nomor asuransi sosial.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "Izin Tinggal",
+                "type": "Informasi",
+                "description": "Pastikan Anda memiliki visa tinggal jangka panjang atau izin tinggal untuk Prancis yang masih berlaku.",
+                "question": "Apakah Anda memiliki visa tinggal jangka panjang atau izin tinggal yang valid?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "Asuransi Kesehatan",
+                "type": "Informasi",
+                "description": "Dapatkan cakupan asuransi kesehatan, yang mungkin diperlukan sebelum mengakses sistem kesehatan publik Prancis.",
+                "question": "Apakah Anda memiliki cakupan asuransi kesehatan?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Mengajukan Nomor Asuransi Sosial",
+                "type": "Prosedur",
+                "description": "Ajukan nomor asuransi sosial (Numéro de Sécurité Sociale atau NISS) di kantor Asuransi Sosial setempat (CPAM). Sediakan dokumen yang diperlukan.",
+                "question": "Apakah Anda telah mengajukan nomor asuransi sosial?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Kirim Dokumen yang Diperlukan",
+                "type": "Prosedur",
+                "description": "Kirim dokumen yang diperlukan ke CPAM untuk menetapkan kelayakan dalam sistem asuransi sosial Prancis.",
+                "question": "Apakah Anda telah mengirim dokumen yang diperlukan?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "Paspor",
+                        "type": "Dokumen",
+                        "description": "Salinan paspor Anda yang masih berlaku, dengan masa berlaku minimal tiga bulan setelah tanggal keberangkatan yang direncanakan.",
+                        "question": "Apakah Anda menyertakan salinan paspor yang masih berlaku?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Visa atau Izin Tinggal",
+                        "type": "Dokumen",
+                        "description": "Salinan visa tinggal jangka panjang atau izin tinggal untuk Prancis.",
+                        "question": "Apakah Anda menyertakan salinan visa tinggal jangka panjang atau izin tinggal?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Bukti Alamat",
+                        "type": "Dokumen",
+                        "description": "Bukti alamat Anda di Prancis, seperti tagihan utilitas atau perjanjian sewa.",
+                        "question": "Apakah Anda menyertakan bukti alamat Anda di Prancis?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Bukti Asuransi Kesehatan",
+                        "type": "Dokumen",
+                        "description": "Dokumentasi yang membuktikan bahwa Anda memiliki cakupan asuransi kesehatan di Prancis.",
+                        "question": "Apakah Anda menyertakan bukti cakupan asuransi kesehatan Anda?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    }
+                ]
+            },
+            {
+                "title": "Mengajukan Kartu Vitale",
+                "type": "Prosedur",
+                "description": "Mengajukan Kartu Vitale, kartu asuransi kesehatan, melalui kantor CPAM. Sediakan dokumen tambahan jika diperlukan.",
+                "question": "Apakah Anda telah mengajukan Kartu Vitale?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Terima Kartu Vitale",
+                "type": "Mengumpulkan",
+                "description": "Setelah diproses, Kartu Vitale akan dikirimkan kepada Anda melalui pos. Gunakan kartu ini untuk mengakses sistem perawatan kesehatan Prancis.",
+                "question": "Apakah Anda telah menerima Kartu Vitale Anda?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            }
+        ]
+    },
+    "espagnol": {
+        "title": "Obtención de una Tarjeta Vital en Francia",
+        "description": "Este proceso describe los pasos para obtener una Carte Vitale (Tarjeta Vital) en Francia para extranjeros no europeos sin número de seguridad social.",
+        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+        "steps": [
+            {
+                "title": "Permiso de Residencia",
+                "type": "Información",
+                "description": "Asegúrate de tener una visa de larga estancia o un permiso de residencia válido para Francia.",
+                "question": "¿Tienes una visa de larga estancia o un permiso de residencia válido?",
+                "source": "https://france-visas.gouv.fr/en_US/web/france-visas/long-stay-visa",
+                "underQuestions": []
+            },
+            {
+                "title": "Seguro de Salud",
+                "type": "Información",
+                "description": "Adquiere cobertura de seguro de salud, la cual puede ser necesaria antes de acceder al sistema de salud público francés.",
+                "question": "¿Tienes cobertura de seguro de salud?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Solicitar un Número de Seguro Social",
+                "type": "Procedimiento",
+                "description": "Solicita un número de seguridad social (Numéro de Sécurité Sociale o NISS) en la oficina local de la Seguridad Social (CPAM). Proporciona los documentos necesarios.",
+                "question": "¿Has solicitado un número de seguro social?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Enviar Documentos Necesarios",
+                "type": "Procedimiento",
+                "description": "Envía los documentos requeridos a la CPAM para establecer la elegibilidad en el sistema de seguridad social francés.",
+                "question": "¿Has enviado los documentos necesarios?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": [
+                    {
+                        "title": "Pasaporte",
+                        "type": "Documento",
+                        "description": "Una copia de tu pasaporte válido, con una validez mínima de tres meses más allá de la fecha prevista de salida.",
+                        "question": "¿Has incluido una copia de tu pasaporte válido?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Visa o Permiso de Residencia",
+                        "type": "Documento",
+                        "description": "Una copia de tu visa de larga estancia o permiso de residencia para Francia.",
+                        "question": "¿Has incluido una copia de tu visa de larga estancia o permiso de residencia?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Comprobante de Domicilio",
+                        "type": "Documento",
+                        "description": "Comprobante de tu domicilio en Francia, como una factura de servicios públicos o contrato de alquiler.",
+                        "question": "¿Has incluido comprobante de tu domicilio en Francia?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    },
+                    {
+                        "title": "Comprobante de Seguro de Salud",
+                        "type": "Documento",
+                        "description": "Documentación que demuestre que tienes cobertura de seguro de salud en Francia.",
+                        "question": "¿Has incluido comprobante de tu cobertura de seguro de salud?",
+                        "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental"
+                    }
+                ]
+            },
+            {
+                "title": "Solicitar la Carte Vitale",
+                "type": "Procedimiento",
+                "description": "Solicita la Carte Vitale, la tarjeta de seguro de salud, en la oficina de CPAM. Proporciona documentos adicionales según sea necesario.",
+                "question": "¿Has solicitado la Carte Vitale?",
+                "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
+                "underQuestions": []
+            },
+            {
+                "title": "Recibir la Carte Vitale",
+                "type": "Recopilación",
+                "description": "Una vez procesada, la Carte Vitale se enviará por correo. Utiliza esta tarjeta para acceder al sistema de atención médica francés.",
+                "question": "¿Has recibido tu Carte Vitale?",
                 "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
                 "underQuestions": []
             }
