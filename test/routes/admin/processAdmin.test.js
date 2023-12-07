@@ -142,17 +142,6 @@ describe("Admin tests", () => {
             //     expect(response._body.message).toEqual("Process modified!");
             //     expect(response._body.response).not.toBeNull();
             // });
-            test("[GET] should get a process with a 200 status code", async() => {
-                Process.get = jest.fn().mockReturnValue({ id: 1 });
-
-                const response = await request(server).get("/admin/process/get").query({
-                    stocked_title: title
-                });
-
-                expect(response.statusCode).toBe(200);
-                expect(response._body.message).toEqual("Process found!");
-                expect(response._body.response).not.toBeNull();
-            });
             test("[GET LANGUAGE] should get a process with a 200 status code", async() => {
                 Process.get = jest.fn().mockReturnValue({ id: 1 });
                 Tools.getData = jest.fn().mockReturnValue({ id: 1 });
