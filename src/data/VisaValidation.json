@@ -1,0 +1,488 @@
+{
+  "english": {
+    "title": "Validation of your residence permit",
+    "description": "You must complete this process in the first few days of your arrival. It will then allow you to register for social security and travel during your stay. Here is the address you need to visit -> https://administration-foreigners-in-france.interior.gouv.fr",
+    "steps": [
+      {
+        "title": "Student Visa",
+        "type": "Information",
+        "description": "What do you need to validate your VLS-TS?",
+        "question": "Do you know which type of visa you need?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": []
+      },
+      {
+        "title": "Required Documents",
+        "type": "Document",
+        "description": "You will need to provide the following documents for your visa application.",
+        "question": "Do you have a complete file for your visa application?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": [
+          {
+            "title": "Email Address",
+            "type": "Information",
+            "description": "You will need a valid email address.",
+            "question": "Do you have a valid email address?",
+            "source": ""
+          },
+          {
+            "title": "Visa Information",
+            "type": "Information",
+            "description": "You will need information from your visa.",
+            "question": "Do you have information from your visa?",
+            "source": ""
+          },
+          {
+            "title": "Arrival Date in France",
+            "type": "Information",
+            "description": "You need to communicate your arrival date in France.",
+            "question": "Have you communicated your arrival date in France?",
+            "source": ""
+          },
+          {
+            "title": "Residential Address in France",
+            "type": "Information",
+            "description": "You need to communicate your residential address in France.",
+            "question": "Have you communicated your residential address in France?",
+            "source": ""
+          },
+          {
+            "title": "Payment Card",
+            "type": "Information",
+            "description": "You will need a payment card to pay online for the residence permit issuance fee.",
+            "question": "Do you have a payment card?",
+            "source": ""
+          },
+          {
+            "title": "No Payment Card",
+            "type": "Information",
+            "description": "No worries! You can buy an electronic stamp at a tobacco shop, on a dedicated terminal, and pay in cash.",
+            "question": "Don't have a payment card?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "Schedule an Appointment",
+        "type": "Appointment",
+        "description": "You will need to submit your application in person at the French embassy or consulate in your country of residence. You will need to pay the visa fee when you submit your application. Remember to bring all the necessary documents with you to your appointment.",
+        "question": "Have you submitted your application?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Collect Your Visa",
+        "type": "Collect",
+        "description": "You will need to collect your visa from the French embassy or consulate in your country of residence. You will need to present your passport and visa fee receipt when you collect your visa.",
+        "question": "Have you collected your visa yet?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  },
+  "français": {
+    "title": "Validation de votre titre de séjour",
+    "description": "Vous devez effectuer cette démarche dans les tous premiers jours de votre arrivée. Elle vous permettra ensuite de vous inscrire à la sécurité sociale et de voyager pendant votre séjour. Voici l’adresse à laquelle vous devez vous connecter -> https://administration-etrangers-en-france.interieur.gouv.fr",
+    "steps": [
+      {
+        "title": "Visa étudiant",
+        "type": "Information",
+        "description": "De quoi avez-vous besoin pour valider votre VLS-TS ?",
+        "question": "Savez-vous de quel type de visa vous avez besoin ?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Documents nécessaires",
+        "type": "Document",
+        "description": "Vous aurez besoin de fournir les documents suivants pour votre demande de visa.",
+        "question": "Avez-vous un dossier complet pour votre demande de visa ?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=fr",
+        "underQuestions": [
+          {
+            "title": "Adresse électronique",
+            "type": "Information",
+            "description": "Vous aurez besoin d'une adresse électronique (email) valide.",
+            "question": "Avez-vous une adresse électronique valide ?",
+            "source": ""
+          },
+          {
+            "title": "Informations sur le visa",
+            "type": "Information",
+            "description": "Vous aurez besoin des informations figurant sur votre visa.",
+            "question": "Avez-vous les informations de votre visa ?",
+            "source": ""
+          },
+          {
+            "title": "Date d'arrivée en France",
+            "type": "Information",
+            "description": "Vous devrez communiquer votre date d'arrivée en France.",
+            "question": "Avez-vous communiqué votre date d'arrivée en France ?",
+            "source": ""
+          },
+          {
+            "title": "Adresse de résidence en France",
+            "type": "Information",
+            "description": "Vous devrez communiquer votre adresse de résidence en France.",
+            "question": "Avez-vous communiqué votre adresse de résidence en France ?",
+            "source": ""
+          },
+          {
+            "title": "Carte de paiement",
+            "type": "Information",
+            "description": "Vous aurez besoin d'une carte de paiement pour payer en ligne la taxe de délivrance d'un titre de séjour.",
+            "question": "Possédez-vous une carte de paiement ?",
+            "source": ""
+          },
+          {
+            "title": "Aucune carte de paiement",
+            "type": "Information",
+            "description": "Pas d'inquiétude ! Vous pouvez acheter un timbre électronique dans un bureau de tabac, sur une borne dédiée, et le payer en espèces.",
+            "question": "Vous ne possédez pas de carte de paiement ?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "Prendre rendez-vous",
+        "type": "Appointment",
+        "description": "Vous devrez soumettre votre demande en personne à l'ambassade ou au consulat français dans votre pays de résidence. Vous devrez payer les frais de visa lors de la soumission de votre demande. N'oubliez pas d'apporter tous les documents nécessaires à votre rendez-vous.",
+        "question": "Avez-vous soumis votre demande ?",
+        "source": "https://administration-etrangers-en-france.interieur.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Récupérer votre visa",
+        "type": "Collect",
+        "description": "Vous devrez récupérer votre visa à l'ambassade ou au consulat français dans votre pays de résidence. Vous devrez présenter votre passeport et le reçu des frais de visa lors de la récupération de votre visa.",
+        "question": "Avez-vous déjà récupéré votre visa ?",
+        "source": "https://administration-etrangers-en-france.interieur.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  },
+  "deutsh": {
+    "title": "Validierung Ihrer Aufenthaltserlaubnis",
+    "description": "Sie müssen diesen Prozess in den ersten Tagen nach Ihrer Ankunft abschließen. Dies ermöglicht es Ihnen, sich für die Sozialversicherung anzumelden und während Ihres Aufenthalts zu reisen. Hier ist die Adresse, die Sie besuchen müssen -> https://administration-foreigners-in-france.interior.gouv.fr",
+    "steps": [
+      {
+        "title": "Studentenvisum",
+        "type": "Information",
+        "description": "Was benötigen Sie, um Ihr VLS-TS zu validieren?",
+        "question": "Wissen Sie, welchen Visumtyp Sie benötigen?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": []
+      },
+      {
+        "title": "Erforderliche Dokumente",
+        "type": "Dokument",
+        "description": "Sie müssen die folgenden Dokumente für Ihren Visumantrag bereitstellen.",
+        "question": "Haben Sie eine vollständige Datei für Ihren Visumantrag?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": [
+          {
+            "title": "E-Mail-Adresse",
+            "type": "Information",
+            "description": "Sie benötigen eine gültige E-Mail-Adresse.",
+            "question": "Haben Sie eine gültige E-Mail-Adresse?",
+            "source": ""
+          },
+          {
+            "title": "Visuminformationen",
+            "type": "Information",
+            "description": "Sie benötigen Informationen von Ihrem Visum.",
+            "question": "Haben Sie Informationen von Ihrem Visum?",
+            "source": ""
+          },
+          {
+            "title": "Ankunftsdatum in Frankreich",
+            "type": "Information",
+            "description": "Sie müssen Ihr Ankunftsdatum in Frankreich mitteilen.",
+            "question": "Haben Sie Ihr Ankunftsdatum in Frankreich mitgeteilt?",
+            "source": ""
+          },
+          {
+            "title": "Wohnadresse in Frankreich",
+            "type": "Information",
+            "description": "Sie müssen Ihre Wohnadresse in Frankreich mitteilen.",
+            "question": "Haben Sie Ihre Wohnadresse in Frankreich mitgeteilt?",
+            "source": ""
+          },
+          {
+            "title": "Zahlungskarte",
+            "type": "Information",
+            "description": "Sie benötigen eine Zahlungskarte, um die Gebühr für die Erteilung der Aufenthaltserlaubnis online zu bezahlen.",
+            "question": "Haben Sie eine Zahlungskarte?",
+            "source": ""
+          },
+          {
+            "title": "Keine Zahlungskarte",
+            "type": "Information",
+            "description": "Keine Sorge! Sie können eine elektronische Marke in einem Tabakgeschäft, an einem speziellen Terminal kaufen und bar bezahlen.",
+            "question": "Haben Sie keine Zahlungskarte?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "Einen Termin vereinbaren",
+        "type": "Termin",
+        "description": "Sie müssen Ihre Bewerbung persönlich in der französischen Botschaft oder dem Konsulat in Ihrem Wohnsitzland einreichen. Sie müssen die Visumgebühr bei Einreichung Ihrer Bewerbung bezahlen. Vergessen Sie nicht, alle erforderlichen Dokumente zu Ihrem Termin mitzubringen.",
+        "question": "Haben Sie Ihre Bewerbung eingereicht?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Ihr Visum abholen",
+        "type": "Abholen",
+        "description": "Sie müssen Ihr Visum von der französischen Botschaft oder dem Konsulat in Ihrem Wohnsitzland abholen. Sie müssen Ihren Reisepass und den Beleg für die Visumgebühr vorlegen, wenn Sie Ihr Visum abholen.",
+        "question": "Haben Sie Ihr Visum bereits abgeholt?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  },
+  "korean": {
+    "title": "거주 허가서 유효성 검증",
+    "description": "당신은 도착한 지 첫 몇 일 안에이 프로세스를 완료해야 합니다. 그런 다음 이 프로세스를 통해 사회 보장에 등록하고 체류 중에 여행할 수 있게 됩니다. 방문해야 할 주소는 다음과 같습니다 -> https://administration-foreigners-in-france.interior.gouv.fr",
+    "steps": [
+      {
+        "title": "학생 비자",
+        "type": "정보",
+        "description": "VLS-TS를 유효화하려면 무엇이 필요한가요?",
+        "question": "어떤 종류의 비자가 필요한지 아십니까?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": []
+      },
+      {
+        "title": "필수 서류",
+        "type": "문서",
+        "description": "비자 신청을 위해 다음 문서를 제공해야 합니다.",
+        "question": "비자 신청을 위한 완전한 파일이 있습니까?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": [
+          {
+            "title": "이메일 주소",
+            "type": "정보",
+            "description": "유효한 이메일 주소가 필요합니다.",
+            "question": "유효한 이메일 주소를 갖고 계십니까?",
+            "source": ""
+          },
+          {
+            "title": "비자 정보",
+            "type": "정보",
+            "description": "비자 정보가 필요합니다.",
+            "question": "비자 정보를 갖고 계십니까?",
+            "source": ""
+          },
+          {
+            "title": "프랑스 도착 날짜",
+            "type": "정보",
+            "description": "프랑스 도착 날짜를 통보해야 합니다.",
+            "question": "프랑스 도착 날짜를 통보했습니까?",
+            "source": ""
+          },
+          {
+            "title": "프랑스 거주 주소",
+            "type": "정보",
+            "description": "프랑스 거주 주소를 통보해야 합니다.",
+            "question": "프랑스 거주 주소를 통보했습니까?",
+            "source": ""
+          },
+          {
+            "title": "지불 카드",
+            "type": "정보",
+            "description": "거주 허가서 발급 수수료를 온라인으로 지불하기 위해 지불 카드가 필요합니다.",
+            "question": "지불 카드를 갖고 계십니까?",
+            "source": ""
+          },
+          {
+            "title": "지불 카드 없음",
+            "type": "정보",
+            "description": "걱정 마세요! 담배 가게에서 전자 스탬프를 구입하고 전용 단말기에서 현금으로 지불할 수 있습니다.",
+            "question": "지불 카드가 없습니까?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "면접 일정 잡기",
+        "type": "면접",
+        "description": "당신은 국내 거주지의 프랑스 대사관이나 영사관에서 신청서를 직접 제출해야 합니다. 신청서를 제출할 때 비자 수수료를 지불해야 합니다. 면접에 필요한 모든 문서를 함께 가져오는 것을 잊지 마세요.",
+        "question": "신청서를 제출했습니까?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "비자 수령",
+        "type": "수령",
+        "description": "당신은 국내 거주지의 프랑스 대사관이나 영사관에서 비자를 수령해야 합니다. 비자를 수령할 때 여권과 비자 수수료 영수증을 제시해야 합니다.",
+        "question": "비자를 이미 수령했습니까?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  },
+  "indonesia": {
+    "title": "Validasi Izin Tinggal Anda",
+    "description": "Anda harus menyelesaikan proses ini dalam beberapa hari pertama setelah kedatangan Anda. Ini akan memungkinkan Anda mendaftar untuk jaminan sosial dan bepergian selama masa tinggal Anda. Berikut adalah alamat yang perlu Anda kunjungi -> https://administration-foreigners-in-france.interior.gouv.fr",
+    "steps": [
+      {
+        "title": "Visa Mahasiswa",
+        "type": "Informasi",
+        "description": "Apa yang Anda butuhkan untuk memvalidasi VLS-TS Anda?",
+        "question": "Apakah Anda tahu jenis visa yang Anda butuhkan?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": []
+      },
+      {
+        "title": "Dokumen yang Diperlukan",
+        "type": "Dokumen",
+        "description": "Anda perlu menyediakan dokumen-dokumen berikut untuk aplikasi visa Anda.",
+        "question": "Apakah Anda memiliki file lengkap untuk aplikasi visa Anda?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": [
+          {
+            "title": "Alamat Email",
+            "type": "Informasi",
+            "description": "Anda akan memerlukan alamat email yang valid.",
+            "question": "Apakah Anda memiliki alamat email yang valid?",
+            "source": ""
+          },
+          {
+            "title": "Informasi Visa",
+            "type": "Informasi",
+            "description": "Anda akan memerlukan informasi dari visa Anda.",
+            "question": "Apakah Anda memiliki informasi dari visa Anda?",
+            "source": ""
+          },
+          {
+            "title": "Tanggal Kedatangan di Prancis",
+            "type": "Informasi",
+            "description": "Anda perlu menyampaikan tanggal kedatangan Anda di Prancis.",
+            "question": "Apakah Anda telah menyampaikan tanggal kedatangan Anda di Prancis?",
+            "source": ""
+          },
+          {
+            "title": "Alamat Tinggal di Prancis",
+            "type": "Informasi",
+            "description": "Anda perlu menyampaikan alamat tinggal Anda di Prancis.",
+            "question": "Apakah Anda telah menyampaikan alamat tinggal Anda di Prancis?",
+            "source": ""
+          },
+          {
+            "title": "Kartu Pembayaran",
+            "type": "Informasi",
+            "description": "Anda akan memerlukan kartu pembayaran untuk membayar biaya penerbitan izin tinggal secara online.",
+            "question": "Apakah Anda memiliki kartu pembayaran?",
+            "source": ""
+          },
+          {
+            "title": "Tidak Ada Kartu Pembayaran",
+            "type": "Informasi",
+            "description": "Tidak masalah! Anda dapat membeli prangko elektronik di toko tembakau, pada terminal khusus, dan membayarnya dengan uang tunai.",
+            "question": "Tidak punya kartu pembayaran?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "Jadwalkan Janji",
+        "type": "Janji",
+        "description": "Anda perlu mengajukan aplikasi secara langsung di kedutaan besar atau konsulat Prancis di negara tempat Anda tinggal. Anda perlu membayar biaya visa saat mengajukan aplikasi. Jangan lupa membawa semua dokumen yang diperlukan saat janji Anda.",
+        "question": "Apakah Anda telah mengajukan aplikasi Anda?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Ambil Visa Anda",
+        "type": "Ambil",
+        "description": "Anda perlu mengambil visa Anda dari kedutaan besar atau konsulat Prancis di negara tempat Anda tinggal. Anda perlu menunjukkan paspor dan tanda terima biaya visa saat mengambil visa Anda.",
+        "question": "Apakah Anda sudah mengambil visa Anda?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  },
+  "espagnol": {
+    "title": "Validación de su permiso de residencia",
+    "description": "Debe completar este proceso en los primeros días de su llegada. Luego le permitirá registrarse en la seguridad social y viajar durante su estancia. Aquí está la dirección a la que debe acceder -> https://administration-foreigners-in-france.interior.gouv.fr",
+    "steps": [
+      {
+        "title": "Visa de Estudiante",
+        "type": "Información",
+        "description": "¿Qué necesita para validar su VLS-TS?",
+        "question": "¿Sabe qué tipo de visa necesita?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": []
+      },
+      {
+        "title": "Documentos Necesarios",
+        "type": "Documento",
+        "description": "Necesitará proporcionar los siguientes documentos para su solicitud de visa.",
+        "question": "¿Tiene un archivo completo para su solicitud de visa?",
+        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en",
+        "underQuestions": [
+          {
+            "title": "Dirección de Correo Electrónico",
+            "type": "Información",
+            "description": "Necesitará una dirección de correo electrónico válida.",
+            "question": "¿Tiene una dirección de correo electrónico válida?",
+            "source": ""
+          },
+          {
+            "title": "Información de la Visa",
+            "type": "Información",
+            "description": "Necesitará información de su visa.",
+            "question": "¿Tiene información de su visa?",
+            "source": ""
+          },
+          {
+            "title": "Fecha de Llegada a Francia",
+            "type": "Información",
+            "description": "Debe comunicar su fecha de llegada a Francia.",
+            "question": "¿Ha comunicado su fecha de llegada a Francia?",
+            "source": ""
+          },
+          {
+            "title": "Dirección de Residencia en Francia",
+            "type": "Información",
+            "description": "Debe comunicar su dirección de residencia en Francia.",
+            "question": "¿Ha comunicado su dirección de residencia en Francia?",
+            "source": ""
+          },
+          {
+            "title": "Tarjeta de Pago",
+            "type": "Información",
+            "description": "Necesitará una tarjeta de pago para pagar en línea la tarifa de emisión del permiso de residencia.",
+            "question": "¿Tiene una tarjeta de pago?",
+            "source": ""
+          },
+          {
+            "title": "Sin Tarjeta de Pago",
+            "type": "Información",
+            "description": "¡No se preocupe! Puede comprar un sello electrónico en una tabaquería, en un terminal dedicado y pagarlo en efectivo.",
+            "question": "¿No tiene tarjeta de pago?",
+            "source": ""
+          }
+        ]
+      },
+      {
+        "title": "Programar una Cita",
+        "type": "Cita",
+        "description": "Deberá presentar su solicitud en persona en la embajada o consulado francés en su país de residencia. Deberá pagar la tarifa de visa al presentar su solicitud. Recuerde llevar todos los documentos necesarios a su cita.",
+        "question": "¿Ha presentado su solicitud?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      },
+      {
+        "title": "Recoger su Visa",
+        "type": "Recoger",
+        "description": "Deberá recoger su visa en la embajada o consulado francés en su país de residencia. Deberá presentar su pasaporte y el recibo de la tarifa de visa cuando recoja su visa.",
+        "question": "¿Ya ha recogido su visa?",
+        "source": "https://administration-foreigners-in-france.interior.gouv.fr",
+        "underQuestions": []
+      }
+    ]
+  }
+}

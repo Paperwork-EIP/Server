@@ -1,11 +1,9 @@
 {
-    "english":
-    {
+    "english": {
         "title": "Resident Permit",
         "description": "A French resident permit, also known as a titre de séjour, is a document that allows non-EU citizens to live and work in France for an extended period of time. The permit is issued by the French government and is valid for one year, renewable annually.",
         "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
-        "steps":
-        [
+        "steps": [
             {
                 "title": "Prepare the necessary documents.",
                 "type": "Document",
@@ -82,13 +80,11 @@
             }
         ]
     },
-    "français":
-    {
+    "français": {
         "title": "Titre de séjour",
         "description": "Un titre de séjour français est un document qui permet aux citoyens non européens de vivre et de travailler en France pendant une période prolongée. Le permis est délivré par le gouvernement français et est valable un an, renouvelable annuellement.",
         "source": "https://www.service-public.fr/particuliers/vosdroits/F39",
-        "steps":
-        [
+        "steps": [
             {
                 "title": "Préparez les documents nécessaires.",
                 "type": "Document",
@@ -101,7 +97,7 @@
                         "type": "Document",
                         "description": "Vous aurez besoin d'un passeport valide.",
                         "question": "Avez-vous un passeport valide ?",
-                        "source": "https://fr.wikipedia.org/wiki/Passeport"   
+                        "source": "https://fr.wikipedia.org/wiki/Passeport"
                     },
                     {
                         "title": "Visa long séjour",
@@ -160,6 +156,330 @@
                 "type": "Appointment",
                 "description": "Vous devrez récupérer votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence.",
                 "question": "Vous avez récupéré votre titre de séjour à la préfecture ou sous-préfecture de votre lieu de résidence ?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
+            }
+        ]
+    },
+    "deutsch": {
+        "title": "Aufenthaltstitel",
+        "description": "Ein französischer Aufenthaltstitel, auch bekannt als Titre de Séjour, ist ein Dokument, das es Nicht-EU-Bürgern ermöglicht, für eine längere Zeit in Frankreich zu leben und zu arbeiten. Der Aufenthaltstitel wird von der französischen Regierung ausgestellt und ist ein Jahr gültig, jährlich verlängerbar.",
+        "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+        "steps": [
+            {
+                "title": "Bereiten Sie die erforderlichen Dokumente vor.",
+                "type": "Dokument",
+                "description": "Sie benötigen eine Akte von etwa zehn ausgefüllten Dokumenten für Ihren Antrag auf einen Aufenthaltstitel.",
+                "question": "Haben Sie eine vollständige Akte für Ihren Antrag auf einen Aufenthaltstitel?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+                "underQuestions": [
+                    {
+                        "title": "Reisepass",
+                        "type": "Dokument",
+                        "description": "Sie benötigen einen gültigen Reisepass.",
+                        "question": "Haben Sie einen gültigen Reisepass?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Langzeitvisum",
+                        "type": "Dokument",
+                        "description": "Sie benötigen Ihr aktuelles Langzeitvisum. Wenn Sie in Frankreich bleiben möchten, müssen Sie spätestens 2 Monate vor Ablauf Ihres Visums einen Antrag auf eine Aufenthaltserlaubnis bei der Präfektur oder Unterpräfektur Ihres Wohnsitzes stellen.",
+                        "question": "Haben Sie ein Langzeitvisum?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
+                    },
+                    {
+                        "title": "Nachweis der Unterkunft",
+                        "type": "Dokument",
+                        "description": "Sie benötigen einen Nachweis der Unterkunft in Frankreich.",
+                        "question": "Haben Sie einen Nachweis der Unterkunft in Frankreich?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Nachweis der finanziellen Mittel",
+                        "type": "Dokument",
+                        "description": "Sie benötigen einen Nachweis der finanziellen Mittel.",
+                        "question": "Haben Sie einen Nachweis der finanziellen Mittel?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Antragsformular",
+                        "type": "Dokument",
+                        "description": "Sie benötigen ein ausgefülltes Antragsformular.",
+                        "question": "Haben Sie ein ausgefülltes Antragsformular?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Krankenversicherung",
+                        "type": "Dokument",
+                        "description": "Sie benötigen einen Nachweis der Krankenversicherungsdeckung.",
+                        "question": "Haben Sie einen Nachweis der Krankenversicherungsdeckung?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Fotos",
+                        "type": "Dokument",
+                        "description": "Sie benötigen 2 Passfotos.",
+                        "question": "Haben Sie 2 Passfotos?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Einen Termin vereinbaren",
+                "type": "Termin",
+                "description": "Sie müssen einen Termin bei der Präfektur oder Unterpräfektur Ihres Wohnsitzes vereinbaren. Dies können Sie online oder telefonisch tun.",
+                "question": "Haben Sie einen Termin bei der Präfektur oder Unterpräfektur Ihres Wohnsitzes vereinbart?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
+            },
+            {
+                "title": "Holen Sie sich Ihren Aufenthaltstitel",
+                "type": "Termin",
+                "description": "Sie müssen zur Präfektur oder Unterpräfektur Ihres Wohnsitzes gehen, um Ihren Aufenthaltstitel zu erhalten.",
+                "question": "Sind Sie zur Präfektur oder Unterpräfektur Ihres Wohnsitzes gegangen, um Ihren Aufenthaltstitel abzuholen?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
+            }
+        ]
+    },
+    "korean": {
+        "title": "거주 허가",
+        "description": "프랑스 거주 허가증, 또는 티트 드 세쥬르(Titre de Séjour)로 알려진 이 문서는 비유럽 연합 시민들이 프랑스에서 장기간 거주하고 일할 수 있도록 허용하는 문서입니다. 이 허가증은 프랑스 정부에 의해 발급되며 1년 동안 유효하며 매년 갱신됩니다.",
+        "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+        "steps": [
+            {
+                "title": "필요한 문서 준비하기",
+                "type": "문서",
+                "description": "거주 허가증 신청을 위한 약 열 가지의 완료된 문서가 포함된 파일이 필요합니다.",
+                "question": "거주 허가증 신청을 위한 완료된 파일이 있나요?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+                "underQuestions": [
+                    {
+                        "title": "여권",
+                        "type": "문서",
+                        "description": "유효한 여권이 필요합니다.",
+                        "question": "유효한 여권이 있나요?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "장기체류비자",
+                        "type": "문서",
+                        "description": "프랑스에서 체류를 원하는 경우 현재의 장기체류비자가 필요하며 비자 만료 2개월 전에 거주지의 프레펙처 또는 지청 프레펙처에 거주 허가증 신청을 제출해야 합니다.",
+                        "question": "장기체류비자를 가지고 계신가요?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
+                    },
+                    {
+                        "title": "거주지 증빙서류",
+                        "type": "문서",
+                        "description": "프랑스의 거주지를 증명하는 서류가 필요합니다.",
+                        "question": "프랑스의 거주지를 증명하는 서류를 가지고 계신가요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "재정 자원 증빙서류",
+                        "type": "문서",
+                        "description": "재정 자원을 증명하는 서류가 필요합니다.",
+                        "question": "재정 자원을 증명하는 서류를 가지고 계신가요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "신청서",
+                        "type": "문서",
+                        "description": "완료된 신청서가 필요합니다.",
+                        "question": "완료된 신청서가 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "건강 보험",
+                        "type": "문서",
+                        "description": "건강 보험 가입을 증명하는 서류가 필요합니다.",
+                        "question": "건강 보험 가입을 증명하는 서류를 가지고 계신가요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "사진",
+                        "type": "문서",
+                        "description": "2장의 여권 사진이 필요합니다.",
+                        "question": "2장의 여권 사진이 있나요?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "예약하기",
+                "type": "예약",
+                "description": "거주지의 프레펙처 또는 지청 프레펙처에서 예약을 하셔야 합니다. 이는 온라인이나 전화로 가능합니다.",
+                "question": "거주지의 프레펙처 또는 지청 프레펙처에서 예약을 하셨나요?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
+            },
+            {
+                "title": "거주 허가증 받기",
+                "type": "예약",
+                "description": "거주지의 프레펙처 또는 지청 프레펙처에 방문하여 거주 허가증을 받아야 합니다.",
+                "question": "거주지의 프레펙처 또는 지청 프레펙처에 방문하여 거주 허가증을 받으셨나요?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
+            }
+        ]
+    },
+    "indonesia": {
+        "title": "Izin Tinggal",
+        "description": "Izin tinggal di Prancis, juga dikenal sebagai titre de séjour, adalah dokumen yang memungkinkan warga negara non-UE untuk tinggal dan bekerja di Prancis untuk jangka waktu yang diperpanjang. Izin ini diterbitkan oleh pemerintah Prancis dan berlaku selama satu tahun, dapat diperpanjang setiap tahunnya.",
+        "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+        "steps": [
+            {
+                "title": "Persiapkan dokumen yang diperlukan.",
+                "type": "Dokumen",
+                "description": "Anda akan memerlukan berkas sekitar sepuluh dokumen yang sudah diisi untuk permohonan izin tinggal Anda.",
+                "question": "Apakah Anda memiliki berkas lengkap untuk aplikasi izin tinggal Anda?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+                "underQuestions": [
+                    {
+                        "title": "Paspor",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan paspor yang valid.",
+                        "question": "Apakah Anda memiliki paspor yang valid?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Visa Tinggal Lama",
+                        "type": "Dokumen",
+                        "description": "Anda akan memerlukan visa tinggal lama Anda yang saat ini berlaku. Jika Anda ingin tinggal di Prancis, Anda harus mengajukan permohonan kartu tinggal dua bulan sebelum visa Anda berakhir ke prefektur atau sub-prefektur di tempat tinggal Anda.",
+                        "question": "Apakah Anda memiliki visa tinggal lama?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
+                    },
+                    {
+                        "title": "Bukti Akomodasi",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan bukti akomodasi di Prancis.",
+                        "question": "Apakah Anda memiliki bukti akomodasi di Prancis?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Bukti Sumber Keuangan",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan bukti sumber keuangan.",
+                        "question": "Apakah Anda memiliki bukti sumber keuangan?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Formulir Aplikasi",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan formulir aplikasi yang sudah diisi.",
+                        "question": "Apakah Anda memiliki formulir aplikasi yang sudah diisi?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Asuransi Kesehatan",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan bukti cakupan asuransi kesehatan.",
+                        "question": "Apakah Anda memiliki bukti cakupan asuransi kesehatan?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Foto",
+                        "type": "Dokumen",
+                        "description": "Anda memerlukan 2 foto berukuran paspor.",
+                        "question": "Apakah Anda memiliki 2 foto berukuran paspor?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Jadwalkan Janji",
+                "type": "Janji",
+                "description": "Anda perlu membuat janji di prefektur atau sub-prefektur tempat tinggal Anda. Anda dapat melakukannya secara online atau melalui telepon.",
+                "question": "Apakah Anda sudah membuat janji di prefektur atau sub-prefektur tempat tinggal Anda?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
+            },
+            {
+                "title": "Dapatkan Izin Tinggal Anda",
+                "type": "Janji",
+                "description": "Anda perlu pergi ke prefektur atau sub-prefektur tempat tinggal Anda untuk mendapatkan izin tinggal Anda.",
+                "question": "Apakah Anda sudah pergi ke prefektur atau sub-prefektur tempat tinggal Anda untuk mendapatkan izin tinggal Anda?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
+                "underQuestions": []
+            }
+        ]
+    },
+    "espagnol": {
+        "title": "Permiso de Residencia",
+        "description": "Un permiso de residencia en Francia, también conocido como titre de séjour, es un documento que permite a ciudadanos no pertenecientes a la Unión Europea vivir y trabajar en Francia por un período prolongado. El permiso es emitido por el gobierno francés y es válido por un año, renovable anualmente.",
+        "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+        "steps": [
+            {
+                "title": "Prepara los documentos necesarios.",
+                "type": "Documento",
+                "description": "Necesitarás un archivo de aproximadamente diez documentos completados para tu solicitud de permiso de residencia.",
+                "question": "¿Tienes un archivo completo para tu solicitud de permiso de residencia?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens#",
+                "underQuestions": [
+                    {
+                        "title": "Pasaporte",
+                        "type": "Documento",
+                        "description": "Necesitarás un pasaporte válido",
+                        "question": "¿Tienes un pasaporte válido?",
+                        "source": "https://en.wikipedia.org/wiki/Passport"
+                    },
+                    {
+                        "title": "Visa de Estancia Prolongada",
+                        "type": "Documento",
+                        "description": "Necesitarás tu visa de estancia prolongada actual. Si deseas quedarte en Francia, debes presentar una solicitud de tarjeta de residencia dos meses antes de que expire tu visa, en la prefectura o subprefectura de tu domicilio.",
+                        "question": "¿Tienes una visa de estancia prolongada?",
+                        "source": "https://www.service-public.fr/particuliers/vosdroits/F16162?lang=en"
+                    },
+                    {
+                        "title": "Comprobante de Alojamiento",
+                        "type": "Documento",
+                        "description": "Necesitarás un comprobante de alojamiento en Francia",
+                        "question": "¿Tienes un comprobante de alojamiento en Francia?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Comprobante de Recursos Financieros",
+                        "type": "Documento",
+                        "description": "Necesitarás un comprobante de recursos financieros",
+                        "question": "¿Tienes un comprobante de recursos financieros?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Formulario de Solicitud",
+                        "type": "Documento",
+                        "description": "Necesitarás un formulario de solicitud completado",
+                        "question": "¿Tienes un formulario de solicitud completado?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/forms"
+                    },
+                    {
+                        "title": "Seguro de Salud",
+                        "type": "Documento",
+                        "description": "Necesitarás un comprobante de cobertura de seguro de salud",
+                        "question": "¿Tienes un comprobante de cobertura de seguro de salud?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    },
+                    {
+                        "title": "Fotos",
+                        "type": "Documento",
+                        "description": "Necesitarás 2 fotos tamaño pasaporte",
+                        "question": "¿Tienes 2 fotos tamaño pasaporte?",
+                        "source": "https://france-visas.gouv.fr/en/web/france-visas/faq"
+                    }
+                ]
+            },
+            {
+                "title": "Solicita una cita",
+                "type": "Cita",
+                "description": "Deberás solicitar una cita en la prefectura o subprefectura de tu lugar de residencia. Puedes hacerlo en línea o por teléfono.",
+                "question": "¿Has solicitado una cita en la prefectura o subprefectura de tu lugar de residencia?",
+                "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/les-titres-de-sejour-ressortissants-non-europeens",
+                "underQuestions": []
+            },
+            {
+                "title": "Obtén tu permiso de residencia",
+                "type": "Cita",
+                "description": "Deberás ir a la prefectura o subprefectura de tu lugar de residencia para obtener tu permiso de residencia.",
+                "question": "¿Has ido a la prefectura o subprefectura de tu lugar de residencia para obtener tu permiso de residencia?",
                 "source": "https://www.prefecturedepolice.interieur.gouv.fr/demarches/remise-du-titre-de-sejour",
                 "underQuestions": []
             }
