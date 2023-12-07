@@ -80,7 +80,7 @@
       }
     ]
   },
-  "français": {
+  "french": {
     "title": "Validation de votre titre de séjour",
     "description": "Vous devez effectuer cette démarche dans les tous premiers jours de votre arrivée. Elle vous permettra ensuite de vous inscrire à la sécurité sociale et de voyager pendant votre séjour. Voici l’adresse à laquelle vous devez vous connecter -> https://administration-etrangers-en-france.interieur.gouv.fr",
     "steps": [
@@ -161,7 +161,7 @@
       }
     ]
   },
-  "deutsh": {
+  "german": {
     "title": "Validierung Ihrer Aufenthaltserlaubnis",
     "description": "Sie müssen diesen Prozess in den ersten Tagen nach Ihrer Ankunft abschließen. Dies ermöglicht es Ihnen, sich für die Sozialversicherung anzumelden und während Ihres Aufenthalts zu reisen. Hier ist die Adresse, die Sie besuchen müssen -> https://administration-foreigners-in-france.interior.gouv.fr",
     "steps": [
@@ -323,7 +323,7 @@
       }
     ]
   },
-  "indonesia": {
+  "indonesian": {
     "title": "Validasi Izin Tinggal Anda",
     "description": "Anda harus menyelesaikan proses ini dalam beberapa hari pertama setelah kedatangan Anda. Ini akan memungkinkan Anda mendaftar untuk jaminan sosial dan bepergian selama masa tinggal Anda. Berikut adalah alamat yang perlu Anda kunjungi -> https://administration-foreigners-in-france.interior.gouv.fr",
     "steps": [
@@ -404,7 +404,7 @@
       }
     ]
   },
-  "espagnol": {
+  "spanish": {
     "title": "Validación de su permiso de residencia",
     "description": "Debe completar este proceso en los primeros días de su llegada. Luego le permitirá registrarse en la seguridad social y viajar durante su estancia. Aquí está la dirección a la que debe acceder -> https://administration-foreigners-in-france.interior.gouv.fr",
     "steps": [
