@@ -4,6 +4,7 @@ const Step = require('../../persistence/process/step');
 const Tools = require('../../tools');
 const router = new Router();
 const path = require('path');
+const Users = require('../../persistence/users/users');
 const fs = require('fs');
 
 function getUnderStepData(file, i, j) {
@@ -50,10 +51,12 @@ async function getStepData(stocked_title, step_id, allSteps) {
 
 router.get('/get', async(request, response) => {
     try {
-        const { stocked_title, step_id } = request.query;
+        const { stocked_title, step_id, token } = request.query;
 
-        if (!stocked_title || !step_id)
+        if (!stocked_title || !step_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });    
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -76,11 +79,13 @@ router.get('/get', async(request, response) => {
 });
 
 router.get('/getAll', async(reuest, response) => {
-    const { stocked_title, language } = reuest.query;
+    const { stocked_title, language, token } = reuest.query;
 
     try {
-        if (!stocked_title || !language)
+        if (!stocked_title || !language || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -106,10 +111,12 @@ router.get('/getAll', async(reuest, response) => {
 
 router.post('/add', async(request, response) => {
     try {
-        const { stocked_title, delay, newStep, is_unique = false } = request.body;
+        const { stocked_title, delay, newStep, is_unique = false, token } = request.body;
 
-        if (!stocked_title || !newStep)
+        if (!stocked_title || !newStep || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         if (!Tools.checkStepContent(newStep))
             return response.status(400).json({ message: 'Missing data in the new step.' });
         const find = await Process.get(stocked_title);
@@ -150,10 +157,12 @@ router.post('/add', async(request, response) => {
 
 router.post('/modify', async(request, response) => {
     try {
-        const { stocked_title, step_id, language, delay = 0, newStep, is_unique = false } = request.body;
+        const { stocked_title, step_id, language, delay = 0, newStep, is_unique = false, token } = request.body;
 
-        if (!stocked_title || !step_id || !language || !newStep)
+        if (!stocked_title || !step_id || !language || !newStep || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -205,10 +214,12 @@ router.post('/modify', async(request, response) => {
 
 router.get('/delete', async(request, response) => {
     try {
-        const { stocked_title, step_id } = request.query;
+        const { stocked_title, step_id, token } = request.query;
 
-        if (!stocked_title || !step_id)
+        if (!stocked_title || !step_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });

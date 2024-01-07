@@ -4,14 +4,17 @@ const Step = require('../../persistence/process/step');
 const Tools = require('../../tools');
 const router = new Router();
 const path = require('path');
+const Users = require('../../persistence/users/users');
 const fs = require('fs');
 
 router.get('/getAll', async(reuest, response) => {
-    const { stocked_title, language, step_id } = reuest.query;
+    const { stocked_title, language, step_id, token } = reuest.query;
 
     try {
-        if (!stocked_title || !language || !step_id)
+        if (!stocked_title || !language || !step_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -39,10 +42,12 @@ router.get('/getAll', async(reuest, response) => {
 
 router.post('/add', async(request, response) => {
     try {
-        const { stocked_title, step_id, newUnderStep } = request.body;
+        const { stocked_title, step_id, newUnderStep, token } = request.body;
 
-        if (!stocked_title || !step_id || !newUnderStep)
+        if (!stocked_title || !step_id || !newUnderStep || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         if (!Tools.checkStepContent(newUnderStep))
             return response.status(400).json({ message: 'Missing data in the new under step.' });
         const find = await Process.get(stocked_title);
@@ -88,11 +93,13 @@ router.post('/add', async(request, response) => {
 });
 
 router.post('/modify', async(request, response) => {
-    const { stocked_title, step_id, underStep_id, newUnderStep, language } = request.body;
+    const { stocked_title, step_id, underStep_id, newUnderStep, language, token } = request.body;
 
     try {
-        if (!stocked_title || !step_id || (!underStep_id && underStep_id != 0) || !newUnderStep || !language)
+        if (!stocked_title || !step_id || (!underStep_id && underStep_id != 0) || !newUnderStep || !language || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -141,10 +148,12 @@ router.post('/modify', async(request, response) => {
 
 router.get('/delete', async(request, response) => {
     try {
-        const { stocked_title, step_id, underStep_id } = request.query;
+        const { stocked_title, step_id, underStep_id, token } = request.query;
 
-        if (!stocked_title || !step_id || !underStep_id)
+        if (!stocked_title || !step_id || !underStep_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });

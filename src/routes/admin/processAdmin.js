@@ -3,16 +3,19 @@ const Process = require('../../persistence/process/process');
 const Step = require('../../persistence/process/step');
 const UserProcess = require('../../persistence/userProcess/userProcess');
 const Tools = require('../../tools');
+const Users = require('../../persistence/users/users');
 const router = new Router();
 const path = require('path');
 const fs = require('fs');
 
 router.post('/add', async(request, response) => {
     try {
-        const { stocked_title, content, delay } = request.body;
+        const { token, stocked_title, content, delay } = request.body;
 
-        if (!stocked_title || !content)
+        if (!stocked_title || !content || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (find)
             return response.status(409).json({ message: Tools.errorMessages.processAlreadyExists });
@@ -63,10 +66,12 @@ async function addLanguageProcessFile(stocked_title, language, title, descriptio
 
 router.post('/addLanguage', async(request, response) => {
     try {
-        const { stocked_title, language, title, description, source } = request.body;
+        const { token, stocked_title, language, title, description, source } = request.body;
 
-        if (!stocked_title || !language || !title || !description || !source)
+        if (!stocked_title || !language || !title || !description || !source || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -86,10 +91,12 @@ router.post('/addLanguage', async(request, response) => {
 
 router.get('/delete', async(request, response) => {
     try {
-        const { stocked_title } = request.query;
+        const { stocked_title, token } = request.query;
 
-        if (!stocked_title)
+        if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -117,10 +124,12 @@ router.get('/delete', async(request, response) => {
 
 router.post('/modify', async(request, response) => {
     try {
-        const { stocked_title, title, description, source, delay, language } = request.body;
+        const { stocked_title, title, description, source, delay, language, token } = request.body;
 
-        if (!stocked_title || !language)
+        if (!stocked_title || !language || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -163,10 +172,12 @@ async function modifyProcessFile(stocked_title, language, title, description, so
 
 router.get('/get', async(request, response) => {
     try {
-        const { stocked_title } = request.query;
+        const { stocked_title, token } = request.query;
 
-        if (!stocked_title)
+        if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
@@ -195,10 +206,12 @@ router.get('/get', async(request, response) => {
 
 router.get('/getLanguage', async(request, response) => {
     try {
-        const { stocked_title } = request.query;
+        const { stocked_title, token } = request.query;
 
-        if (!stocked_title)
+        if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+        if (Users.isAdmin(token) === false)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized });    
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
