@@ -7,12 +7,44 @@ module.exports = {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
-      INSERT INTO user_table (username, email, password, email_verified, language)
-        VALUES (${username}, ${email}, ${hashedPassword}, ${email_verified}, ${language})
+      INSERT INTO user_table (username, email, password, email_verified, language, role)
+        VALUES (${username}, ${email}, ${hashedPassword}, ${email_verified}, ${language}, user)
         RETURNING id, email;
       `);
       const [user] = rows;
       return user;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  async getUsers() {
+    try {
+      const { rows } = await db.query(sql`
+      SELECT * FROM user_table;
+      `);
+      return rows;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  async isAdmin(token) {
+    try {
+      const { rows } = await db.query(sql`
+      SELECT role FROM user_table WHERE token=${token} AND role='admin' LIMIT 1;
+      `);
+      return (rows[0] && rows[0].role === 'admin');
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  async setAdmin(email) {
+    try {
+      const { rows } = await db.query(sql`
+      UPDATE user_table SET role='admin' where email=${email};`);
+      return rows[0];
     } catch (error) {
       console.error(error);
       throw error;

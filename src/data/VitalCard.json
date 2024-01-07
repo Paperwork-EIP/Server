@@ -1,6 +1,6 @@
 {
     "english": {
-        "title": "Obtaining a Vital Card in France",
+        "title": "Vital Card",
         "description": "This process outlines the steps to obtain a Carte Vitale (Vital Card) in France for non-European foreigners without a social security number.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
@@ -84,7 +84,7 @@
         ]
     },
     "french": {
-        "title": "Obtention d'une Carte Vitale en France",
+        "title": "Carte Vitale",
         "description": "Ce processus décrit les étapes pour obtenir une Carte Vitale en France pour les étrangers non européens sans numéro de sécurité sociale.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
@@ -168,7 +168,7 @@
         ]
     },
     "german": {
-        "title": "Erhalt einer Vital-Karte in Frankreich",
+        "title": "Vital-Karte",
         "description": "Dieser Prozess beschreibt die Schritte zum Erhalt einer Carte Vitale (Vital-Karte) in Frankreich für nicht-europäische Ausländer ohne Sozialversicherungsnummer.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
@@ -252,7 +252,7 @@
         ]
     },
     "korean": {
-        "title": "프랑스에서 카르트 비탈(Vital Card) 획득",
+        "title": "바이탈 카드(Vital Card)",
         "description": "이 프로세스는 프랑스에서 사회 보험 번호가 없는 비유럽 외국인을 위한 Carte Vitale(Vital Card)를 얻는 단계를 설명합니다.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
@@ -336,7 +336,7 @@
         ]
     },
     "indonesian": {
-        "title": "Mendapatkan Kartu Vital di Prancis",
+        "title": "Kartu Vital",
         "description": "Proses ini menjelaskan langkah-langkah untuk mendapatkan Carte Vitale (Kartu Vital) di Prancis bagi warga negara non-Eropa yang tidak memiliki nomor asuransi sosial.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
@@ -420,7 +420,7 @@
         ]
     },
     "spanish": {
-        "title": "Obtención de una Tarjeta Vital en Francia",
+        "title": "Tarjeta Vital",
         "description": "Este proceso describe los pasos para obtener una Carte Vitale (Tarjeta Vital) en Francia para extranjeros no europeos sin número de seguridad social.",
         "source": "https://www.ameli.fr/assure/droits-demarches/paris/carte-vitale/etranger-continental",
         "steps": [
