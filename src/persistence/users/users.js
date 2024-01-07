@@ -34,10 +34,7 @@ module.exports = {
       const { rows } = await db.query(sql`
       SELECT role FROM user_table WHERE token=${token} AND role='admin' LIMIT 1;
       `);
-      if (rows[0] && rows[0].role === 'admin')
-        return true;
-      else
-        return false;
+      return (rows[0] && rows[0].role === 'admin');
     } catch (error) {
       console.error(error);
       throw error;
