@@ -8,7 +8,7 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows } = await db.query(sql`
       INSERT INTO user_table (username, email, password, email_verified, language, role)
-        VALUES (${username}, ${email}, ${hashedPassword}, ${email_verified}, ${language}, user)
+        VALUES (${username}, ${email}, ${hashedPassword}, ${email_verified}, ${language}, 'user')
         RETURNING id, email;
       `);
       const [user] = rows;
