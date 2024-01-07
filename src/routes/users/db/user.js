@@ -375,8 +375,9 @@ router.get ('/getUsers', async(request, response) => {
         const { token } = request.query;
         if (!token)
             return response.status(400).json({ error: Tools.errorMessages.missingParameters });
-        if (await User.isAdmin(token) === false)
-            return response.status(401).json({ error: Tools.errorMessages.unauthorized });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         const users = await User.getUsers();
         return response.status(200).json({ users: users });
     } catch (error) {
@@ -390,8 +391,9 @@ router.get ('/getUser', async(request, response) => {
         const { token, email } = request.query;
         if (!token || !email)
             return response.status(400).json({ error: Tools.errorMessages.missingParameters });
-        if (await User.isAdmin(token) === false)
-            return response.status(401).json({ error: Tools.errorMessages.unauthorized });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         const user = await User.find(email);
         if (!user)
             return response.status(404).json({ error: Tools.errorMessages.userNotFound });
@@ -421,8 +423,9 @@ router.post ('/setAdmin', async(request, response) => {
         const { token, email } = request.body;
         if (!token || !email)
             return response.status(400).json({ error: Tools.errorMessages.missingParameters });
-        if (await User.isAdmin(token) === false)
-            return response.status(401).json({ error: Tools.errorMessages.unauthorized });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         if (!await User.find(email))
             return response.status(404).json({ error: Tools.errorMessages.userNotFound });
         const user = await User.setAdmin(email);
@@ -451,8 +454,9 @@ router.post('/modifyUser', async(request, response) => {
         } = request.body;
         if (!token || !user_token)
             return response.status(400).json({ error: Tools.errorMessages.missingParameters });
-        if (User.isAdmin(token) === false)
-            return response.status(401).json({ error: Tools.errorMessages.unauthorized });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         const find = await User.findToken(user_token);
         if (find) {
             const data = {
@@ -488,8 +492,9 @@ router.get('/deleteUser', async(request, response) => {
 
         if (!token || !email)
             return response.status(400).json({ message: 'Missing parameter token.' });
-        if (User.isAdmin(token) === false)
-            return response.status(401).json({ error: Tools.errorMessages.unauthorized });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         const find = await User.find(email)
         if (find) {
             await User.delete(find.email)

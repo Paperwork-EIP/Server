@@ -13,7 +13,8 @@ router.get('/getAll', async(reuest, response) => {
     try {
         if (!stocked_title || !language || !step_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -46,7 +47,8 @@ router.post('/add', async(request, response) => {
 
         if (!stocked_title || !step_id || !newUnderStep || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         if (!Tools.checkStepContent(newUnderStep))
             return response.status(400).json({ message: 'Missing data in the new under step.' });
@@ -98,7 +100,8 @@ router.post('/modify', async(request, response) => {
     try {
         if (!stocked_title || !step_id || (!underStep_id && underStep_id != 0) || !newUnderStep || !language || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -152,7 +155,8 @@ router.get('/delete', async(request, response) => {
 
         if (!stocked_title || !step_id || !underStep_id || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)

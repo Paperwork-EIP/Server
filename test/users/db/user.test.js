@@ -647,11 +647,11 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should get users with a 401 status code", async() => {
+            test("should get users with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
                 const response = await request(server).get("/user/getUsers").query({token: "hyxjnscjksdcnhsdvcnsd"});
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
         });
@@ -677,11 +677,11 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should get user with a 401 status code", async() => {
+            test("should get user with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
                 const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
             test("should get user with a 404 status code", async() => {
@@ -726,11 +726,11 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should delete user with a 401 status code", async() => {
+            test("should delete user with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
                 const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
             test("should delete user with a 404 status code", async() => {
@@ -795,11 +795,11 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should set admin with a 401 status code", async() => {
+            test("should set admin with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
                 const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
             test("should set admin with a 404 status code", async() => {
@@ -875,7 +875,7 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should modify user with a 401 status code", async() => {
+            test("should modify user with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
                 const response = await request(server).post("/user/modifyUser").send({
@@ -886,7 +886,7 @@ describe("User connection tests", () => {
                     new_email: "test",
                     password: "test"
                 });
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
             test("should modify user with a 404 status code", async() => {
@@ -974,11 +974,11 @@ describe("User connection tests", () => {
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
-            test("should delete user with a 401 status code", async() => {
+            test("should delete user with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
                 
                 const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(401);
+                expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
             test("should delete user with a 404 status code", async() => {

@@ -14,7 +14,8 @@ router.post('/add', async(request, response) => {
 
         if (!stocked_title || !content || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (find)
@@ -70,7 +71,8 @@ router.post('/addLanguage', async(request, response) => {
 
         if (!stocked_title || !language || !title || !description || !source || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -95,7 +97,8 @@ router.get('/delete', async(request, response) => {
 
         if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -128,7 +131,8 @@ router.post('/modify', async(request, response) => {
 
         if (!stocked_title || !language || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -176,7 +180,8 @@ router.get('/get', async(request, response) => {
 
         if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
             return response.status(403).json({ message: Tools.errorMessages.unauthorized });
         const find = await Process.get(stocked_title);
         if (!find)
@@ -210,8 +215,9 @@ router.get('/getLanguage', async(request, response) => {
 
         if (!stocked_title || !token)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-        if (Users.isAdmin(token) === false)
-            return response.status(403).json({ message: Tools.errorMessages.unauthorized });    
+        const isAdmin = await Users.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ message: Tools.errorMessages.unauthorized }); 
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });
