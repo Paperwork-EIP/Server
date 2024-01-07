@@ -19,7 +19,8 @@ module.exports = {
                 token text UNIQUE NULL,
                 google_token text NULL,
                 facebook_token text NULL,
-                email_verified bool NOT NULL);`)
+                email_verified bool NOT NULL,
+                role text NOT NULL);`)
             await db.query(sql`CREATE TABLE IF NOT EXISTS role (
                 id SERIAL UNIQUE NOT NULL,
                 access_forum int NOT NULL,

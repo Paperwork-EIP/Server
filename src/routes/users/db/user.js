@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const router = new Router();
 const AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
+const Tools = require('../../../tools');
 const ses = new AWS.SES();
 
 router.post('/register', async(request, response) => {
@@ -367,6 +368,143 @@ router.post("/mobileLogin", async(req, response) => {
         return response.status(500).json({
             message: "Connection with google or facebook failed",
         });
+    }
+});
+router.get ('/getUsers', async(request, response) => {
+    try {
+        const { token } = request.query;
+        if (!token)
+            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
+        const users = await User.getUsers();
+        return response.status(200).json({ users: users });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
+
+router.get ('/getUser', async(request, response) => {
+    try {
+        const { token, email } = request.query;
+        if (!token || !email)
+            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
+        const user = await User.find(email);
+        if (!user)
+            return response.status(404).json({ error: Tools.errorMessages.userNotFound });
+        return response.status(200).json({ user: user });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
+
+router.get ('/isAdmin', async(request, response) => {
+    try {
+        const { token } = request.query;
+        if (!token)
+            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
+        const isAdmin = await User.isAdmin(token);
+        return response.status(200).json({ isAdmin: isAdmin});
+    }
+    catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
+
+router.post ('/setAdmin', async(request, response) => {
+    try {
+        const { token, email } = request.body;
+        if (!token || !email)
+            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
+        if (!await User.find(email))
+            return response.status(404).json({ error: Tools.errorMessages.userNotFound });
+        const user = await User.setAdmin(email);
+        return response.status(200).json({message: 'User is now admin', user: user});
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
+
+router.post('/modifyUser', async(request, response) => {
+    try {
+        const {
+            token,
+            user_token,
+            new_email,
+            language,
+            username,
+            firstname,
+            name,
+            age,
+            address,
+            number_phone,
+            profile_picture,
+            password
+        } = request.body;
+        if (!token || !user_token)
+            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
+        const find = await User.findToken(user_token);
+        if (find) {
+            const data = {
+                "language": language,
+                "password": password,
+                "username": username,
+                "firstname": firstname,
+                "name": name,
+                "age": age,
+                "address": address,
+                "profile_picture": profile_picture,
+                "number_phone": number_phone,
+                "email": new_email,
+            }
+            if (await User.find(new_email) && new_email != find.email)
+                return response.status(409).json({ message: 'Email already used' });
+            if (await User.findUsername(username) && username != find.username)
+                return response.status(409).json({ message: 'Usename already used' });
+            for (let key in data)
+                await User.modifyDatas(find.email, key, data[key]);
+            return response.status(200).json({ message: 'User updated' });
+        } else
+            return response.status(404).json({ message: 'User not found.' });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
+    }
+});
+
+router.get('/deleteUser', async(request, response) => {
+    try {
+        const { token, email } = request.query;
+
+        if (!token || !email)
+            return response.status(400).json({ message: 'Missing parameter token.' });
+        const isAdmin = await User.isAdmin(token);
+        if (!isAdmin)
+            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
+        const find = await User.find(email)
+        if (find) {
+            await User.delete(find.email)
+            await Settings.delete(find.id)
+            return response.status(200).json({ message: 'User deleted' });
+        } else
+            return response.status(404).json({ message: 'User not found.' });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ message: 'System error.' });
     }
 });
 

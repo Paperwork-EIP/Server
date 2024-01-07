@@ -5,6 +5,7 @@ const { start, stop } = require('../../../index');
 const User = require('../../../src/persistence/users/users');
 const Settings = require('../../../src/persistence/users/userSettings');
 const init_db = require('../../../src/persistence/init-db');
+const TOKEN = require('../../../src/persistence/users/tokens');
 
 describe("User connection tests", () => {
     const port = 3002;
@@ -623,193 +624,764 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
-        test('[REGISTER 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[VALID GET USERS TESTS]", () => {
+            test("should get users with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.getUsers = jest.fn().mockReturnValue({ id: 1 });
 
-            try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                const response = await request(server).get("/user/getUsers").query({token: "hyxjnscjksdcnhsdvcnsd"});
 
-                response = await request(server).post("/user/register").send({
-                    email: 'email',
-                    password: 'password',
-                    username: 'gfhg'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[LOGIN 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[INVALID GET USERS TESTS]", () => {
+            test("should get users with a 400 status code", async() => {
+                const response = await request(server).get("/user/getUsers").query({token: ""});
 
-            try {
-                sinon.stub(User, 'connect').throws(new Error('db query failed'));
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get users with a 400 status code", async() => {
+                const response = await request(server).get("/user/getUsers").query({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get users with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
 
-                response = await request(server).post("/user/login").send({
-                    email: 'email',
-                    password: 'password'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).get("/user/getUsers").query({token: "hyxjnscjksdcnhsdvcnsd"});
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[GET BY EMAIL 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[VALID GET USER TESTS]", () => {
+            test("should get user with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue({id: 1});
 
-            try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
+                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
 
-                response = await request(server).get("/user/getbyemail").query({
-                    email: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[GET BY USERNAME 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[INVALID GET USER TESTS]", () => {
+            test("should get user with a 400 status code", async() => {
+                const response = await request(server).get("/user/getUser").query({token: "", email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get user with a 400 status code", async() => {
+                const response = await request(server).get("/user/getUser").query({email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get user with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
 
-            try {
-                sinon.stub(User, 'findUsername').throws(new Error('db query failed'));
+                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
+            test("should get user with a 404 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue(null);
 
-                response = await request(server).get("/user/getbyusername").query({
-                    username: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[GET SETTINGS 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[VALID DELETE USER TESTS]", () => {
+            test("should delete user with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue({id: 1});
+                User.delete = jest.fn().mockReturnValue({id: 1});
 
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
 
-                response = await request(server).get("/user/getSettings").query({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[DELETE 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[INVALID DELETE USER TESTS]", () => {
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({token: "", email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({email: "", token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
 
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/delete").query({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 404 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue(null);
+                
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[MODIFY DATAS 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[VALID IS ADMIN TESTS]", () => {
+            test("should is admin with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
 
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
-
-                response = await request(server).post("/user/modifyDatas").send({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).get("/user/isAdmin").query({token: "hyxjnscjksdcnhsdvcnsd"});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[MODIFY SETTINGS 500] should throw an error if an error occurs', async() => {
-            let response;
-
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/modifySettings").query({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+        describe("[INVALID IS ADMIN TESTS]", () => {
+            test("should is admin with a 400 status code", async() => {
+                const response = await request(server).get("/user/isAdmin").query({token: ""});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should is admin with a 400 status code", async() => {
+                const response = await request(server).get("/user/isAdmin").query({});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[GET BY TOKEN 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[VALID SET ADMIN TESTS]", () => {
+            test("should set admin with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue({id: 1});
+                User.setAdmin = jest.fn().mockReturnValue({id: 1});
 
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/getbytoken").query({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[SEND VERIFICATION EMAIL 500] should throw an error if an error occurs', async() => {
-            let response;
+        describe("[INVALID SET ADMIN TESTS]", () => {
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({token: "", email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({email: "", token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
 
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 404 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue(null);
 
-                response = await request(server).get("/user/sendVerificationEmail").query({
-                    token: 'email'
-                });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[VERIFY EMAIL 500] should throw an error if an error occurs', async() => {
-            let response;
-            User.findToken = jest.fn().mockReturnValue({ id: 1, email_verified: true });
+        describe("[VALID MODIFY USER TESTS]", () => {
+            test("should modify user with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.findToken = jest.fn().mockReturnValue({id: 1, email: "testtttt", username: "grgrgrgrrg"});
+                User.findUsername = jest.fn().mockReturnValue(null);
+                User.modifyDatas = jest.fn().mockReturnValue({id: 1});
 
-            try {
-                sinon.stub(User, 'setEmailVerified').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/verifyEmail").query({
-                    token: 'email',
-                    email: 'email'
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "hyxjnscjksdcnhsdvcnsdesdwdwd",
+                    email: "test",
+                    username: "testt",
+                    new_email: "test",
+                    password: "test"
                 });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
         });
-        test('[SEND RESET PASSWORD EMAIL 500] should throw an error if an error occurs', async() => {
-            let response;
-
-            try {
-                sinon.stub(User, 'find').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/sendResetPasswordEmail").query({
-                    email: 'email'
+        describe("[INVALID MODIFY USER TESTS]", () => {
+            test("should modify user with a 400 status code", async() => {
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "",
+                    user_token: "hyxjnscjksdcnhsdvcnsd",
+                    email: "test",
+                    username: "test",
+                    new_email: "test",
+                    password: "test"
                 });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
-        });
-        test('[RESET PASSWORD 500] should throw an error if an error occurs', async() => {
-            let response;
-
-            try {
-                sinon.stub(User, 'findToken').throws(new Error('db query failed'));
-
-                response = await request(server).get("/user/resetPassword").query({
-                    token: 'email',
-                    password: 'password'
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 400 status code", async() => {
+                const response = await request(server).post("/user/modifyUser").send({
+                    user_token: "hyxjnscjksdcnhsdvcnsd",
+                    email: "test",
+                    username: "test",
+                    new_email: "test",
+                    password: "test"
                 });
-            } catch (error) {
-                expect(response.statusCode).toBe(500);
-                expect(response._body.message).toEqual('System error.');
-            }
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 400 status code", async() => {
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "",
+                    username: "test",
+                    new_email: "test",
+                    password: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 400 status code", async() => {
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    email: "test",
+                    new_email: "test",
+                    password: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
+
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "hyxjnscjksdcnhsdvcnsd",
+                    email: "test",
+                    username: "test",
+                    new_email: "test",
+                    password: "test"
+                });
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 404 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.findToken = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "hyxjnscjksdcnhsdvcnsd",
+                    email: "test",
+                    username: "test",
+                    new_email: "test",
+                    password: "test"
+                });
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 409 status code, email already used", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.findToken = jest.fn().mockReturnValue({id: 1, email: "testt", username: "grgrgrgrrg"});
+                User.find = jest.fn().mockReturnValue({id: 1, email: "testtttt", username: "eeee"});
+                User.findUsername = jest.fn().mockReturnValue(null);
+                User.modifyDatas = jest.fn().mockReturnValue({id: 1});
+
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "hyxjnscjksdcnhsdvcnsdesdwdwd",
+                    email: "test",
+                    username: "testt",
+                    new_email: "testtttt",
+                    password: "test"
+                });
+                expect(response.statusCode).toBe(409);
+                expect(response.message).not.toBeNull();
+            });
+            test("should modify user with a 409 status code, username already used", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.findToken = jest.fn().mockReturnValue({id: 1, email: "ttt", username: "hhhh"});
+                User.findUsername = jest.fn().mockReturnValue({id: 1, email: "teddddt", username: "grrrrrrr"});
+                User.find = jest.fn().mockReturnValue(null);
+                User.modifyDatas = jest.fn().mockReturnValue({id: 1});
+
+                const response = await request(server).post("/user/modifyUser").send({
+                    token: "hyxjnscjksdcnhsdvcnsd",
+                    user_token: "hyxjnscjksdcnhsdvcnsdesdwdwd",
+                    email: "test",
+                    username: "grrrrrrr",
+                    new_email: "testtttt",
+                    password: "test",
+                    new_email: "testtttt"
+                });
+                expect(response.statusCode).toBe(409);
+                expect(response.message).not.toBeNull();
+            });
         });
-    });
+        describe("[VALID DELETE USER TESTS]", () => {
+            test("should delete user with a 200 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue({id: 1});
+                User.delete = jest.fn().mockReturnValue({id: 1});
+
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID DELETE USER TESTS]", () => {
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({token: "", email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({email: "", token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 400 status code", async() => {
+                const response = await request(server).get("/user/deleteUser").query({token: "dwdad"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 403 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(false);
+                
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(403);
+                expect(response.message).not.toBeNull();
+            });
+            test("should delete user with a 404 status code", async() => {
+                User.isAdmin = jest.fn().mockReturnValue(true);
+                User.find = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/user/deleteUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                expect(response.statusCode).toBe(404);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[VALID MOBILE LOGIN TESTS]", () => {
+            test("should login with a 200 status code when the user exist", async() => {
+                User.find = jest.fn().mockReturnValue({id: 1});
+                TOKEN.set = jest.fn().mockReturnValue({id: 1});
+                User.setToken = jest.fn().mockReturnValue({id: 1});
+                
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    access_token: "test",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 200 status code when the user doesn't exist", async() => {
+                User.find = jest.fn().mockReturnValue(null);
+                User.create = jest.fn().mockReturnValue(Promise.resolve({id: 1, email: "test", username: "test", password: "test", email_verified: true}));
+                TOKEN.set = jest.fn().mockReturnValue({id: 1});
+                User.setToken = jest.fn().mockReturnValue({id: 1});
+                
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    access_token: "test",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(200);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[INVALID MOBILE LOGIN TESTS]", () => {
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "",
+                    access_token: "test",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    access_token: "test",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    access_token: "",
+                    oauth: "test"
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    access_token: "test",
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should login with a 400 status code", async() => {
+                const response = await request(server).post("/user/mobileLogin").send({
+                    id: 1,
+                    email: "test",
+                    access_token: "test",
+                    oauth: ""
+                });
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+        });
+        describe("[ERROR 500 TESTS]", () => {
+            test('[REGISTER 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/register").send({
+                        email: 'email',
+                        password: 'password',
+                        username: 'gfhg'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[LOGIN 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'connect').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/login").send({
+                        email: 'email',
+                        password: 'password'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[GET BY EMAIL 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getbyemail").query({
+                        email: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[GET BY USERNAME 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findUsername').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getbyusername").query({
+                        username: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[GET SETTINGS 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getSettings").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[DELETE 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/delete").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[MODIFY DATAS 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/modifyDatas").send({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[MODIFY SETTINGS 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/modifySettings").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[GET BY TOKEN 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getbytoken").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[SEND VERIFICATION EMAIL 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/sendVerificationEmail").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[VERIFY EMAIL 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/verifyEmail").query({
+                        token: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[SEND RESET PASSWORD EMAIL 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/sendResetPasswordEmail").query({
+                        email: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[RESET PASSWORD 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'findToken').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/resetPassword").query({
+                        token: 'email',
+                        password: 'password'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+            test('[GET USERS 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getUsers").query({
+                        token: 'email',
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[GET USER 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/getUser").query({
+                        token: 'email',
+                        email: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[DELETE USER 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/deleteUser").query({
+                        token: 'email',
+                        email: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[IS ADMIN 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).get("/user/isAdmin").query({
+                        token: 'email',
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[SET ADMIN 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/setAdmin").send({
+                        token: 'email',
+                        email: 'email'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[MODIFY USER 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'isAdmin').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/modifyUser").send({
+                        token: 'email',
+                        user_token: 'email',
+                        email: 'email',
+                        username: 'username',
+                        new_email: 'new_email',
+                        password: 'password'
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+                User.isAdmin = jest.fn().mockReturnValue(true);
+            });
+            test('[MOBILE LOGIN 500] should throw an error if an error occurs', async() => {
+                let response;
+
+                try {
+                    sinon.stub(User, 'find').throws(new Error('db query failed'));
+
+                    response = await request(server).post("/user/mobileLogin").send({
+                        id: 1,
+                        email: "test",
+                        access_token: "test",
+                        oauth: "test"
+                    });
+                } catch (error) {
+                    expect(response.statusCode).toBe(500);
+                    expect(response._body.message).toEqual('System error.');
+                }
+            });
+        });
+    });  
 });

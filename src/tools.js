@@ -19,6 +19,7 @@ module.exports = {
         languageAlreadyExists: 'Language already exists.',
         processAlreadyExists: 'Process already exists.',
         languageNotFound: 'Language not found.',
+        unauthorized: 'Unauthorized.',
     },
     getUnderSteps(i, data, UserSteps, UserUnderSteps) {
         let k = [];

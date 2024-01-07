@@ -268,4 +268,54 @@ describe("User Persistence Tests", () => {
             expect(error.message).toBe(errorMessage);
         }
     });
+    it('[GET ALL] should return all users', async() => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ username: "test" }] });
+        const response = await User.getUsers();
+        expect(response).toEqual([{ username: "test" }]);
+    });
+    it('[GET ALL] should throw an error if an error occurs', async() => {
+        const errorMessage = 'Error getting users';
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.getUsers();
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
+    it('[IS ADMIN] should return true if user is admin', async() => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ role: "admin" }] });
+        const response = await User.isAdmin("test");
+        expect(response).toEqual(true);
+    });
+    it('[IS ADMIN] should return false if user is not admin', async() => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ role: "user" }] });
+        const response = await User.isAdmin("test");
+        expect(response).toEqual(false);
+    });
+    it('[IS ADMIN] should throw an error if an error occurs', async() => {
+        const errorMessage = 'Error getting if user is admin';
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.isAdmin("test");
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
+    it('[SET ADMIN] should set user as admin', async() => {
+        db.query = jest.fn().mockReturnValue({ rows: [{ role: "admin" }] });
+        const response = await User.setAdmin("test");
+        expect(response).toEqual({ role: "admin" });
+    });
+    it('[SET ADMIN] should throw an error if an error occurs', async() => {
+        const errorMessage = 'Error setting user as admin';
+        db.query = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+        try {
+            await User.setAdmin("test");
+        } catch (error) {
+            expect(error.message).toBe(errorMessage);
+        }
+    });
 });
