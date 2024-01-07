@@ -44,7 +44,7 @@ router.post('/add', async(request, response) => {
         if (!stocked_title || !step_id || !newUnderStep)
             return response.status(400).json({ message: Tools.errorMessages.missingParameters });
         if (!Tools.checkStepContent(newUnderStep))
-            return response.status(400).json({ message: 'Missing data in the new step.' });
+            return response.status(400).json({ message: 'Missing data in the new under step.' });
         const find = await Process.get(stocked_title);
         if (!find)
             return response.status(404).json({ message: Tools.errorMessages.processNotFound });

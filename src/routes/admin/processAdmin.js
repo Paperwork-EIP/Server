@@ -218,3 +218,5 @@ router.get('/getLanguage', async(request, response) => {
 });
 
 module.exports = router;
+module.exports.addLanguageProcessFile = addLanguageProcessFile;
+module.exports.modifyProcessFile = modifyProcessFile;

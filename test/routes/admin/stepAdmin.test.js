@@ -8,6 +8,8 @@ const UserProcess = require('../../../src/persistence/userProcess/userProcess');
 const Tools = require('../../../src/tools');
 const { start, stop } = require("../../../index");
 const fs = require('fs');
+const { getStepData, getUnderStepData } = require('../../../src/routes/admin/stepAdmin');
+const path = require('path');
 
 const title = "test";
 const content = {
@@ -38,13 +40,13 @@ const content = {
 };
 const delay = "test delay";
 
-jest.mock('fs');
-
 describe("Admin tests", () => {
     const port = 3032;
     let server;
 
     beforeEach(() => {
+        fs.promises.readFile = jest.fn().mockResolvedValue(JSON.stringify(content));
+        fs.promises.writeFile = jest.fn().mockResolvedValue();
         jest.spyOn(fs, 'readFile').mockImplementation((path, options, callback) => { callback(null, content) });
         jest.spyOn(fs, 'writeFile').mockImplementation((path, data, callback) => { callback(null) });
         jest.spyOn(fs, 'readFileSync').mockImplementation((path, options) => { return content });
@@ -80,6 +82,144 @@ describe("Admin tests", () => {
     });
 
     describe("[INTEGRATION TESTS]", () => {
+        describe("getStepData tests", () => {
+            const stocked_title = "test";
+            const step_id = 1;
+            const allSteps = [{ id: 1 }];
+        
+            test("should return an array of steps with the specified step_id", async () => {
+                const file = {
+                    english: {
+                        steps: [
+                            {
+                                title: "titleTest",
+                                type: "documentTest",
+                                description: "descriptionTest",
+                                question: "questionTest",
+                                source: "sourceTest",
+                                delay: "test delay",
+                                underQuestions: []
+                            }
+                        ]
+                    }
+                };
+        
+                jest.spyOn(Tools, 'getData').mockResolvedValue(file);
+                jest.fn(getUnderStepData).mockReturnValue([]);
+        
+                const result = await getStepData(stocked_title, step_id, allSteps);
+        
+                expect(result).toEqual([
+                    {
+                        language: "english",
+                        step_id: 1,
+                        number: "0",
+                        content: {
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest",
+                            delay: "test delay",
+                            underQuestions: []
+                        }
+                    }
+                ]);
+            });
+        
+            test("should return an empty array if no steps with the specified step_id exist", async () => {
+                const file = {
+                    english: {
+                        steps: [
+                            {
+                                title: "titleTest",
+                                type: "documentTest",
+                                description: "descriptionTest",
+                                question: "questionTest",
+                                source: "sourceTest",
+                                delay: "test delay"
+                            }
+                        ]
+                    }
+                };
+        
+                jest.spyOn(Tools, 'getData').mockResolvedValue(file);
+                jest.fn(getUnderStepData).mockReturnValue([]);
+        
+                const result = await getStepData(stocked_title, 2, allSteps);
+        
+                expect(result).toEqual([]);
+            });
+        });
+        describe("getUnderStepData tests", () => {
+            test("should return an array of under questions", () => {
+                const file = {
+                    english: {
+                        steps: [
+                            {
+                                underQuestions: {
+                                    1: {
+                                        title: "Under Question 1",
+                                        type: "Type 1",
+                                        description: "Description 1",
+                                        source: "Source 1",
+                                        question: "Question 1"
+                                    },
+                                    2: {
+                                        title: "Under Question 2",
+                                        type: "Type 2",
+                                        description: "Description 2",
+                                        source: "Source 2",
+                                        question: "Question 2"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                };
+                const i = 0;
+                const j = 0;
+        
+                const result = getUnderStepData(file, i, j);
+        
+                expect(result).toEqual([
+                    {
+                        id: "1",
+                        title: "Under Question 1",
+                        type: "Type 1",
+                        description: "Description 1",
+                        source: "Source 1",
+                        question: "Question 1"
+                    },
+                    {
+                        id: "2",
+                        title: "Under Question 2",
+                        type: "Type 2",
+                        description: "Description 2",
+                        source: "Source 2",
+                        question: "Question 2"
+                    }
+                ]);
+            });
+        
+            test("should return an empty array if no under questions exist", () => {
+                const file = {
+                    english: {
+                        steps: [
+                            {
+                                underQuestions: {}
+                            }
+                        ]
+                    }
+                };
+                const i = 0;
+                const j = 0;
+        
+                const result = getUnderStepData(file, i, j);
+        
+                expect(result).toEqual([]);
+            });
+        });
         describe("[VALID ADMIN STEP TESTS]", () => {
             test("[GET ALL] should get all steps with a 200 status code", async() => {
                 Process.get = jest.fn().mockReturnValue({ id: 1 });
@@ -109,8 +249,27 @@ describe("Admin tests", () => {
                 expect(response._body.message).toEqual("Steps found!");
                 expect(response._body.response).not.toBeNull();
             });
-        });
+            test("[GET STEP] should get a step with a 200 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({
+                    id: 1,
+                    title: "titleTest",
+                    type: "documentTest",
+                    description: "descriptionTest",
+                    question: "questionTest",
+                    source: "sourceTest"
+                });
 
+                const response = await request(server).get("/admin/step/get").query({
+                    step_id: 1,
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Step found!");
+                expect(response._body.response).not.toBeNull();
+            });
+        });
         describe("[INVALID ADMIN STEP TESTS]", () => {
             test("[ADD] no stocked_title : should not add a step with a 400 status code", async() => {
                 const response = await request(server).post("/admin/step/add").send({
@@ -157,6 +316,20 @@ describe("Admin tests", () => {
 
                 expect(response.statusCode).toBe(400);
                 expect(response._body.message).toEqual("Missing parameters.");
+            });
+            test("[ADD] Missing data in newStep : should not add a step with a 400 status code", async() => {
+                const response = await request(server).post("/admin/step/add").send({
+                    stocked_title: "test",
+                    newStep: {
+                        title: "titleTest",
+                        type: "documentTest",
+                        description: "descriptionTest",
+                        question: "questionTest"
+                    },
+                });
+
+                expect(response.statusCode).toBe(400);
+                expect(response._body.message).toEqual("Missing data in the new step.");
             });
             test("[ADD] process not found : should not add a step with a 404 status code", async() => {
                 Process.get = jest.fn().mockReturnValue(null);
@@ -253,6 +426,20 @@ describe("Admin tests", () => {
 
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual("Step not found.");
+                expect(response._body.response).not.toBeNull();
+            });
+            test("[GET STEP] steps not found : should not get a step with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Step.getById = jest.fn().mockReturnValue({ id: 1 });
+                Step.getByProcess = jest.fn().mockReturnValue(null);
+
+                const response = await request(server).get("/admin/step/get").query({
+                    step_id: 1,
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Steps not found.");
                 expect(response._body.response).not.toBeNull();
             });
             test("[GET STEP] system error : should not get a step with a 500 status code", async() => {
@@ -572,4 +759,4 @@ describe("Admin tests", () => {
             });
         });
     });
-})
+});

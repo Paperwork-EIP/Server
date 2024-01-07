@@ -45,3 +45,4 @@ router.get('/get', async (request, response) => {
 });
 
 module.exports = router;
+module.exports.mapQuestions = mapQuestions;

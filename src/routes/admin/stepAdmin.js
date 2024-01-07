@@ -65,7 +65,7 @@ router.get('/get', async(request, response) => {
             return response.status(404).json({ message: Tools.errorMessages.stepsNotFound });
         let step = await getStepData(stocked_title, step_id, allSteps);
         return response.status(200).json({
-            message: 'Steps found!',
+            message: 'Step found!',
             stocked_title: stocked_title,
             step: step
         });
@@ -248,3 +248,5 @@ router.get('/delete', async(request, response) => {
 });
 
 module.exports = router;
+module.exports.getStepData = getStepData;
+module.exports.getUnderStepData = getUnderStepData;

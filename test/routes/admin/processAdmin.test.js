@@ -8,6 +8,8 @@ const UserProcess = require('../../../src/persistence/userProcess/userProcess');
 const Tools = require('../../../src/tools');
 const { start, stop } = require("../../../index");
 const fs = require('fs');
+const path = require('path');
+const { addLanguageProcessFile, modifyProcessFile } = require('../../../src/routes/admin/processAdmin');
 
 const title = "test";
 const content = {
@@ -38,13 +40,13 @@ const content = {
 };
 const delay = "test delay";
 
-jest.mock('fs');
-
 describe("Admin tests", () => {
     const port = 3030;
     let server;
 
     beforeEach(() => {
+        fs.promises.readFile = jest.fn().mockResolvedValue(JSON.stringify(content));
+        fs.promises.writeFile = jest.fn().mockResolvedValue();
         jest.spyOn(fs, 'readFile').mockImplementation((path, options, callback) => { callback(null, content) });
         jest.spyOn(fs, 'writeFile').mockImplementation((path, data, callback) => { callback(null) });
         jest.spyOn(fs, 'readFileSync').mockImplementation((path, options) => { return content });
@@ -80,6 +82,152 @@ describe("Admin tests", () => {
     });
 
     describe("[INTEGRATION TESTS]", () => {
+        describe("addLanguageProcessFile tests", () => {
+            test("should add a new language to the process file", async () => {
+                const stocked_title = "test";
+                const language = "test";
+                const title = "test";
+                const description = "test";
+                const source = "test";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockResolvedValue(JSON.stringify(content));
+                jest.spyOn(fs.promises, 'writeFile').mockResolvedValue();
+    
+                await addLanguageProcessFile(stocked_title, language, title, description, source);
+    
+                expect(fs.promises.readFile).toHaveBeenCalledWith(filePath, 'utf8');
+                expect(fs.promises.writeFile).toHaveBeenCalledWith(filePath, JSON.stringify({
+                    english: {
+                        title: "test.",
+                        description: "blablabla",
+                        source: "styler",
+                        steps: [{
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    },
+                    français: {
+                        title: "Long-term visa.",
+                        description: "blablabla",
+                        source: "styler",
+                        steps: [{
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    },
+                    test: {
+                        title: "test",
+                        description: "test",
+                        source: "test",
+                        steps: [{
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    }
+                }, null, 2));
+            });
+            test("should throw an error if the file is not found", async () => {
+                const stocked_title = "test";
+                const language = "test";
+                const title = "test";
+                const description = "test";
+                const source = "test";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockResolvedValue(null);
+    
+                await expect(addLanguageProcessFile(stocked_title, language, title, description, source)).rejects.toThrowError('Error reading/writing file.');
+            });
+            test("should throw an error if there is an error reading/writing the file", async () => {
+                const stocked_title = "test";
+                const language = "test";
+                const title = "test";
+                const description = "test";
+                const source = "test";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockRejectedValue(new Error('Error reading/writing file.'));
+    
+                await expect(addLanguageProcessFile(stocked_title, language, title, description, source)).rejects.toThrowError('Error reading/writing file.');
+            });
+        });
+        describe("modifyProcessFile tests", () => {
+            test("[modifyProcessFile] should modify the process file with the provided data", async() => {
+                const stocked_title = "test";
+                const language = "english";
+                const title = "Modified Title";
+                const description = "Modified Description";
+                const source = "Modified Source";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockResolvedValue(JSON.stringify(content));
+                jest.spyOn(fs.promises, 'writeFile').mockResolvedValue();
+    
+                await modifyProcessFile(stocked_title, language, title, description, source);
+    
+                expect(fs.promises.readFile).toHaveBeenCalledWith(filePath, 'utf8');
+                expect(fs.promises.writeFile).toHaveBeenCalledWith(filePath, JSON.stringify({
+                    english: {
+                        title: "Modified Title",
+                        description: "Modified Description",
+                        source: "Modified Source",
+                        steps: [{
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    },
+                    français: {
+                        title: "Long-term visa.",
+                        description: "blablabla",
+                        source: "styler",
+                        steps: [{
+                            title: "titleTest",
+                            type: "documentTest",
+                            description: "descriptionTest",
+                            question: "questionTest",
+                            source: "sourceTest"
+                        }]
+                    }
+                }, null, 2));
+            });
+            test("[modifyProcessFile] should throw an error if the file is not found", async() => {
+                const stocked_title = "test";
+                const language = "english";
+                const title = "Modified Title";
+                const description = "Modified Description";
+                const source = "Modified Source";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockResolvedValue(null);
+    
+                await expect(modifyProcessFile(stocked_title, language, title, description, source)).rejects.toThrowError('Error reading/writing file.');
+            });
+            test("[modifyProcessFile] should throw an error if there is an error reading/writing the file", async() => {
+                const stocked_title = "test";
+                const language = "english";
+                const title = "Modified Title";
+                const description = "Modified Description";
+                const source = "Modified Source";
+                const filePath = "/app/src/data/test.json";
+    
+                jest.spyOn(fs.promises, 'readFile').mockRejectedValue(new Error('Error reading/writing file.'));
+    
+                await expect(modifyProcessFile(stocked_title, language, title, description, source)).rejects.toThrowError('Error reading/writing file.');
+            });
+        });
         describe("[VALID ADMIN PROCESS TESTS]", () => {
             test("[ADD] should create a process with a 200 status code", async() => {
                 Process.get = jest.fn().mockReturnValue(null);
@@ -125,23 +273,6 @@ describe("Admin tests", () => {
                 expect(response._body.message).toEqual("Process and steps deleted!");
                 expect(response._body.response).not.toBeNull();
             });
-            // test("[MODIFY] should modify a process with a 200 status code", async() => {
-            //     Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
-            //     Process.update = jest.fn().mockReturnValue({ something: 'not null' });
-
-            //     const response = await request(server).post("/admin/process/modify").send({
-            //         stocked_title: "Visa",
-            //         title: title,
-            //         description: "descriptionTest",
-            //         source: "fr",
-            //         delay: delay,
-            //         language: "français"
-            //     });
-
-            //     expect(response.statusCode).toBe(200);
-            //     expect(response._body.message).toEqual("Process modified!");
-            //     expect(response._body.response).not.toBeNull();
-            // });
             test("[GET LANGUAGE] should get a process with a 200 status code", async() => {
                 Process.get = jest.fn().mockReturnValue({ id: 1 });
                 Tools.getData = jest.fn().mockReturnValue({ id: 1 });
@@ -154,22 +285,50 @@ describe("Admin tests", () => {
                 expect(response._body.message).toEqual("Languages found!");
                 expect(response._body.response).not.toBeNull();
             });
-            // test("[ADD LANGUAGE] should add a language to a process with a 200 status code", async() => {
-            //     Process.get = jest.fn().mockReturnValue({ id: 1 });
-            //     Tools.getData = jest.fn().mockReturnValue({ english: { something: 'not null' } });
+            test("[ADD LANGUAGE] should add a language to a process with a 200 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Tools.getData = jest.fn().mockReturnValue(content);
+                let addLanguageProcessFile = jest.fn().mockReturnValue();
 
-            //     const response = await request(server).post("/admin/process/addLanguage").send({
-            //         stocked_title: title,
-            //         language: "test",
-            //         title: "test",
-            //         description: "test",
-            //         source: "test"
-            //     });
+                const response = await request(server).post("/admin/process/addLanguage").send({
+                    stocked_title: "test",
+                    language: "test",
+                    title: "test",
+                    description: "test",
+                    source: "test"
+                });
 
-            //     expect(response.statusCode).toBe(200);
-            //     expect(response._body.message).toEqual("Language added!");
-            //     expect(response._body.response).not.toBeNull();
-            // });
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Language added!");
+            });
+            test("[MODIFY] should modify a process with a 200 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                let modifyProcessFile = jest.fn().mockReturnValue();
+
+                const response = await request(server).post("/admin/process/modify").send({
+                    stocked_title: "test",
+                    title: title,
+                    description: "descriptionTest",
+                    source: "fr",
+                    delay: delay,
+                    language: "français"
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Process modified!");
+            });
+            test("[GET] should get a process with a 200 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Tools.getData = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/admin/process/get").query({
+                    stocked_title: title
+                });
+
+                expect(response.statusCode).toBe(200);
+                expect(response._body.message).toEqual("Process found!");
+                expect(response._body.response).not.toBeNull();
+            });
         });
 
         describe("[INVALID ADMIN PROCESS TESTS]", () => {
@@ -438,6 +597,18 @@ describe("Admin tests", () => {
                 expect(response._body.message).toEqual("Language not found.");
                 expect(response._body.response).not.toBeNull();
             });
+            test("[GET LANGUAGE] language not found : should not get a process with a 404 status code", async() => {
+                Process.get = jest.fn().mockReturnValue({ id: 1 });
+                Tools.getData = jest.fn().mockReturnValue({});
+
+                const response = await request(server).get("/admin/process/getLanguage").query({
+                    stocked_title: "Visa"
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual("Language not found.");
+                expect(response._body.response).not.toBeNull();
+            });
             test("[GET LANGUAGE] system error : should not get a process with a 500 status code", async() => {
                 Process.get = jest.fn().mockRejectedValue(new Error("System error."));
 
@@ -623,4 +794,4 @@ describe("Admin tests", () => {
             });
         });
     });
-})
+});

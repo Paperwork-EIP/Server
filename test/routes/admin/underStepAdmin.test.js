@@ -8,6 +8,7 @@ const UserProcess = require('../../../src/persistence/userProcess/userProcess');
 const Tools = require('../../../src/tools');
 const { start, stop } = require("../../../index");
 const fs = require('fs');
+const path = require('path');
 
 const title = "test";
 const content = {
@@ -45,13 +46,13 @@ const newUnderStep = {
 };
 const delay = "test delay";
 
-jest.mock('fs');
-
 describe("Admin tests", () => {
     const port = 3031;
     let server;
 
     beforeEach(() => {
+        fs.promises.readFile = jest.fn().mockResolvedValue(JSON.stringify(content));
+        fs.promises.writeFile = jest.fn().mockResolvedValue();
         jest.spyOn(fs, 'readFile').mockImplementation((path, options, callback) => { callback(null, content) });
         jest.spyOn(fs, 'writeFile').mockImplementation((path, data, callback) => { callback(null) });
         jest.spyOn(fs, 'readFileSync').mockImplementation((path, options) => { return content });
@@ -117,7 +118,6 @@ describe("Admin tests", () => {
             });
         });
     });
-
     describe("[INVALID ADMIN UNDER STEPS TESTS]", () => {
         test("[GET ALL] missing stocked_title : should not get the steps with a 400 status code", async() => {
             const response = await request(server).get("/admin/underStep/getAll?language=english&step_id=1");
@@ -209,6 +209,11 @@ describe("Admin tests", () => {
         test("[ADD] empty newUnderStep : should not add the step with a 400 status code", async() => {
             const response = await request(server).post(`/admin/underStep/add?newUnderStep=&step_id=1&stocked_title=test`);
             expect(response.statusCode).toBe(400);
+        });
+        test("[ADD] missing data in the newUnderStep : should not add the step with a 400 status code", async() => {
+            const response = await request(server).post(`/admin/underStep/add`).send({ newUnderStep: {}, step_id: 1, stocked_title: "test" });
+            expect(response.statusCode).toBe(400);
+            expect(response._body.message).toEqual("Missing data in the new under step.");
         });
         test("[ADD] process doesn't exist : should not add the step with a 404 status code", async() => {
             Process.get = jest.fn().mockResolvedValueOnce(null);

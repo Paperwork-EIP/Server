@@ -6,6 +6,9 @@ const Process = require("../../../src/persistence/process/process");
 const Step = require("../../../src/persistence/process/step");
 const db = require('../../../src/persistence/db');
 const { start, stop } = require("../../../index");
+const { mapQuestions } = require("../../../src/routes/process/questions");
+const fs = require('fs');
+tools = require('../../../src/tools');
 
 describe("Questions tests", () => {
     const port = 3004;
@@ -13,6 +16,7 @@ describe("Questions tests", () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
+        sinon.restore();
     });
 
     beforeAll(async() => {
@@ -52,29 +56,84 @@ describe("Questions tests", () => {
         });
     });
 
+    describe("mapQuestions tests", () => {
+        test("should map questions correctly", () => {  
+          const steps = [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 }
+          ];
+      
+          const data = {
+            english: {
+              steps: [
+                { question: "Question 1", underQuestions: [] },
+                { question: "Question 2", underQuestions: [{ question: "Subquestion 1" }, { question: "Subquestion 2" }] },
+                { question: "Question 3", underQuestions: [] }
+              ]
+            }
+          };
+      
+          const language = "english";
+      
+          const expectedOutput = [
+            { step_id: 1, question: "Question 1" },
+            { step_id: 2, question: "Question 2", underQuestions: [{ step_id: 2, question: "Subquestion 1" }, { step_id: 2, question: "Subquestion 2" }] },
+            { step_id: 3, question: "Question 3" }
+          ];
+      
+          const result = mapQuestions(steps, data, language);
+      
+          expect(result).toEqual(expectedOutput);
+        });
+      
+        test("should handle empty steps array", () => {
+          const steps = [];
+          const data = {
+            english: {
+              steps: [
+                { question: "Question 1" },
+                { question: "Question 2" }
+              ]
+            }
+          };
+          const language = "english";
+      
+          const expectedOutput = [];
+      
+          const result = mapQuestions(steps, data, language);
+      
+          expect(result).toEqual(expectedOutput);
+        });
+      
+        test("should handle empty underQuestions array", () => {
+          const steps = [
+            { id: 1 },
+            { id: 2 }
+          ];
+          const data = {
+            english: {
+              steps: [
+                { question: "Question 1" },
+                { question: "Question 2", underQuestions: [] }
+              ]
+            }
+          };
+          const language = "english";
+      
+          const expectedOutput = [
+            { step_id: 1, question: "Question 1" },
+            { step_id: 2, question: "Question 2" }
+          ];
+      
+          const result = mapQuestions(steps, data, language);
+      
+          expect(result).toEqual(expectedOutput);
+        });
+    });
+
     describe("[INTEGRATION TESTS]", () => {
         describe("[VALID TESTS]", () => {
-            // test("[GET] should get questions with a 200 status code", async() => {
-            //     const data = [{
-            //             id: 1,
-            //             question: 'test'
-            //         },
-            //         {
-            //             id: 2,
-            //             question: 'test2'
-            //         }
-            //     ];
-            //     Process.get = jest.fn().mockReturnValue({ id: 1, title: "Visa" });
-            //     Step.getByProcess = jest.fn().mockReturnValue(data);
-
-            //     const response = await request(server).get("/processQuestions/get").query({
-            //         title: "TestQuestions",
-            //         language: "english"
-            //     });
-
-            //     expect(response.statusCode).toBe(200);
-            //     expect(response._body.questions).not.toBeNull();
-            // });
         });
         describe("[INVALID TESTS]", () => {
             test("[GET] title missing : should not get questions with a 400 status code", async() => {
@@ -117,18 +176,6 @@ describe("Questions tests", () => {
 
                 expect(response.statusCode).toBe(404);
             });
-            // test("[GET] Data not found : should not get questions with a 404 status code", async() => {
-            //     Process.get = jest.fn().mockReturnValue({ id: 1, title: 'cdcsdVisa' });
-            //     Step.getByProcess = jest.fn().mockReturnValue({ id: 1 });
-
-            //     const response = await request(server).get("/processQuestions/get").query({
-            //         title: "gggdhddhdjjdjdjk",
-            //         language: "english"
-            //     });
-
-            //     expect(response.statusCode).toBe(404);
-            //     expect(response._body.message).toEqual('Data not found.');
-            // });
             test("[GET] Data not found : should not get questions with a 404 status code", async() => {
                 Process.get = jest.fn().mockReturnValue({ id: 1, title: 'Visa' });
                 Step.getByProcess = jest.fn().mockReturnValue({ id: 1 });
