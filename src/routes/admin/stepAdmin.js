@@ -137,17 +137,18 @@ router.post('/add', async(request, response) => {
             let res = await Step.create(delay, find.id, is_unique);
             fs.writeFile(filePath, jsonData, function(err, result) {
                 if (err) {
-                    async() => {
+                    (async() => {
                         await Step.delete(res.id);
-                        return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
-                    }
+                        response.status(500).json({ message: Tools.errorMessages.errWritingFile });
+                    })();
+                } else {
+                    response.status(200).json({
+                        message: 'Step added!',
+                        stocked_title: stocked_title,
+                        id: res.id,
+                        step: newStep
+                    });
                 }
-                return response.status(200).json({
-                    message: 'Step added!',
-                    stocked_title: stocked_title,
-                    id: res.id,
-                    step: newStep
-                });
             });
         } catch (error) {
             return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
@@ -198,9 +199,8 @@ router.post('/modify', async(request, response) => {
             let step = file[language].steps[j];
             const jsonData = JSON.stringify(file, null, 2);
             fs.writeFile(filePath, jsonData, function(err, result) {
-                if (err) {
+                if (err)
                     return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
-                }
             });
             return response.status(200).json({
                 message: 'Step updated!',
