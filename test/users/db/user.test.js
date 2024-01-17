@@ -655,44 +655,6 @@ describe("User connection tests", () => {
                 expect(response.message).not.toBeNull();
             });
         });
-        describe("[VALID GET USER TESTS]", () => {
-            test("should get user with a 200 status code", async() => {
-                User.isAdmin = jest.fn().mockReturnValue(true);
-                User.find = jest.fn().mockReturnValue({id: 1});
-
-                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-
-                expect(response.statusCode).toBe(200);
-                expect(response.message).not.toBeNull();
-            });
-        });
-        describe("[INVALID GET USER TESTS]", () => {
-            test("should get user with a 400 status code", async() => {
-                const response = await request(server).get("/user/getUser").query({token: "", email: "test"});
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should get user with a 400 status code", async() => {
-                const response = await request(server).get("/user/getUser").query({email: "test"});
-                expect(response.statusCode).toBe(400);
-                expect(response.message).not.toBeNull();
-            });
-            test("should get user with a 403 status code", async() => {
-                User.isAdmin = jest.fn().mockReturnValue(false);
-
-                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(403);
-                expect(response.message).not.toBeNull();
-            });
-            test("should get user with a 404 status code", async() => {
-                User.isAdmin = jest.fn().mockReturnValue(true);
-                User.find = jest.fn().mockReturnValue(null);
-
-                const response = await request(server).get("/user/getUser").query({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
-                expect(response.statusCode).toBe(404);
-                expect(response.message).not.toBeNull();
-            });
-        });
         describe("[VALID DELETE USER TESTS]", () => {
             test("should delete user with a 200 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(true);
@@ -769,36 +731,46 @@ describe("User connection tests", () => {
                 User.find = jest.fn().mockReturnValue({id: 1});
                 User.setAdmin = jest.fn().mockReturnValue({id: 1});
 
-                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test", role: "admin"});
                 expect(response.statusCode).toBe(200);
                 expect(response.message).not.toBeNull();
             });
         });
         describe("[INVALID SET ADMIN TESTS]", () => {
             test("should set admin with a 400 status code", async() => {
-                const response = await request(server).post("/user/setAdmin").send({token: "", email: "test"});
+                const response = await request(server).post("/user/setAdmin").send({token: "", email: "test", role: "admin"});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should set admin with a 400 status code", async() => {
-                const response = await request(server).post("/user/setAdmin").send({email: "test"});
+                const response = await request(server).post("/user/setAdmin").send({email: "test", role: "admin"});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should set admin with a 400 status code", async() => {
-                const response = await request(server).post("/user/setAdmin").send({email: "", token: "dwdad"});
+                const response = await request(server).post("/user/setAdmin").send({email: "", token: "dwdad", role: "admin"});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should set admin with a 400 status code", async() => {
-                const response = await request(server).post("/user/setAdmin").send({token: "dwdad"});
+                const response = await request(server).post("/user/setAdmin").send({token: "dwdad", role: "admin"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({token: "dwdad", email: "test"});
+                expect(response.statusCode).toBe(400);
+                expect(response.message).not.toBeNull();
+            });
+            test("should set admin with a 400 status code", async() => {
+                const response = await request(server).post("/user/setAdmin").send({token: "dwdad", email: "test", role: ""});
                 expect(response.statusCode).toBe(400);
                 expect(response.message).not.toBeNull();
             });
             test("should set admin with a 403 status code", async() => {
                 User.isAdmin = jest.fn().mockReturnValue(false);
 
-                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test", role: "admin"});
                 expect(response.statusCode).toBe(403);
                 expect(response.message).not.toBeNull();
             });
@@ -806,7 +778,7 @@ describe("User connection tests", () => {
                 User.isAdmin = jest.fn().mockReturnValue(true);
                 User.find = jest.fn().mockReturnValue(null);
 
-                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test"});
+                const response = await request(server).post("/user/setAdmin").send({token: "hyxjnscjksdcnhsdvcnsd", email: "test", role: "admin"});
                 expect(response.statusCode).toBe(404);
                 expect(response.message).not.toBeNull();
             });

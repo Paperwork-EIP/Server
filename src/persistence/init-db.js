@@ -15,7 +15,7 @@ module.exports = {
                 address text NULL,
                 profile_picture text NULL,
                 age int NULL,
-                number_phone int NULL,
+                number_phone text NULL,
                 token text UNIQUE NULL,
                 google_token text NULL,
                 facebook_token text NULL,

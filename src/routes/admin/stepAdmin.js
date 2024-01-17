@@ -137,17 +137,18 @@ router.post('/add', async(request, response) => {
             let res = await Step.create(delay, find.id, is_unique);
             fs.writeFile(filePath, jsonData, function(err, result) {
                 if (err) {
-                    async() => {
+                    (async() => {
                         await Step.delete(res.id);
-                        return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
-                    }
+                        response.status(500).json({ message: Tools.errorMessages.errWritingFile });
+                    })();
+                } else {
+                    response.status(200).json({
+                        message: 'Step added!',
+                        stocked_title: stocked_title,
+                        id: res.id,
+                        step: newStep
+                    });
                 }
-                return response.status(200).json({
-                    message: 'Step added!',
-                    stocked_title: stocked_title,
-                    id: res.id,
-                    step: newStep
-                });
             });
         } catch (error) {
             return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
@@ -185,22 +186,16 @@ router.post('/modify', async(request, response) => {
             if (!file)
                 return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
             let j = allSteps.findIndex((step) => step.id == step_id);
-            if (newStep.title)
-                file[language].steps[j].title = newStep.title;
-            if (newStep.type)
-                file[language].steps[j].type = newStep.type;
-            if (newStep.description)
-                file[language].steps[j].description = newStep.description;
-            if (newStep.question)
-                file[language].steps[j].question = newStep.question;
-            if (newStep.source)
-                file[language].steps[j].source = newStep.source;
+            const updateFields = ['title', 'type', 'description', 'question', 'source'];
+            updateFields.forEach(field => {
+                if (newStep[field])
+                    file[language].steps[j][field] = newStep[field];
+            });
             let step = file[language].steps[j];
             const jsonData = JSON.stringify(file, null, 2);
             fs.writeFile(filePath, jsonData, function(err, result) {
-                if (err) {
+                if (err)
                     return response.status(500).json({ message: Tools.errorMessages.errWritingFile });
-                }
             });
             return response.status(200).json({
                 message: 'Step updated!',

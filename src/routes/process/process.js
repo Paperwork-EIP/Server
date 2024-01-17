@@ -29,21 +29,22 @@ router.post('/add', async (request, response) => {
 
 router.get('/delete', async (request, response) => {
   try {
-      const { title } = request.query;
+    const { title } = request.query;
 
-      if (!title)
-          return response.status(400).json({ message: Tools.errorMessages.missingParameters });
-      const find = await Process.get(title);
-      if(!find)
-        return response.status(404).json({ message: Tools.errorMessages.processNotFound });
-      else
-        await Step.deleteAll(find.id);
-        await UserProcess.deleteAll(find.id);
-        const res = await Process.delete(find.id);
-        return response.status(200).json({
-            message: 'Process and steps deleted!',
-            response: res
+    if (!title)
+        return response.status(400).json({ message: Tools.errorMessages.missingParameters });
+    const find = await Process.get(title);
+    if(!find)
+      return response.status(404).json({ message: Tools.errorMessages.processNotFound });
+    else {
+      await Step.deleteAll(find.id);
+      await UserProcess.deleteAll(find.id);
+      const res = await Process.delete(find.id);
+      return response.status(200).json({
+          message: 'Process and steps deleted!',
+          response: res
       });
+    }
   } catch (error) {
       console.error(error);
       return response.status(500).json({ message: Tools.errorMessages.systemError });
