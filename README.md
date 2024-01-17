@@ -42,7 +42,7 @@ You can clone the repo by entering:
 ## Usage
 
 You will need to add your .env file with this values corresponding to your own environment(jwt_key, EMAIL, AWS_DEFAULT_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY).
-The server will start at https://localhost:8282, the swagger documentation is located under this path : ./doc/swagger.yaml.
+The server will start at https://localhost:8282, the swagger documentation is accessible here : https://paperwork-eip.github.io/doc-api-server/
 ```sh
   docker-compose up --build serverLocal
   docker-compose up --build test
