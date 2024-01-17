@@ -21,7 +21,7 @@ module.exports = {
   async getUsers() {
     try {
       const { rows } = await db.query(sql`
-      SELECT * FROM user_table;
+      SELECT * FROM user_table ORDER BY id;
       `);
       return rows;
     } catch (error) {
@@ -29,7 +29,7 @@ module.exports = {
       throw error;
     }
   },
-  async isAdmin(token) {
+  async isAdmin(token, role) {
     try {
       const { rows } = await db.query(sql`
       SELECT role FROM user_table WHERE token=${token} AND role='admin' LIMIT 1;

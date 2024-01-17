@@ -386,24 +386,6 @@ router.get ('/getUsers', async(request, response) => {
     }
 });
 
-router.get ('/getUser', async(request, response) => {
-    try {
-        const { token, email } = request.query;
-        if (!token || !email)
-            return response.status(400).json({ error: Tools.errorMessages.missingParameters });
-        const isAdmin = await User.isAdmin(token);
-        if (!isAdmin)
-            return response.status(403).json({ error: Tools.errorMessages.unauthorized });
-        const user = await User.find(email);
-        if (!user)
-            return response.status(404).json({ error: Tools.errorMessages.userNotFound });
-        return response.status(200).json({ user: user });
-    } catch (error) {
-        console.error(error);
-        return response.status(500).json({ message: 'System error.' });
-    }
-});
-
 router.get ('/isAdmin', async(request, response) => {
     try {
         const { token } = request.query;
@@ -420,15 +402,15 @@ router.get ('/isAdmin', async(request, response) => {
 
 router.post ('/setAdmin', async(request, response) => {
     try {
-        const { token, email } = request.body;
-        if (!token || !email)
+        const { token, email, role } = request.body;
+        if (!token || !email || !role)
             return response.status(400).json({ error: Tools.errorMessages.missingParameters });
         const isAdmin = await User.isAdmin(token);
         if (!isAdmin)
             return response.status(403).json({ error: Tools.errorMessages.unauthorized });
         if (!await User.find(email))
             return response.status(404).json({ error: Tools.errorMessages.userNotFound });
-        const user = await User.setAdmin(email);
+        const user = await User.setAdmin(email, role);
         return response.status(200).json({message: 'User is now admin', user: user});
     } catch (error) {
         console.error(error);

@@ -86,9 +86,7 @@ router.post('/update', async (request, response) => {
                 res.push(await UserStep.update(user_process.id, questions[i].step_id, questions[i].response));
         }
         const notDone = await UserStep.getNotDone(user_process.id);
-        let done = false;
-        if (notDone.length === 0)
-            done = true;
+        let done = notDone.length === 0;
         await UserProcess.update(user_process.id, process.id, done);
         return response.status(200).json({
             message: 'User process updated!',

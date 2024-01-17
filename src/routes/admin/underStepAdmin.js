@@ -119,16 +119,17 @@ router.post('/modify', async(request, response) => {
             if (!file)
                 return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
             const j = allSteps.findIndex((step) => step.id == step_id);
+            const underQuestion = file[language].steps[j].underQuestions[underStep_id];
             if (newUnderStep.title)
-                file[language].steps[j].underQuestions[underStep_id].title = newUnderStep.title;
+                underQuestion.title = newUnderStep.title;
             if (newUnderStep.description)
-                file[language].steps[j].underQuestions[underStep_id].description = newUnderStep.description;
+                underQuestion.description = newUnderStep.description;
             if (newUnderStep.source)
-                file[language].steps[j].underQuestions[underStep_id].source = newUnderStep.source;
+                underQuestion.source = newUnderStep.source;
             if (newUnderStep.type)
-                file[language].steps[j].underQuestions[underStep_id].type = newUnderStep.type;
+                underQuestion.type = newUnderStep.type;
             if (newUnderStep.question)
-                file[language].steps[j].underQuestions[underStep_id].question = newUnderStep.question;
+                underQuestion.question = newUnderStep.question;
             const jsonData = JSON.stringify(file, null, 2);
             fs.writeFile(filePath, jsonData, function(err, result) {
                 if (err)
@@ -138,7 +139,7 @@ router.post('/modify', async(request, response) => {
                     stocked_title: stocked_title,
                     step_id: step_id,
                     underStep_id: underStep_id,
-                    step: file[language].steps[j].underQuestions[underStep_id]
+                    step: underQuestion
                 });
             });
         } catch (error) {

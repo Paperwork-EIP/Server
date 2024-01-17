@@ -815,6 +815,17 @@ describe("User process", () => {
                 expect(response.statusCode).toBe(404);
                 expect(response._body.message).toEqual('User process not found.');
             });
+            test("[GET USER STEPS BY ID] user not found : should not get a user step with a 404 status code", async() => {
+                Users.getById = jest.fn().mockReturnValue(null);
+                UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
+
+                const response = await request(server).get("/userProcess/getUserStepsById").query({
+                    user_process_id: 4567865,
+                });
+
+                expect(response.statusCode).toBe(404);
+                expect(response._body.message).toEqual('User not found.');
+            });
             test("[GET USER STEPS BY ID] user step not found : should not get a user step with a 404 status code", async() => {
                 Users.findToken = jest.fn().mockReturnValue({ id: 1, language: 'english' });
                 UserProcess.getById = jest.fn().mockReturnValue({ id: 1 });
