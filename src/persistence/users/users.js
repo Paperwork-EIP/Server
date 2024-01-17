@@ -29,7 +29,7 @@ module.exports = {
       throw error;
     }
   },
-  async isAdmin(token, role) {
+  async isAdmin(token) {
     try {
       const { rows } = await db.query(sql`
       SELECT role FROM user_table WHERE token=${token} AND role='admin' LIMIT 1;
@@ -40,10 +40,10 @@ module.exports = {
       throw error;
     }
   },
-  async setAdmin(email) {
+  async setAdmin(email, role) {
     try {
       const { rows } = await db.query(sql`
-      UPDATE user_table SET role='admin' where email=${email};`);
+      UPDATE user_table SET role=${role} where email=${email};`);
       return rows[0];
     } catch (error) {
       console.error(error);
