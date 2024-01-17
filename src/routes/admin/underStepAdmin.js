@@ -119,6 +119,7 @@ router.post('/modify', async(request, response) => {
             if (!file)
                 return response.status(404).json({ message: Tools.errorMessages.dataNotFound });
             const j = allSteps.findIndex((step) => step.id == step_id);
+            const underQuestion = file[language].steps[j].underQuestions[underStep_id];
             const updateFields = ['title', 'description', 'source', 'type', 'question'];
             updateFields.forEach(field => {
                 if (newUnderStep[field])
