@@ -352,7 +352,7 @@ router.post("/mobileLogin", async(req, response) => {
                 jwt: jwtToken,
             });
         } else {
-            await User.create(id, email, access_token, "english", true).then(async user => {
+            await User.create(email+'.user', email, access_token, "english", true).then(async user => {
                 await TOKEN.set(email, oauth, access_token);
                 jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 await User.setToken(email, jwtToken);
