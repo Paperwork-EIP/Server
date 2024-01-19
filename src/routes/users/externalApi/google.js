@@ -77,7 +77,7 @@ router.get("/login", async (req, response) => {
                 jwt: jwtToken,
             });
         } else {
-            await USER.create(user.data.id, user.data.email, access_token, "english", true).then(async user => {
+            await USER.create(user.data.email+'.user', user.data.email, access_token, "english", true).then(async user => {
                 await TOKEN.set(user.email, 'google', access_token);
                 jwtToken = jwt.sign({ user }, process.env.jwt_key);
                 await USER.setToken(user.email, jwtToken);
